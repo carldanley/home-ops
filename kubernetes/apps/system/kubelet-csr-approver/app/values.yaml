@@ -1,0 +1,5 @@
+---
+providerRegex: |
+  ^(sc[1-5])$
+
+bypassDnsResolution: true

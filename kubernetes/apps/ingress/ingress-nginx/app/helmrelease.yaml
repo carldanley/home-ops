@@ -1,0 +1,89 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ingress-nginx
+  namespace: ingress
+spec:
+  interval: 30m
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes.github.io/ingress-nginx
+      chart: ingress-nginx
+      version: 4.7.0
+      sourceRef:
+        kind: HelmRepository
+        name: ingress-nginx
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      replicaCount: 3
+
+      extraArgs:
+        default-ssl-certificate: ingress/wildcard-tls
+
+      updateStrategy:
+        type: RollingUpdate
+
+      config:
+        custom-http-errors: 404,401,403,500,503
+        hsts: "true"
+        hsts-max-age: "31449600"
+        use-http2: "true"
+        log-format-escape-json: "true"
+        log-format-upstream: >
+          {"time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
+          "x_forwarded_for": "$proxy_add_x_forwarded_for", "request_id": "$req_id",
+          "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "request_time": $request_time,
+          "status": $status, "vhost": "$host", "request_proto": "$server_protocol",
+          "path": "$uri", "request_query": "$args", "request_length": $request_length,
+          "duration": $request_time,"method": "$request_method", "http_referrer": "$http_referer",
+          "http_user_agent": "$http_user_agent"}
+
+      use-forwarded-headers: "true"
+
+      service:
+        enabled: true
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_NGINX}
+        externalTrafficPolicy: Cluster
+
+      publishService:
+        enabled: true
+
+      ingressClassResource:
+        default: true
+
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          namespace: ingress
+          namespaceSelector:
+            any: true
+
+      topologySpreadConstraints:
+      - maxSkew: 2
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: ingress-nginx
+            app.kubernetes.io/component: controller
+
+      resources:
+        requests:
+          memory: 381M
+          cpu: 100m
+        limits:
+          memory: 463M
+
+    defaultBackend:
+      enabled: true
+      image:
+        repository: ghcr.io/tarampampam/error-pages
+        tag: 2.24.0
+      extraEnvs:
+      - { name: TEMPLATE_NAME, value: lost-in-space }
+      - { name: SHOW_DETAILS, value: "false" }

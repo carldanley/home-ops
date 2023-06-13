@@ -1,0 +1,24 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-domains
+  namespace: ingress
+spec:
+  secretName: wildcard-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+  - "${CERT_MANAGER_DOMAIN_1}"
+  - "*.${CERT_MANAGER_DOMAIN_1}"
+  - "${CERT_MANAGER_DOMAIN_2}"
+  - "*.${CERT_MANAGER_DOMAIN_2}"
+  - "${CERT_MANAGER_DOMAIN_3}"
+  - "*.${CERT_MANAGER_DOMAIN_3}"
+  - "${CERT_MANAGER_DOMAIN_4}"
+  - "*.${CERT_MANAGER_DOMAIN_4}"
+  - "${CERT_MANAGER_DOMAIN_5}"
+  - "*.${CERT_MANAGER_DOMAIN_5}"
+  - "${CERT_MANAGER_DOMAIN_6}"
+  - "*.${CERT_MANAGER_DOMAIN_6}"

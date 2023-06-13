@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-service-synology
+  namespace: ingress
+spec:
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-service-synology
+  namespace: ingress
+subsets:
+- addresses:
+  - ip: ${SYNOLOGY_ADDRESS}
+  ports:
+  - port: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: external-service-synology
+  namespace: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "synology.${EXTERNAL_DNS_1_DOMAIN}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: external-service-synology
+            port:
+              number: 5000

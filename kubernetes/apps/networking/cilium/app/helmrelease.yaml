@@ -1,0 +1,71 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: networking
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cilium
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+        namespace: flux-system
+      version: v1.14.0-snapshot.2
+
+  valuesFrom:
+  - kind: ConfigMap
+    name: cilium-values
+
+  values:
+    hubble:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+      metrics:
+        enabled:
+        - dns:query;ignoreAAAA
+        - drop
+        - tcp
+        - flow
+        - port-distribution
+        - icmp
+        - http
+
+      relay:
+        enabled: true
+        rollOutPods: true
+        prometheus:
+          serviceMonitor:
+            enabled: true
+
+      ui:
+        enabled: true
+        rollOutPods: true
+        ingress:
+          enabled: true
+          className: "nginx"
+          annotations:
+            nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          hosts:
+          - "hubble.${EXTERNAL_DNS_1_DOMAIN}"
+
+      dashboards:
+        enabled: true
+        label: grafana.io/dashboard
+        namespace: monitoring
+        labelValue: "true"
+        annotations: {}
+
+    prometheus:
+      serviceMonitor:
+        enabled: true
+
+    operator:
+      prometheus:
+        serviceMonitor:
+          enabled: true

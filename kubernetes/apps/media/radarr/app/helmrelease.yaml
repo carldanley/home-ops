@@ -1,0 +1,96 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/onedr0p/radarr
+      tag: 4.5.2.7388@sha256:eb7894c15299bb95655a78ed03f0dc6761fdffe393467df468b956994c58f130
+    env:
+      TZ: America/New_York
+      RADARR__INSTANCE_NAME: Radarr
+      RADARR__PORT: &port 7878
+      RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DNS_1_DOMAIN}
+      RADARR__LOG_LEVEL: info
+      RADARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: starr-apps-secret
+            key: RADARR_API_KEY
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:movie-open-outline"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: &host radarr.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+            - path: /
+              pathType: Prefix
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: nfs-media
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/backups/radarr
+        mountPath: /config/Backups
+        readOnly: false
+
+    volumeClaimTemplates:
+    - name: config
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: ceph-block
+
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups:
+      - 65539
+      - 1030
+
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 5m
+      limits:
+        memory: 431Mi

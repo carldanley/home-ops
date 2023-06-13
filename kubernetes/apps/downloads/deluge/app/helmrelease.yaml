@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: deluge
+  namespace: downloads
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+
+    image:
+      repository: tccr.io/truecharts/deluge
+      tag: 2.1.1@sha256:fb4841fbf1184c0ac2ef1712fdcf41a5253b916aaca1fead2093be257c5959bd
+
+    podAnnotations:
+      vpn.home.arpa/enabled: "true"
+
+    service:
+      main:
+        ports:
+          http:
+            port: &httpPort 8112
+          daemon:
+            port: &daemonPort 57120
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:download-circle-outline"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: &host deluge.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+
+    volumeClaimTemplates:
+    - name: config
+      mountPath: /config
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: ceph-block
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: nfs-downloads
+        mountPath: /data/downloads

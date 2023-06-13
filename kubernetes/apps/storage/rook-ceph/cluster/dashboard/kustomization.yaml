@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+# Ref: https://grafana.com/grafana/dashboards/2842
+- name: ceph-cluster
+  files:
+  - ceph-cluster.json
+# Ref: https://grafana.com/grafana/dashboards/5336
+- name: ceph-osd
+  files:
+  - ceph-osd.json
+# Ref: https://grafana.com/grafana/dashboards/5342
+- name: ceph-pools
+  files:
+  - ceph-pools.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Rook Ceph
+  labels:
+    grafana.io/dashboard: "true"

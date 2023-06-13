@@ -1,0 +1,119 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: frigate
+  namespace: nvr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/blakeblackshear/frigate
+      tag: 0.12.1
+
+    service:
+      main:
+        ports:
+          http:
+            port: &port 5000
+          rtsp:
+            enabled: true
+            port: 8554
+
+    probes:
+      liveness: &probe
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/version
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness:
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/version
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      startup:
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/version
+            port: *port
+          failureThreshold: 30
+          periodSeconds: 10
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: frigate-configmap
+        subPath: config.yaml
+        mountPath: /config/config.yml
+        readOnly: true
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/bus/usb
+      cache:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 512Mi
+        mountPath: /dev/shm
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+        hosts:
+        - host: "frigate.${EXTERNAL_DNS_1_DOMAIN}"
+          paths:
+          - path: /
+
+    securityContext:
+      privileged: true
+
+    nodeSelector:
+      google.feature.node.kubernetes.io/coral: "true"
+      intel.feature.node.kubernetes.io/gpu: "true"
+
+    resources:
+      requests:
+        gpu.intel.com/i915: 1
+      limits:
+        gpu.intel.com/i915: 1
+
+    volumeClaimTemplates:
+    - name: database
+      mountPath: /db
+      accessMode: ReadWriteOnce
+      size: 2Gi
+      stoageClass: ceph-block

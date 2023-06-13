@@ -1,0 +1,195 @@
+---
+clusterName: ${CLUSTER_NAME}
+
+talosVersion: v1.4.5
+kubernetesVersion: 1.27.2
+endpoint: "https://${CLUSTER_NAME}.${DOMAIN}:6443"
+
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlane: true
+
+clusterPodNets:
+- 172.22.0.0/16
+clusterSvcNets:
+- 172.23.0.0/16
+cniConfig:
+  name: none
+
+additionalApiServerCertSans:
+- ${CLUSTER_ENDPOINT_IP}
+
+additionalMachineCertSans:
+- ${CLUSTER_ENDPOINT_IP}
+- ${CLUSTER_NAME}.${DOMAIN}
+
+nodes:
+
+- hostname: sc1.${DOMAIN}
+  disableSearchDomain: true
+  ipAddress: 192.168.10.41
+  controlPlane: true
+  installDisk: /dev/nvme1n1
+  networkInterfaces:
+  - interface: eth0
+    dhcp: true
+    vip:
+      ip: ${CLUSTER_ENDPOINT_IP}
+    vlans:
+    - vlanId: 4
+      mtu: 1500
+      dhcp: true
+      dhcpOptions:
+        routeMetric: 4096
+
+- hostname: sc2.${DOMAIN}
+  disableSearchDomain: true
+  ipAddress: 192.168.10.42
+  controlPlane: true
+  installDisk: /dev/nvme1n1
+  networkInterfaces:
+  - interface: eth0
+    dhcp: true
+    vip:
+      ip: ${CLUSTER_ENDPOINT_IP}
+    vlans:
+    - vlanId: 4
+      mtu: 1500
+      dhcp: true
+      dhcpOptions:
+        routeMetric: 4096
+
+- hostname: sc3.${DOMAIN}
+  disableSearchDomain: true
+  ipAddress: 192.168.10.43
+  controlPlane: true
+  installDisk: /dev/nvme1n1
+  networkInterfaces:
+  - interface: eth0
+    dhcp: true
+    vip:
+      ip: ${CLUSTER_ENDPOINT_IP}
+    vlans:
+    - vlanId: 4
+      mtu: 1500
+      dhcp: true
+      dhcpOptions:
+        routeMetric: 4096
+
+- hostname: sc4.${DOMAIN}
+  disableSearchDomain: true
+  ipAddress: 192.168.10.44
+  controlPlane: false
+  installDisk: /dev/nvme1n1
+  networkInterfaces:
+  - interface: eth0
+    dhcp: true
+    vlans:
+    - vlanId: 4
+      mtu: 1500
+      dhcp: true
+      dhcpOptions:
+        routeMetric: 4096
+
+- hostname: sc5.${DOMAIN}
+  disableSearchDomain: true
+  ipAddress: 192.168.10.45
+  controlPlane: false
+  installDisk: /dev/nvme1n1
+  networkInterfaces:
+  - interface: eth0
+    dhcp: true
+    vlans:
+    - vlanId: 4
+      mtu: 1500
+      dhcp: true
+      dhcpOptions:
+        routeMetric: 4096
+
+controlPlane:
+  patches:
+    - |-
+      cluster:
+        proxy:
+          disabled: true
+        etcd:
+          advertisedSubnets:
+          - 192.168.10.0/23
+        extraManifests:
+        - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
+        - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    - |-
+      machine:
+        files:
+        - op: create
+          path: /etc/cri/conf.d/20-customization.part
+          content: |
+            [plugins]
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+        install:
+          extensions:
+          - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 250
+          nodeIP:
+            validSubnets:
+            - 192.168.10.0/23
+        network:
+          extraHostEntries:
+          - ip: ${CLUSTER_ENDPOINT_IP}
+            aliases:
+            - ${CLUSTER_NAME}.${DOMAIN}
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+        time:
+          disabled: false
+          servers:
+          - ${NTP_SERVER}
+
+worker:
+  patches:
+    - |-
+      machine:
+        files:
+        - op: create
+          path: /etc/cri/conf.d/20-customization.part
+          content: |
+            [plugins]
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+        install:
+          extensions:
+          - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 250
+          nodeIP:
+            validSubnets:
+            - 192.168.10.0/23
+        network:
+          extraHostEntries:
+          - ip: ${CLUSTER_ENDPOINT_IP}
+            aliases:
+            - ${CLUSTER_NAME}.${DOMAIN}
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+        time:
+          disabled: false
+          servers:
+          - ${NTP_SERVER}

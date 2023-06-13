@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: wyze-bridge
+  namespace: nvr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controller:
+      type: deployment
+      replicas: 1
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/mrlt8/docker-wyze-bridge
+      tag: 2.3.1
+
+    envFrom:
+    - secretRef:
+        name: wyze-bridge-secret
+
+    env:
+      ENABLE_AUDIO: "true"
+      NET_MODE: "LAN"
+      FRESH_DATA: "true"
+      # SUBSTREAM: "true"
+
+    service:
+      main:
+        annotations:
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_WYZE_BRIDGE}
+        ports:
+          rtmp:
+            port: 1935
+          rtsp:
+            port: 8554
+          hls:
+            port: 8888
+          http:
+            port: 5000
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+        hosts:
+        - host: "wyze.${EXTERNAL_DNS_1_DOMAIN}"
+          paths:
+          - path: /
+            service:
+              port: 5000

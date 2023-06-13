@@ -1,0 +1,258 @@
+mqtt:
+  host: ${FRIGATE_MQTT_HOST}
+  port: ${FRIGATE_MQTT_PORT}
+  topic_prefix: frigate
+  client_id: frigate
+  user: ${FRIGATE_MQTT_USERNAME}
+  password: ${FRIGATE_MQTT_PASSWORD}
+
+logger:
+  default: info
+  logs:
+    frigate.record: debug
+
+database:
+  path: /db/frigate.db
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+detect:
+  fps: 5
+  max_disappeared: 25
+  stationary:
+    interval: 0
+    threshold: 50 # 10 x fps
+    max_frames:
+      default: 3000
+      objects:
+        person: 300
+
+ffmpeg:
+  hwaccel_args:
+  - -hwaccel
+  - vaapi
+  - -hwaccel_device
+  - /dev/dri/renderD128
+  - -hwaccel_output_format
+  - yuv420p
+  output_args:
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -c:a aac
+    rtmp: -c:v copy -f flv -c:a aac
+
+motion:
+  improve_contrast: true
+
+snapshots:
+  enabled: true
+  bounding_box: true
+  retain:
+    default: 10
+
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: active_objects
+  events:
+    retain:
+      default: 14
+      mode: active_objects
+
+rtmp:
+  enabled: false
+
+cameras:
+
+  backyard:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_BACKYARD_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1920
+      height: 1080
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 25800
+    motion:
+      mask:
+      - 0,131,265,86,669,39,683,74,1063,137,1718,315,1920,400,1920,0,0,0
+
+  driveway:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_DRIVEWAY_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1920
+      height: 1080
+    objects:
+      track:
+      - person
+      - car
+      filters:
+        person:
+          min_area: 14000
+    motion:
+      mask:
+      - 181,662,93,348,270,267,372,243,535,230,816,222,1067,228,1379,249,1734,298,1920,330,1920,0,0,0,0,762
+
+  front_doorbell:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_FRONT_DOORBELL_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1600
+      height: 1200
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 4500
+    motion:
+      mask:
+      - 1360,0,1038,210,1051,267,848,419,615,401,615,679,635,1200,0,1200,0,0
+    zones:
+      at_front_door:
+        coordinates: 1060,808,1600,1121,1600,1200,635,1200,625,894
+
+  garage:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_GARAGE_HOST}
+        roles:
+        - detect
+        - car
+      #input_args: -avoid_negative_ts make_zero -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -rtsp_transport tcp -timeout 5000000 -use_wallclock_as_timestamps 1
+    detect:
+      width: 2560
+      height: 1440
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 50000
+
+  great_room:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_GREAT_ROOM_HOST}
+        roles:
+        - detect
+      #input_args: -avoid_negative_ts make_zero -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -rtsp_transport tcp -timeout 5000000 -use_wallclock_as_timestamps 1
+    detect:
+      width: 2560
+      height: 1440
+    objects:
+      track:
+      - person
+    motion:
+      mask:
+      - 819,22,1003,21,1177,24,1142,151,1131,288,854,318,639,356,665,35
+      - 2193,952,2188,827,2436,275,2431,194,2061,0,2560,0,2560,1440,1611,1436
+
+  kitchen:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_KITCHEN_HOST}
+        roles:
+        - detect
+    detect:
+      width: 2560
+      height: 1440
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 32000
+
+  patio:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_PATIO_HOST}
+        roles:
+        - detect
+    detect:
+      width: 2560
+      height: 1440
+    objects:
+      track:
+      - person
+
+  prusa_i3_mk3s_plus:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_PRUSA_I3MK3S_PLUS_HOST}
+        roles:
+        - detect
+    detect:
+      width: 2560
+      height: 1440
+
+  sadies_room:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_SADIES_ROOM_HOST}
+        roles:
+        - detect
+    detect:
+      width: 2560
+      height: 1440
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 65000
+
+  side_left:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_SIDE_LEFT_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1920
+      height: 1080
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 8000
+    motion:
+      mask:
+      - 0,394,305,274,575,191,936,109,1227,64,1546,44,1777,89,1920,1080,1920,0,0,0
+
+  side_right:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_SIDE_RIGHT_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1920
+      height: 1080
+    objects:
+      track:
+      - person
+      filters:
+        person:
+          min_area: 125000
+          max_area: 340000
+    motion:
+      mask:
+      - 0,702,318,322,680,74,998,50,1100,0,1920,390,1920,0,0,0

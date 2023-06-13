@@ -1,0 +1,54 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: external-dns-2
+  namespace: ingress
+spec:
+  interval: 30m
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/external-dns/
+      chart: external-dns
+      version: 1.12.2
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-sigs-external-dns
+        namespace: flux-system
+      interval: 30m
+  values:
+    interval: 10s
+    sources:
+    - ingress
+    policy: sync
+    registry: txt
+    txtPrefix: "k8s-external-dns-2-"
+    domainFilters:
+    - ${EXTERNAL_DNS_2_DOMAIN}
+    provider: rfc2136
+    extraArgs:
+    - --rfc2136-host=${SYNOLOGY_ADDRESS}
+    - --rfc2136-port=53
+    - --rfc2136-zone=${EXTERNAL_DNS_2_DOMAIN}
+    - --rfc2136-tsig-axfr
+    resources:
+      requests:
+        cpu: 5m
+        memory: 49M
+      limits:
+        memory: 49M
+    serviceMonitor:
+      enabled: true
+  postRenderers:
+  - kustomize:
+      patches:
+      - target:
+          version: v1
+          kind: Deployment
+          name: external-dns-2
+        patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/envFrom
+            value:
+            - secretRef:
+                name: external-dns-2-secret

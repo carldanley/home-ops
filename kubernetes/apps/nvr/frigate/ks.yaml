@@ -1,0 +1,46 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nvr-frigate-secrets
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "false"
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/nvr/frigate/secret"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nvr-frigate
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/nvr/frigate/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom:
+    - kind: Secret
+      name: flux-frigate-secret
+      optional: false
+  dependsOn:
+  - name: storage-synology-csi
+  - name: system-node-feature-discovery-rules
+  - name: system-intel-device-plugins-gpu
+  - name: nvr-wyze-bridge

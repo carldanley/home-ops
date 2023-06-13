@@ -1,0 +1,35 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: ${EMAIL_ADDRESS}
+    privateKeySecretRef:
+      name: letsencrypt-account-key
+    solvers:
+    - selector:
+        dnsZones:
+        - "${CERT_MANAGER_DOMAIN_1}"
+        - "*.${CERT_MANAGER_DOMAIN_1}"
+        - "${CERT_MANAGER_DOMAIN_2}"
+        - "*.${CERT_MANAGER_DOMAIN_2}"
+        - "${CERT_MANAGER_DOMAIN_3}"
+        - "*.${CERT_MANAGER_DOMAIN_3}"
+        - "${CERT_MANAGER_DOMAIN_4}"
+        - "*.${CERT_MANAGER_DOMAIN_4}"
+        - "${CERT_MANAGER_DOMAIN_5}"
+        - "*.${CERT_MANAGER_DOMAIN_5}"
+        - "${CERT_MANAGER_DOMAIN_6}"
+        - "*.${CERT_MANAGER_DOMAIN_6}"
+      dns01:
+        route53:
+          region: ${CERT_MANAGER_AWS_REGION}
+          accessKeyIDSecretRef:
+            name: cert-manager-aws-credentials
+            key: ACCESS_KEY
+          secretAccessKeySecretRef:
+            name: cert-manager-aws-credentials
+            key: SECRET_ACCESS_KEY
