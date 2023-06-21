@@ -14,13 +14,20 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-      version: v1.14.0-snapshot.2
+      version: v1.14.0-snapshot.4
 
   valuesFrom:
   - kind: ConfigMap
     name: cilium-values
 
   values:
+    # https://docs.cilium.io/en/v1.9/gettingstarted/kubeproxy-free/#dsr-mode
+    loadBalancer:
+      mode: dsr
+    tunnel: disabled
+    autoDirectNodeRoutes: true
+    kubeProxyReplacement: strict
+
     hubble:
       enabled: true
       serviceMonitor:
