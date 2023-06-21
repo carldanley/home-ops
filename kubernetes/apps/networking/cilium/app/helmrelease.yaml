@@ -21,13 +21,6 @@ spec:
     name: cilium-values
 
   values:
-    # https://docs.cilium.io/en/v1.9/gettingstarted/kubeproxy-free/#dsr-mode
-    loadBalancer:
-      mode: dsr
-    tunnel: disabled
-    autoDirectNodeRoutes: true
-    kubeProxyReplacement: strict
-
     hubble:
       enabled: true
       serviceMonitor:
