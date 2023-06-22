@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zwavejs2mqtt
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: ghcr.io/zwave-js/zwave-js-ui
+      tag: 8.19.0
+    env:
+      TZ: "American/New York"
+    service:
+      main:
+        ports:
+          http:
+            port: 8091
+          websocket:
+            enabled: true
+            port: 3000
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:zwave"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: zwave.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+
+    securityContext:
+      privileged: true
+
+    resources:
+      requests:
+        cpu: 8m
+        memory: 178Mi
+      limits:
+        memory: 256Mi
+
+    volumeClaimTemplates:
+    - name: data
+      mountPath: /data
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: ceph-block
+
+    persistence:
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-0658_0200-if00/ttyACM0
+
+    nodeSelector:
+      feature.node.kubernetes.io/zwave: "true"

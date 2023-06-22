@@ -40,7 +40,7 @@ spec:
       name: flux-frigate-secret
       optional: false
   dependsOn:
-  - name: storage-synology-csi
+  - name: storage-rook-ceph
   - name: system-node-feature-discovery-rules
   - name: system-intel-device-plugins-gpu
   - name: nvr-wyze-bridge
