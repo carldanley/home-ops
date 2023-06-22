@@ -37,3 +37,4 @@ infrastructure/talos/**/clusterconfig
 .env
 *.snap
 setup/cluster/*cluster.yml
+*.zip

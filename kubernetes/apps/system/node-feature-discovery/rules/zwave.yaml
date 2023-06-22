@@ -5,12 +5,12 @@ metadata:
   name: zooz-700-series-zwave-plus-s2
 spec:
   rules:
-  - # Zooz 700 Series Z-Wave Plus S2 Stick
+  - # HUSBZB-01 Zwave Stick
     name: zwave
     labels:
       feature.node.kubernetes.io/zwave: "true"
     matchFeatures:
     - feature: usb.device
       matchExpressions:
-        vendor: { op: In, value: ["0658"] }
-        device: { op: In, value: ["0200"] }
+        vendor: { op: In, value: ["10c4"] }
+        device: { op: In, value: ["8a2a"] }

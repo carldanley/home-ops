@@ -80,7 +80,7 @@ spec:
       usb:
         enabled: true
         type: hostPath
-        hostPath: /dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0cc386a08919ec11947e36cc47486eb0-if00-port0
+        hostPath: /dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_516009EA-if01-port0
 
     nodeSelector:
       feature.node.kubernetes.io/zigbee: "true"
