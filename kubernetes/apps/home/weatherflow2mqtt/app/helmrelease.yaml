@@ -29,9 +29,7 @@ spec:
         [{
           "name":"multus-iot",
           "namespace": "networking",
-          "ips": [ "192.168.4.44/24" ],
-          "mac": "c2:b1:56:49:47:f2",
-          "gateway": [ "192.168.4.1" ]
+          "ips": [ "192.168.4.11/24" ]
         }]
 
     image:

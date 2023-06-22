@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/home-assistant/home-assistant
+      tag: 2023.6.2
+
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name":"multus-iot",
+          "namespace": "networking",
+          "ips": [ "192.168.4.10/24" ]
+        }]
+
+    env:
+      TZ: "America/New York"
+
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_HOME_ASSISTANT}
+        ports:
+          http:
+            enabled: true
+            port: 8123
+          sonos:
+            enabled: true
+            port: 1400
+          mass:
+            enabled: true
+            port: 8095
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          nginx.org/websocket-services: home-assistant
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:homeassistant"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        ingressClassName: nginx
+        hosts:
+        - host: ${EXTERNAL_DNS_2_DOMAIN}
+          paths:
+          - path: /
+
+    probes:
+      liveness:
+        custom: true
+        spec:
+          httpGet:
+            path: /manifest.json
+            port: 8123
+          initialDelaySeconds: 3
+          periodSeconds: 3
+      readiness:
+        enabled: false
+      startup:
+        enabled: false
+
+    resources:
+      requests:
+        cpu: 47m
+        memory: 1254Mi
+      limits:
+        memory: 1254Mi
+
+    persistence:
+      config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/home-assistant
+        mountPath: /config
+        readOnly: false

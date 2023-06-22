@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: home-home-assistant
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/home/home-assistant/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops
+  dependsOn:
+  - name: home-mosquitto
+  - name: storage-rook-ceph-cluster
