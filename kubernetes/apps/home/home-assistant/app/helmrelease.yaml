@@ -103,3 +103,13 @@ spec:
             path: /volume1/home-assistant
         mountPath: /config
         readOnly: false
+
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/backups/home-assistant
+        mountPath: /config/backups
+        readOnly: false
