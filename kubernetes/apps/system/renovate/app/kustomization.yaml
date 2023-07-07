@@ -12,13 +12,6 @@ configMapGenerator:
 - name: renovate-config
   files:
   - config/config.json5
-  - config/renovate.json5
-  - config/allowedVersions.json5
-  - config/autoMerge.json5
-  - config/commitMessage.json5
-  - config/groups.json5
-  - config/labels.json5
-  - config/semanticCommits.json5
 generatorOptions:
   disableNameSuffixHash: true
   labels:
