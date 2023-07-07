@@ -21,7 +21,7 @@ spec:
       LOG_LEVEL: debug
 
     cronjob:
-      schedule: '* * * * *'
+      schedule: '0 * * * *'
       failedJobsHistoryLimit: 3
       successfulJobsHistoryLimit: 3
       jobBackoffLimit: 1
