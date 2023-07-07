@@ -7,3 +7,4 @@ resources:
 - ./octoprint.yaml
 - ./synology.yaml
 - ./vaultwarden.yaml
+- ./wg-easy.yaml
