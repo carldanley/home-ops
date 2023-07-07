@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: renovate
+  namespace: system
+spec:
+  interval: 30m
+  chart:
+    # renovate: registryUrl=https://docs.renovatebot.com/helm-charts
+    spec:
+      chart: renovate
+      version: 35.159.7
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: renovate
+        namespace: flux-system
+  values:
+    env:
+      LOG_LEVEL: debug
+
+    cronjob:
+      schedule: '* * * * *'
+      failedJobsHistoryLimit: 3
+      successfulJobsHistoryLimit: 3
+      jobBackoffLimit: 1
+
+    dind:
+      enabled: false
+      slim:
+        enabled: false
+
+    renovate:
+      existingConfigFile: "/etc/config/config.json5"
+
+    envFrom:
+    - secretRef:
+      name: renovate-secrets
+
+    extraVolumeMounts:
+    - name: renovate-config
+      mountPath: /etc/config
+      readOnly: true
+
+    extraVolumes:
+    - name: renovate-config
+      persistentVolumeClaim:
+        claimName: renovate-config

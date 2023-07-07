@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: system
+resources:
+- ./secret-renovate.sops.yaml
+- ./helmrelease.yaml
+commonLabels:
+  app.kubernetes.io/name: renovate
+  app.kubernetes.io/instance: renovate
+configMapGenerator:
+- name: renovate-config
+  files:
+  - config/config.json5
+  - config/renovate.json5
+  - config/allowedVersions.json5
+  - config/autoMerge.json5
+  - config/commitMessage.json5
+  - config/groups.json5
+  - config/labels.json5
+  - config/semanticCommits.json5
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

@@ -15,6 +15,7 @@ resources:
 - ./piraeus.yaml
 - ./postfinance.yaml
 - ./prometheus-community.yaml
+- ./renovate.yaml
 - ./rook-ceph.yaml
 - ./stakater.yaml
 - ./synology-csi.yaml
