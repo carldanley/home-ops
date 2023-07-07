@@ -45,5 +45,5 @@ spec:
 
     extraVolumes:
     - name: renovate-config
-      persistentVolumeClaim:
+      configMap:
         claimName: renovate-config
