@@ -9,7 +9,6 @@
     ":automergeDigest",
     ":automergeBranch",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/allowedVersions.json5",
-    "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/autoMerge.json5",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/commitMessage.json5",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/groups.json5",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/labels.json5",
