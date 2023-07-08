@@ -68,6 +68,26 @@ go2rtc:
   streams:
     backyard:
     - ${FRIGATE_CAMERA_BACKYARD_HOST}
+    driveway:
+    - ${FRIGATE_CAMERA_DRIVEWAY_HOST}
+    front_doorbell:
+    - ${FRIGATE_CAMERA_FRONT_DOORBELL_HOST}
+    garage:
+    - ${FRIGATE_CAMERA_GARAGE_HOST}
+    great_room:
+    - ${FRIGATE_CAMERA_GREAT_ROOM_HOST}
+    kitchen:
+    - ${FRIGATE_CAMERA_KITCHEN_HOST}
+    patio:
+    - ${FRIGATE_CAMERA_PATIO_HOST}
+    pennys_room:
+    - ${FRIGATE_CAMERA_PENNYS_ROOM_HOST}
+    sadies_room:
+    - ${FRIGATE_CAMERA_SADIES_ROOM_HOST}
+    side_left:
+    - ${FRIGATE_CAMERA_SIDE_LEFT_HOST}
+    side_right:
+    - ${FRIGATE_CAMERA_SIDE_RIGHT_HOST}
   webrtc:
     candidates:
     - ${SERVICE_ADDRESS_FRIGATE}:8555
