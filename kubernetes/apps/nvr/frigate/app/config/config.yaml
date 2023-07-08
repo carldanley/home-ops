@@ -64,6 +64,11 @@ record:
 rtmp:
   enabled: false
 
+go2rtc:
+  streams:
+    backyard:
+    - ${FRIGATE_CAMERA_BACKYARD_HOST}
+
 cameras:
 
   backyard:
