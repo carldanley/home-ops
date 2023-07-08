@@ -78,6 +78,7 @@ go2rtc:
     - ${FRIGATE_CAMERA_GREAT_ROOM_HOST}
     kitchen:
     - ${FRIGATE_CAMERA_KITCHEN_HOST}
+    - "ffmpeg:rtsp_cam#audio=opus"
     patio:
     - ${FRIGATE_CAMERA_PATIO_HOST}
     pennys_room:
