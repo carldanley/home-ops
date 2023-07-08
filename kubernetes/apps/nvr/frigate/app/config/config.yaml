@@ -122,7 +122,7 @@ cameras:
           min_area: 4500
     motion:
       mask:
-      - 1360,0,1038,210,1051,267,848,419,615,401,615,679,635,1200,0,1200,0,0
+      - 1360,0,1047,206,1073,522,1071,893,872,745,865,422,615,401,615,679,635,1200,0,1200,0,0
     zones:
       at_front_door:
         coordinates: 1060,808,1600,1121,1600,1200,635,1200,625,894
@@ -134,7 +134,6 @@ cameras:
         roles:
         - detect
         - car
-      #input_args: -avoid_negative_ts make_zero -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -rtsp_transport tcp -timeout 5000000 -use_wallclock_as_timestamps 1
     detect:
       width: 2560
       height: 1440
@@ -151,7 +150,6 @@ cameras:
       - path: ${FRIGATE_CAMERA_GREAT_ROOM_HOST}
         roles:
         - detect
-      #input_args: -avoid_negative_ts make_zero -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -rtsp_transport tcp -timeout 5000000 -use_wallclock_as_timestamps 1
     detect:
       width: 2560
       height: 1440
@@ -160,8 +158,8 @@ cameras:
       - person
     motion:
       mask:
-      - 819,22,1003,21,1177,24,1142,151,1131,288,854,318,639,356,665,35
-      - 2193,952,2188,827,2436,275,2431,194,2061,0,2560,0,2560,1440,1611,1436
+      - 1048,248,1081,524,623,732,551,389
+      - 63,250,942,69,1058,210,1529,250,1921,200,2560,0,0,0,0,608
 
   kitchen:
     ffmpeg:
@@ -178,6 +176,9 @@ cameras:
       filters:
         person:
           min_area: 32000
+    motion:
+      mask:
+      - 923,330,1637,492,2560,414,2560,0,0,0,0,339
 
   patio:
     ffmpeg:
@@ -191,11 +192,14 @@ cameras:
     objects:
       track:
       - person
+    motion:
+      mask:
+      - 175,999,1599,570,2303,959,2560,517,2560,0,0,0
 
-  prusa_i3_mk3s_plus:
+  pennys_room:
     ffmpeg:
       inputs:
-      - path: ${FRIGATE_CAMERA_PRUSA_I3MK3S_PLUS_HOST}
+      - path: ${FRIGATE_CAMERA_PENNYS_ROOM_HOST}
         roles:
         - detect
     detect:
