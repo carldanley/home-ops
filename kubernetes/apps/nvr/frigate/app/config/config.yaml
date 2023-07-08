@@ -68,6 +68,9 @@ go2rtc:
   streams:
     backyard:
     - ${FRIGATE_CAMERA_BACKYARD_HOST}
+  webrtc:
+    candidates:
+    - ${SERVICE_ADDRESS_FRIGATE}:8555
 
 cameras:
 

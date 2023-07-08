@@ -28,12 +28,18 @@ spec:
 
     service:
       main:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
         ports:
           http:
             port: &port 5000
           rtsp:
             enabled: true
             port: 8554
+          webrtc:
+            enabled: true
+            port: 8555
 
     probes:
       liveness: &probe
