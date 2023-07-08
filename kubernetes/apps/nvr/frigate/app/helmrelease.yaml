@@ -92,6 +92,24 @@ spec:
         medium: Memory
         sizeLimit: 512Mi
         mountPath: /dev/shm
+      clips:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/clips
+        mountPath: /media/frigate/clips
+        readOnly: false
+      recordings:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/recordings
+        mountPath: /media/frigate/recordings
+        readOnly: false
 
     ingress:
       main:
