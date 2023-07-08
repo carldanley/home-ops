@@ -74,17 +74,22 @@ go2rtc:
     - ${FRIGATE_CAMERA_FRONT_DOORBELL_HOST}
     garage:
     - ${FRIGATE_CAMERA_GARAGE_HOST}
+    - "ffmpeg:garage#audio=opus"
     great_room:
     - ${FRIGATE_CAMERA_GREAT_ROOM_HOST}
+    - "ffmpeg:great_room#audio=opus"
     kitchen:
     - ${FRIGATE_CAMERA_KITCHEN_HOST}
     - "ffmpeg:kitchen#audio=opus"
     patio:
     - ${FRIGATE_CAMERA_PATIO_HOST}
+    - "ffmpeg:patio#audio=opus"
     pennys_room:
     - ${FRIGATE_CAMERA_PENNYS_ROOM_HOST}
+    - "ffmpeg:pennys_room#audio=opus"
     sadies_room:
     - ${FRIGATE_CAMERA_SADIES_ROOM_HOST}
+    - "ffmpeg:sadies_room#audio=opus"
     side_left:
     - ${FRIGATE_CAMERA_SIDE_LEFT_HOST}
     side_right:
