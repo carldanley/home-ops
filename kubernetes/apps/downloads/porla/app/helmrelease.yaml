@@ -77,20 +77,16 @@ spec:
         mountPath: /config/config.toml
         subPath: config.toml
         readOnly: true
+      porla-workflows:
+        enabled: true
+        type: configMap
+        name: porla-workflows
+        mountPath: /workflows
+        readOnly: true
       media:
         enabled: true
         existingClaim: nfs-downloads
         mountPath: /media
-
-    extraVolumeMounts:
-    - name: porla-workflows
-      mountPath: /workflows
-      readOnly: true
-
-    extraVolumes:
-    - name: porla-workflows
-      configMap:
-        name: porla-workflows
 
     resources:
       requests:
