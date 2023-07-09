@@ -50,6 +50,17 @@ spec:
           - path: /
             pathType: Prefix
 
+    persistence:
+      backups:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/backups/tautulli
+        mountPath: /config/backups
+        readOnly: false
+
     volumeClaimTemplates:
     - name: config
       mountPath: /config
