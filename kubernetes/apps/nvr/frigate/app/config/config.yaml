@@ -16,7 +16,6 @@ database:
 
 ui:
   live_mode: webrtc
-  use_experimental: true
 
 detectors:
   coral:
