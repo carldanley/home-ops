@@ -84,7 +84,7 @@ spec:
 
     extraVolumeMounts:
     - name: porla-workflows
-      mountPath: /config/workflows
+      mountPath: /workflows
       readOnly: true
 
     extraVolumes:

@@ -1,5 +1,5 @@
 secret_key = "${PORLA_SECRET_KEY}"
-workflow_dir = "/config/workflows"
+workflow_dir = "/workflows"
 
 listen_interfaces = [
     ["vxlan0", 57427]

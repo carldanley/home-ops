@@ -13,5 +13,3 @@ configMapGenerator:
   - workflows/seeding-checker.lua
 generatorOptions:
   disableNameSuffixHash: true
-  labels:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
