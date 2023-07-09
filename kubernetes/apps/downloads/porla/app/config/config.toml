@@ -1,0 +1,27 @@
+secret_key = "${PORLA_SECRET_KEY}"
+workflow_dir = "/config/workflows"
+
+listen_interfaces = [
+    ["vxlan0", 57427]
+]
+
+[plugins]
+allow_git = true
+
+[presets.sonarr]
+category = "sonarr"
+download_limit = -1
+upload_limit = 1000000
+max_connections = 200
+max_uploads = 100
+save_path = "/media/downloads/porla/.incomplete"
+tags = ["public"]
+
+[presets.sonarrracing]
+category = "sonarr"
+download_limit = -1
+upload_limit = -1
+max_connections = 500
+max_uploads = 500
+save_path = "/media/downloads/porla/.incomplete"
+tags = ["racing","private"]
