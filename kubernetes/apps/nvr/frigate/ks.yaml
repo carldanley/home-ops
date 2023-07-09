@@ -40,6 +40,7 @@ spec:
       name: flux-frigate-secret
       optional: false
   dependsOn:
+  - name: nvr-frigate-secrets
   - name: storage-rook-ceph
   - name: system-node-feature-discovery-rules
   - name: system-intel-device-plugins-gpu

@@ -38,4 +38,5 @@ spec:
       name: flux-porla-secret
       optional: false
   dependsOn:
+  - name: downloads-porla-secrets
   - name: networking-pod-gateway
