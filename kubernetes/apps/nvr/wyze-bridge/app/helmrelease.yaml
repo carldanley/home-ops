@@ -37,6 +37,12 @@ spec:
       NET_MODE: "LAN"
       FRESH_DATA: "true"
       H264_ENC: "h264_qsv"
+      DEBUG_FFMPEG: "true"
+
+    securityContext:
+      capabilities:
+        add:
+        - CAP_PERFMON
 
     service:
       main:
