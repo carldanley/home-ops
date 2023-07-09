@@ -36,8 +36,7 @@ spec:
       ENABLE_AUDIO: "true"
       NET_MODE: "LAN"
       FRESH_DATA: "true"
-      # H264_ENC: "h264_qsv"
-      # DEBUG_FFMPEG: "true"
+      H264_ENC: "h264_qsv"
 
     service:
       main:
