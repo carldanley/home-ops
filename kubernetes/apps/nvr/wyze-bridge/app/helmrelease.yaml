@@ -36,7 +36,6 @@ spec:
       ENABLE_AUDIO: "true"
       NET_MODE: "LAN"
       FRESH_DATA: "true"
-      SUBSTREAM: "true"
 
     service:
       main:
