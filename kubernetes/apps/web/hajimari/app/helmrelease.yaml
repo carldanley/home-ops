@@ -38,6 +38,7 @@ spec:
         matchNames:
         - downloads
         - home
+        - ingress
         - media
         - monitoring
         - networking
