@@ -123,6 +123,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           hajimari.io/enable: "true"
+          hajimari.io/appName: "Rook"
           hajimari.io/icon: "mdi:chess-rook"
         host:
           name: "rook.${EXTERNAL_DNS_1_DOMAIN}"
