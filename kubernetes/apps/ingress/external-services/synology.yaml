@@ -30,6 +30,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     hajimari.io/enable: "true"
+    hajimari.io/appName: "Synology"
     hajimari.io/icon: "simple-icons:synology"
 spec:
   ingressClassName: nginx

@@ -31,6 +31,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     hajimari.io/enable: "true"
+    hajimari.io/appName: "Octoprint"
     hajimari.io/icon: "simple-icons:octoprint"
 spec:
   ingressClassName: nginx
