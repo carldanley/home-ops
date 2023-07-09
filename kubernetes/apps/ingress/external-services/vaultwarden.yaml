@@ -50,6 +50,8 @@ metadata:
   namespace: ingress
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "simple-icons:bitwarden"
 spec:
   ingressClassName: nginx
   rules:
