@@ -16,13 +16,13 @@ return Workflow:new{
         local category = ctx.torrent.category or "default"
 
         if (category == "movies") then
-          return "/media/downloads/porla/Movies"
+          return "/media/downloads/porla/movies"
 
         elseif (category == "sonarr") then
-          return "/media/downloads/porla/Sonarr"
+          return "/media/downloads/porla/sonarr"
 
         elseif (category == "radarr") then
-          return "/media/downloads/porla/Radarr"
+          return "/media/downloads/porla/radarr"
 
         elseif (category == "default") then
           return "/media/downloads/porla/"
