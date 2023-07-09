@@ -26,7 +26,7 @@ spec:
 
     image:
       repository: ghcr.io/mrlt8/docker-wyze-bridge
-      tag: dev-qsv
+      tag: 2.3.9
 
     envFrom:
     - secretRef:
@@ -36,13 +36,8 @@ spec:
       ENABLE_AUDIO: "true"
       NET_MODE: "LAN"
       FRESH_DATA: "true"
-      H264_ENC: "h264_qsv"
-      DEBUG_FFMPEG: "true"
-
-    securityContext:
-      capabilities:
-        add:
-        - CAP_PERFMON
+      # H264_ENC: "h264_qsv"
+      # DEBUG_FFMPEG: "true"
 
     service:
       main:
