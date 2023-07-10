@@ -85,7 +85,9 @@ spec:
       fsGroup: 100
       supplementalGroups:
       - 34
+      - 44
       - 100
+      - 226
       fsGroupChangePolicy: "OnRootMismatch"
       capabilities:
         add:
