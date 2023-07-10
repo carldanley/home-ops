@@ -58,9 +58,7 @@ spec:
         add:
         - CHOWN
       supplementalGroups:
-      - 34
       - 44
-      - 100
       - 226
 
     resources:
