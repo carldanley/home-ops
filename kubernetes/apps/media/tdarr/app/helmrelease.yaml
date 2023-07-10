@@ -21,8 +21,8 @@ spec:
 
     env:
       TZ: "America/New_York"
-      PUID: "568"
-      PGID: "568"
+      #PUID: "568"
+      #PGID: "568"
       ffmpegPath: "/usr/local/bin/ffmpeg"
       TDARR_INSTANCE_NAME: Tdarr
       TDARR__PORT: &port 8265
@@ -82,7 +82,11 @@ spec:
     podSecurityContext:
       runAsUser: 0
       runAsGroup: 0
-      fsGroup: 0
+      fsGroup: 100
+      supplementalGroups:
+      - 34
+      - 100
+      fsGroupChangePolicy: "OnRootMismatch"
       capabilities:
         add:
         - CHOWN

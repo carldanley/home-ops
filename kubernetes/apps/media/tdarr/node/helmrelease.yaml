@@ -24,8 +24,8 @@ spec:
 
     env:
       TZ: "America/New_York"
-      PUID: "1000"
-      PGID: "1000"
+      # PUID: "1000"
+      # PGID: "1000"
       serverIP: tdarr.media.svc.cluster.local
       serverPort: 8266
       ffmpegPath: "/usr/local/bin/ffmpeg"
@@ -53,13 +53,16 @@ spec:
     podSecurityContext:
       runAsUser: 0
       runAsGroup: 0
-      fsGroup: 0
+      fsGroup: 100
+      supplementalGroups:
+      - 34
+      - 100
+      - 44
+      - 226
+      fsGroupChangePolicy: "OnRootMismatch"
       capabilities:
         add:
         - CHOWN
-      supplementalGroups:
-      - 44
-      - 226
 
     resources:
       requests:
