@@ -7,4 +7,3 @@ resources:
 - ./flaresolverr/ks.yaml
 - ./prowlarr/ks.yaml
 - ./deluge/ks.yaml
-- ./porla/ks.yaml
