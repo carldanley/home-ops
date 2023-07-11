@@ -170,11 +170,11 @@ spec:
         paths:
         - /
 
-      thanosService:
-        enabled: true
+      # thanosService:
+      #   enabled: true
 
-      thanosServiceMonitor:
-        enabled: true
+      # thanosServiceMonitor:
+      #   enabled: true
 
       prometheusSpec:
         replicas: 3
@@ -185,11 +185,11 @@ spec:
         probeSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
-        thanos:
-          image: quay.io/thanos/thanos:v0.31.0
-          objectStorageConfig:
-            name: thanos-objstore-secret
-            key: objstore.yml
+        # thanos:
+        #   image: quay.io/thanos/thanos:v0.31.0
+        #   objectStorageConfig:
+        #     name: thanos-objstore-secret
+        #     key: objstore.yml
         retention: 7d
         retentionSize: 15GB
         storageSpec:
