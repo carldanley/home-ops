@@ -39,6 +39,6 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-  - name: monitoring-prometheus-stack-crds
+  - name: monitoring-kube-prometheus-stack-crds
   - name: ingress-cert-manager
   - name: storage-rook-ceph-cluster
