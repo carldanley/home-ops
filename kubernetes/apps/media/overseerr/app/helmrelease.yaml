@@ -39,7 +39,7 @@ spec:
         - "${OVERSEERR_API_KEY}"
         envFrom:
         - secretRef:
-            name: star-apps-secret
+            name: starr-apps-secret
         ports:
         - name: metrics
           containerPort: &metricsPort 9850
