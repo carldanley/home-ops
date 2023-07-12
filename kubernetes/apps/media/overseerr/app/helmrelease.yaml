@@ -37,7 +37,7 @@ spec:
         - "http://localhost:5055"
         - --overseerr.api-key
         - "${OVERSEERR_API_KEY}"
-        env:
+        envFrom:
         - secretRef:
             name: star-apps-secret
         ports:
