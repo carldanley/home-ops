@@ -5,9 +5,6 @@ talosVersion: v1.4.5
 kubernetesVersion: 1.27.2
 endpoint: "https://${CLUSTER_NAME}.${DOMAIN}:6443"
 
-allowSchedulingOnMasters: true
-allowSchedulingOnControlPlane: true
-
 clusterPodNets:
 - 172.22.0.0/16
 clusterSvcNets:
@@ -106,90 +103,62 @@ nodes:
         routeMetric: 4096
 
 controlPlane:
-  patches:
-    - |-
-      cluster:
-        proxy:
-          disabled: true
-        etcd:
-          advertisedSubnets:
+  inlinePatch:
+    cluster:
+      allowSchedulingOnMasters: true
+      proxy:
+        disabled: true
+      etcd:
+        extraArgs:
+          listen-metrics-urls: http://0.0.0.0:2381
+        advertisedSubnets:
+        - 192.168.10.0/23
+      controllerManager:
+        extraArgs:
+          bind-address: 0.0.0.0
+      scheduler:
+        extraArgs:
+          bind-address: 0.0.0.0
+      apiServer:
+        admissionControl: null
+      extraManifests:
+      - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
+      - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+    machine: &machine
+      install:
+        extensions:
+        - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+      sysctls:
+        fs.inotify.max_user_watches: 1048576
+        fs.inotify.max_user_instances: 8192
+      network:
+        extraHostEntries:
+        - ip: ${CLUSTER_ENDPOINT_IP}
+          aliases:
+          - ${CLUSTER_NAME}.${DOMAIN}
+      time:
+        disabled: false
+        servers:
+        - ${NTP_SERVER}
+      kubelet:
+        extraArgs:
+          feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+          rotate-server-certificates: "true"
+        extraConfig:
+          maxPods: 250
+        nodeIP:
+          validSubnets:
           - 192.168.10.0/23
-        extraManifests:
-        - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
-        - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
-
-    - |-
-      - op: remove
-        path: /cluster/apiServer/admissionControl
-
-    - |-
-      machine:
-        files:
-        - op: create
-          path: /etc/cri/conf.d/20-customization.part
-          content: |
-            [plugins]
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-        install:
-          extensions:
-          - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
-        kubelet:
-          extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-            rotate-server-certificates: "true"
-          extraConfig:
-            maxPods: 250
-          nodeIP:
-            validSubnets:
-            - 192.168.10.0/23
-        network:
-          extraHostEntries:
-          - ip: ${CLUSTER_ENDPOINT_IP}
-            aliases:
-            - ${CLUSTER_NAME}.${DOMAIN}
-        sysctls:
-          fs.inotify.max_user_watches: "1048576"
-          fs.inotify.max_user_instances: "8192"
-        time:
-          disabled: false
-          servers:
-          - ${NTP_SERVER}
+      files:
+      - op: create
+        path: /etc/cri/conf.d/20-customization.part
+        content: |
+          [plugins]
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
 
 worker:
-  patches:
-    - |-
-      machine:
-        files:
-        - op: create
-          path: /etc/cri/conf.d/20-customization.part
-          content: |
-            [plugins]
-              [plugins."io.containerd.grpc.v1.cri"]
-                enable_unprivileged_ports = true
-                enable_unprivileged_icmp = true
-        install:
-          extensions:
-          - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
-        kubelet:
-          extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-            rotate-server-certificates: "true"
-          extraConfig:
-            maxPods: 250
-          nodeIP:
-            validSubnets:
-            - 192.168.10.0/23
-        network:
-          extraHostEntries:
-          - ip: ${CLUSTER_ENDPOINT_IP}
-            aliases:
-            - ${CLUSTER_NAME}.${DOMAIN}
-        sysctls:
-          fs.inotify.max_user_watches: "1048576"
-          fs.inotify.max_user_instances: "8192"
-        time:
-          disabled: false
-          servers:
-          - ${NTP_SERVER}
+  inlinePatch:
+    machine:
+      <<: *machine
