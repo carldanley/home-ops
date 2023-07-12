@@ -4,3 +4,14 @@ kind: Kustomization
 namespace: monitoring
 resources:
 - ./helmrelease.yaml
+configMapGenerator:
+- name: node-exporter-grafana-dashboards
+  files:
+  - ./dashboards/node-exporter.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Nodes
+  labels:
+    grafana.io/dashboard: "true"

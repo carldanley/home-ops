@@ -40,12 +40,6 @@ spec:
 
     dashboards:
       nodes:
-        # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
-        node-exporter:
-          gnetId: 1860
-          revision: 30
-          datasource: prometheus
-
         # Ref: https://grafana.com/grafana/dashboards/3070-etcd/
         etcd:
           gnetId: 3070
