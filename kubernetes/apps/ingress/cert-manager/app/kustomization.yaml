@@ -4,4 +4,14 @@ kind: Kustomization
 namespace: ingress
 resources:
 - ./helmrelease.yaml
-- ./dashboard/
+configMapGenerator:
+- name: cert-manager-dashboards
+  files:
+  - ./dashboards/cert-manager.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Ingress
+  labels:
+    grafana.io/dashboard: "true"
