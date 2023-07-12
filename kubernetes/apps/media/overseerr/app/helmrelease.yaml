@@ -34,7 +34,7 @@ spec:
         image: ghcr.io/willfantom/overseerr-exporter:1.2.1
         args:
         - --overseerr.address
-        - "http://localhost:5055"
+        - "http://overseerr-metrics.media.svc.cluster.local:5055"
         - --overseerr.api-key
         - "$(OVERSEERR_API_KEY)"
         envFrom:
