@@ -46,14 +46,18 @@ spec:
         env:
         - name: URL
           value: "http://localhost"
-        - name: CONFIG
-          value: "/config/config.xml"
         - name: PORT
           value: &metricsPort 9710
         - name: ENABLE_ADDITIONAL_METRICS
           value: true
         - name: ENABLE_UNKNOWN_QUEUE_ITEMS
           value: false
+        - name: APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: starr-apps-secret
+              key: PROWLARR_API_KEY
+
         ports:
         - name: metrics
           containerPort: *metricsPort
