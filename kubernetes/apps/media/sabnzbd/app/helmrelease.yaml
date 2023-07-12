@@ -49,7 +49,6 @@ spec:
         image: ghcr.io/onedr0p/exportarr:v1.5.3
         args:
         - sabnzbd
-        - --enable-additional-metrics
         env:
         - name: URL
           value: "http://localhost:8080"
