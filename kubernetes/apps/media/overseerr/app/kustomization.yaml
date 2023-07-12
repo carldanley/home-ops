@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: media
 resources:
 - ./helmrelease.yaml
-- ./dashboard
 configMapGenerator:
 - name: overseerr-grafana-dashboards
   files:
