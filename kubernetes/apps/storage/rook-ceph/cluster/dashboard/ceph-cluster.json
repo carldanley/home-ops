@@ -81,7 +81,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -180,7 +182,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -249,7 +253,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -318,7 +324,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -387,7 +395,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -464,7 +474,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -540,7 +552,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -609,7 +623,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -678,7 +694,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -747,7 +765,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -816,7 +836,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -885,7 +907,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -954,7 +978,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1025,7 +1051,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1117,7 +1145,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1194,7 +1224,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1271,7 +1303,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1344,7 +1378,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1417,7 +1453,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1494,7 +1532,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1571,7 +1611,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1648,7 +1690,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1724,7 +1768,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -1811,7 +1857,9 @@
       "panels": [
         {
           "columns": [],
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1874,7 +1922,9 @@
         },
         {
           "columns": [],
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1937,7 +1987,9 @@
         },
         {
           "columns": [],
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2018,7 +2070,9 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2118,7 +2172,9 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2218,7 +2274,9 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2318,7 +2376,9 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": {
+            "type": "prometheus"
+          },
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -2444,7 +2504,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -2584,7 +2646,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "decimals": 0,
       "editable": true,
       "error": false,
@@ -2702,7 +2766,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -2819,7 +2885,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2922,7 +2990,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -3025,7 +3095,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -3127,7 +3199,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -3227,7 +3301,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -3329,7 +3405,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -3452,7 +3530,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -3562,7 +3642,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -3843,7 +3925,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -3971,7 +4055,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -4099,7 +4185,9 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4169,7 +4257,9 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4238,7 +4328,9 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4307,7 +4399,9 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4370,7 +4464,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4478,7 +4574,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "decimals": null,
       "fieldConfig": {
         "defaults": {
@@ -4609,7 +4707,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4717,7 +4817,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4819,7 +4921,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -4921,7 +5025,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -5022,7 +5128,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -5222,7 +5330,9 @@
       {
         "allValue": "cephpolbo|cepherin|cephkelly",
         "current": {},
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": {
+          "type": "prometheus"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": false,

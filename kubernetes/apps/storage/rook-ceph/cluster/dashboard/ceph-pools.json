@@ -31,7 +31,7 @@
     {
       "type": "datasource",
       "id": "prometheus",
-      "name": "Prometheus",
+      "name": "prometheus",
       "version": "1.0.0"
     }
   ],
@@ -75,7 +75,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "decimals": 2,
       "editable": true,
       "error": false,
@@ -233,7 +235,9 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -327,7 +331,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -451,7 +457,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "decimals": 2,
       "editable": true,
       "error": false,
@@ -567,7 +575,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "PBFA97CFB590B2093",
+      "datasource": {
+        "type": "prometheus"
+      },
       "decimals": 2,
       "editable": true,
       "error": false,
@@ -780,7 +790,9 @@
       {
         "allValue": ".*",
         "current": {},
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": {
+          "type": "prometheus"
+        },
         "definition": "label_values(ceph_pool_metadata, name)",
         "hide": 0,
         "includeAll": true,
