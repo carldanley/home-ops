@@ -44,6 +44,27 @@ spec:
         - name: external-config
           mountPath: /data/external_config
 
+    sidecars:
+      exporter:
+        name: exporter
+        image: sapcc/mosquitto-exporter:0.8.0
+        env:
+        - name: BROKER_ENDPOINT
+          value: "tcp://127.0.0.1:1883"
+        - name: MQTT_USER
+          valueFrom:
+            secretKeyRef:
+              name: mosquitto-secret
+              key: MOSQUITTO_USER
+        - name: MQTT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mosquitto-secret
+              key: MOSQUITTO_PASS
+        ports:
+        - name: metrics
+          containerPort: &metricsPort 9234
+
     service:
       main:
         type: LoadBalancer
@@ -55,6 +76,10 @@ spec:
           mqtt:
             enabled: true
             port: 1883
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
 
     persistence:
       mosquitto-config:
@@ -92,3 +117,14 @@ spec:
       accessMode: ReadWriteOnce
       size: 1Gi
       storageClass: ceph-block
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: mosquitto-metrics
+        endpoints:
+        - port: metrics
+          scheme: http
+          path: /metrics
+          interval: 30s
+          scrapeTimeout: 10s
