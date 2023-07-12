@@ -36,11 +36,36 @@ spec:
             name: starr-apps-secret
             key: RADARR_API_KEY
 
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        args:
+        - radarr
+        - --enable-additional-metrics
+        env:
+        - name: URL
+          value: "http://localhost:7878"
+        - name: PORT
+          value: &metricsPort 9710
+        - name: APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: starr-apps-secret
+              key: RADARR_API_KEY
+        ports:
+        - name: metrics
+          containerPort: *metricsPort
+
     service:
       main:
         ports:
           http:
             port: *port
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
 
     ingress:
       main:
@@ -94,3 +119,14 @@ spec:
         cpu: 5m
       limits:
         memory: 431Mi
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: radarr-metrics
+        endpoints:
+        - port: metrics
+          scheme: http
+          path: /metrics
+          interval: 5m
+          scrapeTimeout: 2m
