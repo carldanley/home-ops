@@ -15,6 +15,14 @@ configMapGenerator:
 - name: mosquitto-init-config
   files:
   - config/load-users.sh
+- name: mosquitto-grafana-dashboards
+  files:
+  - ./dashboards/mosquitto.json
+  options:
+    annotations:
+      grafana.io/folder: Home
+    labels:
+      grafana.io/dashboard: "true"
 generatorOptions:
   disableNameSuffixHash: true
   labels:
