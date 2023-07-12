@@ -18,6 +18,6 @@ generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
-    grafana.io/folder: Rook Ceph
+    grafana.io/folder: Storage
   labels:
     grafana.io/dashboard: "true"

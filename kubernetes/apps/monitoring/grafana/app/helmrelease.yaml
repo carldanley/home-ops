@@ -29,43 +29,28 @@ spec:
             path: /var/lib/grafana/dashboards/default
           orgId: 1
           type: file
-        - name: device
+        - name: nodes
           disableDeletion: false
           editable: true
-          folder: "Device"
+          folder: "Nodes"
           options:
-            path: /var/lib/grafana/dashboards/device
-          orgId: 1
-          type: file
-        - name: storage
-          disableDeletion: false
-          editable: true
-          folder: "Storage"
-          options:
-            path: /var/lib/grafana/dashboards/storage
+            path: /var/lib/grafana/dashboards/nodes
           orgId: 1
           type: file
 
     dashboards:
-      device:
+      nodes:
         # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
         node-exporter:
           gnetId: 1860
           revision: 30
           datasource: prometheus
-      storage:
-        # Ref: https://grafana.com/grafana/dashboards/2842/
-        ceph-cluster:
-          gnetId: 2842
-          revision: 16
-        # Ref: https://grafana.com/grafana/dashboards/5336/
-        ceph-osds:
-          gnetId: 5336
-          revision: 9
-        # Ref: https://grafana.com/grafana/dashboards/5342/
-        ceph-pools:
-          gnetId: 5342
-          revision: 9
+
+        # Ref: https://grafana.com/grafana/dashboards/3070-etcd/
+        etcd:
+          gnetId: 3070
+          revision: 3
+          datasource: prometheus
 
     datasources:
       datasources.yaml:
