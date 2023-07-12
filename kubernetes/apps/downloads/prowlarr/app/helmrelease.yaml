@@ -46,7 +46,7 @@ spec:
         - prowlarr
         env:
         - name: URL
-          value: "http://prowlarr.downloads.svc.cluster.local:9696"
+          value: "http://localhost:9696"
         - name: PORT
           value: &metricsPort 9710
         - name: APIKEY
