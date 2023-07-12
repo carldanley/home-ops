@@ -4,3 +4,14 @@ kind: Kustomization
 namespace: media
 resources:
 - ./helmrelease.yaml
+configMapGenerator:
+- name: sabnzbd-grafana-dashboards
+  files:
+  - ./dashboards/sabnzbd.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Media
+  labels:
+    grafana.io/dashboard: "true"
