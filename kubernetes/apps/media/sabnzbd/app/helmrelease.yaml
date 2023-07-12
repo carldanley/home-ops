@@ -43,11 +43,36 @@ spec:
             name: starr-apps-secret
             key: SABNZBD_NZB_KEY
 
+    sidecars:
+      exporter:
+        name: exporter
+        image: ghcr.io/onedr0p/exportarr:v1.5.3
+        args:
+        - sabnzbd
+        - --enable-additional-metrics
+        env:
+        - name: URL
+          value: "http://localhost:8080"
+        - name: PORT
+          value: &metricsPort 9710
+        - name: APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: starr-apps-secret
+              key: SABNZBD_API_KEY
+        ports:
+        - name: metrics
+          containerPort: *metricsPort
+
     service:
       main:
         ports:
           http:
             port: *port
+      metrics:
+        ports:
+          metrics:
+            port: *metricsPort
 
     ingress:
       main:
@@ -101,3 +126,14 @@ spec:
         memory: "2392M"
       limits:
         memory: "2392M"
+
+    serviceMonitor:
+      metrics:
+        enabled: true
+        serviceName: sabnzbd-metrics
+        endpoints:
+        - port: metrics
+          scheme: http
+          path: /metrics
+          interval: 5m
+          scrapeTimeout: 2m
