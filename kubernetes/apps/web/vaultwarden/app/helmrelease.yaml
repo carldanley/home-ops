@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: web
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controller:
+      type: statefulset
+      replicas: 1
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/dani-garcia/vaultwarden
+      tag: 1.29.0
+
+    envFrom:
+    - secretRef:
+        name: vaultwarden-secret
+
+    env:
+      WEBSOCKET_ENABLED: "true"
+      SIGNUPS_ALLOWED: "false"
+      DOMAIN: ""
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+          websocket:
+            port: 3012
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:bitwarden"
+        hosts:
+        - host: "bw.${EXTERNAL_DNS_1_DOMAIN}"
+          paths:
+          - path: /
+            service:
+              port: http
+          - path: /notifications/hub
+            service:
+              port: websocket
+
+    persistence:
+      data:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/docker/vaultwarden
+        mountPath: /data
+        readOnly: false
