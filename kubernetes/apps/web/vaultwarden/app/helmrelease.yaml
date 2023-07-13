@@ -58,10 +58,10 @@ spec:
           paths:
           - path: /
             service:
-              port: http
+              port: 80
           - path: /notifications/hub
             service:
-              port: websocket
+              port: 3012
 
     persistence:
       data:
