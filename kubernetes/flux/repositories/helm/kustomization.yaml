@@ -13,6 +13,7 @@ resources:
 - ./jetstack.yaml
 - ./kubernetes-sigs-descheduler.yaml
 - ./kubernetes-sigs-external-dns.yaml
+- ./kubernetes-sigs-metrics-server.yaml
 - ./kubernetes-sigs-nfd.yaml
 - ./piraeus.yaml
 - ./postfinance.yaml
