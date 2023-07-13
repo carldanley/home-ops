@@ -78,6 +78,15 @@ spec:
             path: /volume1/backups/tdarr
         mountPath: /app/server/Tdarr/Backups
         readOnly: false
+      nvr:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/recordings
+        mountPath: /nvr
+        readOnly: false
 
     podSecurityContext:
       runAsUser: 0
