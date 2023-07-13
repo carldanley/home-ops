@@ -29,22 +29,6 @@ spec:
             path: /var/lib/grafana/dashboards/default
           orgId: 1
           type: file
-        - name: nodes
-          disableDeletion: false
-          editable: true
-          folder: "Nodes"
-          options:
-            path: /var/lib/grafana/dashboards/nodes
-          orgId: 1
-          type: file
-
-    dashboards:
-      nodes:
-        # Ref: https://grafana.com/grafana/dashboards/3070-etcd/
-        etcd:
-          gnetId: 3070
-          revision: 3
-          datasource: prometheus
 
     datasources:
       datasources.yaml:
