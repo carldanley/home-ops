@@ -29,46 +29,6 @@ spec:
             path: /var/lib/grafana/dashboards/default
           orgId: 1
           type: file
-        - name: home
-          disableDeletion: false
-          editable: true
-          folder: ""
-          options:
-            path: /var/lib/grafana/dashboards/home
-          orgId: 1
-          type: file
-        - name: ingress
-          disableDeletion: false
-          editable: true
-          folder: ""
-          options:
-            path: /var/lib/grafana/dashboards/ingress
-          orgId: 1
-          type: file
-        - name: media
-          disableDeletion: false
-          editable: true
-          folder: ""
-          options:
-            path: /var/lib/grafana/dashboards/media
-          orgId: 1
-          type: file
-        - name: nodes
-          disableDeletion: false
-          editable: true
-          folder: ""
-          options:
-            path: /var/lib/grafana/dashboards/nodes
-          orgId: 1
-          type: file
-        - name: storage
-          disableDeletion: false
-          editable: true
-          folder: ""
-          options:
-            path: /var/lib/grafana/dashboards/storage
-          orgId: 1
-          type: file
 
     datasources:
       datasources.yaml:
