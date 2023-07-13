@@ -4,4 +4,15 @@ kind: Kustomization
 namespace: ingress
 resources:
 - ./helmrelease.yaml
-- ./dashboard/
+configMapGenerator:
+- name: ingress-nginx-dashboards
+  files:
+  - ./dashboards/nginx-ingress-controller.json
+  - ./dashboards/request-handling-performance.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Ingress
+  labels:
+    grafana.io/dashboard: "true"
