@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ingress
+configMapGenerator:
+- name: external-dns-dashboards
+  files:
+  - ./dashboards/external-dns.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Ingress
+  labels:
+    grafana.io/dashboard: "true"

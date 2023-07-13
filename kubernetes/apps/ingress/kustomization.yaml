@@ -6,5 +6,6 @@ resources:
 - ./cert-manager/ks.yaml
 - ./external-dns-1/ks.yaml
 - ./external-dns-2/ks.yaml
+- ./external-dns-dashboards/
 - ./ingress-nginx/ks.yaml
 - ./external-services/
