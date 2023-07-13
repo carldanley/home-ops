@@ -13,6 +13,8 @@ generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
     grafana.io/folder: Media
+  labels:
+    grafana.io/dashboard: "true"
 commonLabels:
   app.kubernetes.io/name: sonarr
   app.kubernetes.io/instance: sonarr
