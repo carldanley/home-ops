@@ -20,3 +20,5 @@ spec:
       enabled: true
     serviceMonitor:
       enabled: true
+    podLabels:
+      k8s-app: metrics-server
