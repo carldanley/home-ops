@@ -101,8 +101,8 @@ spec:
     persistence:
       media:
         enabled: true
-        existingClaim: nfs-media
-        mountPath: /data/media
+        existingClaim: nfs-downloads
+        mountPath: /data/downloads
 
       backups:
         enabled: true
