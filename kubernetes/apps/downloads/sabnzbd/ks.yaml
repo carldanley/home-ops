@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-sabnzbd
+  name: downloads-sabnzbd
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/media/sabnzbd/app"
+  path: "./kubernetes/apps/downloads/sabnzbd/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -15,7 +15,6 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-  - name: media-common
-  - name: media-common-mounts
+  - name: downloads-common-mounts
   - name: storage-rook-ceph-cluster
   - name: monitoring-kube-prometheus-stack-crds
