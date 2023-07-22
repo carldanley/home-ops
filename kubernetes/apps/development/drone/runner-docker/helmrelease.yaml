@@ -24,19 +24,9 @@ spec:
     dind:
       repository: docker
       tag: 20-dind
-      command:
-      - "dockerd"
-      commandArgs:
-      - "--host"
-      - &docker_host "tcp://127.0.0.1:2375"
-      - "--mtu=1430"
-      securityContext:
-        privileged: true
     env:
-      DOCKER_HOST: *docker_host
       DRONE_RPC_HOST: drone:8080
       DRONE_RPC_PROTO: http
-      DRONE_RUNNER_NETWORK_OPTS: "com.docker.network.driver.mtu:1430"
   valuesFrom:
   - kind: Secret
     name: drone-secret
