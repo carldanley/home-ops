@@ -39,7 +39,7 @@ spec:
     env:
       DRONE_SERVER_HOST: *host
       DRONE_SERVER_PROTO: https
-      DRONE_GIT_ALWAYS_AUTH: true
+      DRONE_GIT_ALWAYS_AUTH: "true"
   valuesFrom:
   - kind: Secret
     name: drone-secret
