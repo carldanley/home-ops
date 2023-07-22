@@ -5,6 +5,7 @@ resources:
 - ./angelnu.yaml
 - ./bjw-s.yaml
 - ./cilium.yaml
+- ./drone.yaml
 - ./emberstack.yaml
 - ./grafana.yaml
 - ./hajimari.yaml

@@ -1,0 +1,45 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: drone
+  namespace: development
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: drone
+      version: 0.6.4
+      sourceRef:
+        kind: HelmRepository
+        name: drone
+        namespace: flux-system
+  values:
+    image:
+      repository: drone/drone
+      tag: 2.18.0
+    podAnnotations:
+      reloader.stakater.com/search: "true"
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "simple-icons:drone"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      hosts:
+      - host: &host ci.${EXTERNAL_DNS_1_DOMAIN}
+        paths:
+        - path: /
+          pathType: Prefix
+    persistentVolume:
+      enabled: true
+      size: 8Gi
+      storageClass: ceph-block
+    env:
+      DRONE_SERVER_HOST: *host
+      DRONE_SERVER_PROTO: https
+      DRONE_GIT_ALWAYS_AUTH: true
+  valuesFrom:
+  - kind: Secret
+    name: drone-secret
