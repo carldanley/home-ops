@@ -28,7 +28,7 @@ spec:
       - "dockerd"
       commandArgs:
       - "--host"
-      - &docker_host "tcp://localhost:2375"
+      - &docker_host "tcp://0.0.0.0:2375"
       - "--mtu=1430"
       securityContext:
         privileged: true
