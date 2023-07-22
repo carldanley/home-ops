@@ -41,6 +41,7 @@ spec:
       DRONE_SERVER_PROTO: https
       DRONE_GIT_ALWAYS_AUTH: "true"
       DRONE_OPEN: "false"
+      DRONE_USER_CREATE: "username:carldanley,admin:true"
   valuesFrom:
   - kind: Secret
     name: drone-secret
@@ -58,7 +59,3 @@ spec:
     name: drone-secret
     valuesKey: DRONE_USER_FILTER
     targetPath: env.DRONE_USER_FILTER
-  - kind: Secret
-    name: drone-secret
-    valuesKey: DRONE_USER_CREATE
-    targetPath: env.DRONE_USER_CREATE
