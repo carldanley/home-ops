@@ -27,10 +27,6 @@ spec:
     env:
       DRONE_RPC_HOST: drone:8080
       DRONE_RPC_PROTO: http
-    securityContext:
-      capabilities:
-        add:
-        - SYS_ADMIN
   valuesFrom:
   - kind: Secret
     name: drone-secret
