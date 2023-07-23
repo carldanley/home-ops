@@ -23,7 +23,7 @@ spec:
       reloader.stakater.com/search: "true"
     dind:
       repository: docker
-      tag: 20-dind
+      tag: 23.0.6-dind
     env:
       DRONE_RPC_HOST: drone:8080
       DRONE_RPC_PROTO: http
