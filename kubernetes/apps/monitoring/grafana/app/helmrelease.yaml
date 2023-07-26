@@ -19,7 +19,7 @@ spec:
 
     image:
       repository: docker.io/grafana/grafana
-      tag: 10.0.2
+      tag: 10.0.3
 
     dashboardProviders:
       dashboardproviders.yaml:
