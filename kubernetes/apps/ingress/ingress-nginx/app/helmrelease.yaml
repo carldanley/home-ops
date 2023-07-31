@@ -26,7 +26,7 @@ spec:
         type: RollingUpdate
 
       config:
-        custom-http-errors: 404,401,403,500,503
+        # custom-http-errors: 404,401,403,500,503
         hsts: "true"
         hsts-max-age: "31449600"
         use-http2: "true"
@@ -77,11 +77,11 @@ spec:
         limits:
           memory: 463M
 
-    defaultBackend:
-      enabled: true
-      image:
-        repository: ghcr.io/tarampampam/error-pages
-        tag: 2.24.0
-      extraEnvs:
-      - { name: TEMPLATE_NAME, value: lost-in-space }
-      - { name: SHOW_DETAILS, value: "false" }
+    # defaultBackend:
+    #   enabled: true
+    #   image:
+    #     repository: ghcr.io/tarampampam/error-pages
+    #     tag: 2.24.0
+    #   extraEnvs:
+    #   - { name: TEMPLATE_NAME, value: lost-in-space }
+    #   - { name: SHOW_DETAILS, value: "false" }
