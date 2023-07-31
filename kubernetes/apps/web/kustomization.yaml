@@ -5,4 +5,3 @@ resources:
 - ./namespace.yaml
 - ./hajimari/ks.yaml
 - ./vaultwarden/ks.yaml
-- ./radicale/ks.yaml
