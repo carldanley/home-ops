@@ -22,6 +22,8 @@ spec:
     podAnnotations:
       configmap.reloader.stakater.com/reload: radicale
       secret.reloader.stakater.com/reload: radicale
+    env:
+      TAKE_FILE_OWNERSHIP: "false"
     service:
       main:
         ports:
