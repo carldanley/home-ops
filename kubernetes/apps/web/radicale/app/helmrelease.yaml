@@ -17,18 +17,19 @@ spec:
         namespace: flux-system
   values:
     image:
-      repository: tomsquest/docker-radicale
-      tag: 3.1.8.3@sha256:b5dac16dafcb003520a1ea95d3e25a24d0955cc552b0d6d447163f0e070780ff
+      repository: ghcr.io/bjw-s/radicale
+      tag: 3.1.8
+
     podAnnotations:
       configmap.reloader.stakater.com/reload: radicale
       secret.reloader.stakater.com/reload: radicale
-    env:
-      TAKE_FILE_OWNERSHIP: "false"
+
     service:
       main:
         ports:
           http:
             port: 5232
+
     ingress:
       main:
         enabled: true
@@ -41,6 +42,7 @@ spec:
         - host: &host "radicale.${EXTERNAL_DNS_1_DOMAIN}"
           paths:
           - path: /
+
     persistence:
       config:
         enabled: true
@@ -49,6 +51,7 @@ spec:
         subPath: config.cfg
         mountPath: /config/config
         readOnly: true
+
       data:
         enabled: true
         type: custom
@@ -58,6 +61,7 @@ spec:
             path: /volume1/docker/radicale
         mountPath: /data
         readOnly: false
+
       auth:
         enabled: true
         type: secret
@@ -65,9 +69,16 @@ spec:
         subPath: USERS
         mountPath: /config/users
         readOnly: true
+
     resources:
       requests:
         cpu: 15m
         memory: 79M
       limits:
         memory: 79M
+
+    podSecurityContext:
+      runAsUser: 1022
+      runAsGroup: 1022
+      fsGroup: 1022
+      fsGroupChangePolicy: "OnRootMismatch"
