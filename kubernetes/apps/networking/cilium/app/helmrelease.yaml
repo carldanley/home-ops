@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-      version: 1.14.0
+      version: 1.14.1
 
   valuesFrom:
   - kind: ConfigMap
