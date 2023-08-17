@@ -37,6 +37,8 @@ spec:
       NET_MODE: "LAN"
       FRESH_DATA: "true"
       H264_ENC: "h264_qsv"
+      FILTER_MACS: "2CAA8E16BC21"
+      FILTER_BLOCK: "true"
       # FFMPEG_CMD: "ffmpeg -loglevel verbose -hwaccel qsv -fflags +genpts+flush_packets+nobuffer+bitexact -flags +low_delay -thread_queue_size 100 -hwaccel qsv -analyzeduration 50 -probesize 50 -f H264 -i pipe: -thread_queue_size 100 -f alaw -ar 16000 -i /tmp/{cam_name}.wav -flags +global_header -c:v h264_qsv -c:a copy -movflags +empty_moov+default_base_moof+frag_keyframe -muxdelay 0 -muxpreload 0 -map 0:v -map 1:a -async 100 -f tee [f=rtsp:rtsp_transport=tcp:bsfs/v=dump_extra=freq=keyframe]rtsp://0.0.0.0:8554/{cam_name}"
 
     service:
