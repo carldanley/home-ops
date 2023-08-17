@@ -90,6 +90,9 @@ go2rtc:
     pennys_room:
     - ${FRIGATE_CAMERA_PENNYS_ROOM_HOST}
     - "ffmpeg:pennys_room#audio=opus"
+    prusa_i3_mk3s_plus:
+    - ${FRIGATE_CAMERA_PRUSA_I3_MK3S_PLUS_HOST}
+    - "ffmpeg:prusa_i3_mk3s_plus#audio=opus"
     sadies_room:
     - ${FRIGATE_CAMERA_SADIES_ROOM_HOST}
     - "ffmpeg:sadies_room#audio=opus"
@@ -242,6 +245,16 @@ cameras:
     detect:
       width: 2560
       height: 1440
+
+  prusa_i3_mk3s_plus:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_PRUSA_I3_MK3S_PLUS_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1920
+      height: 1080
 
   sadies_room:
     ffmpeg:
