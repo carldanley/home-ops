@@ -92,7 +92,7 @@ go2rtc:
     - "ffmpeg:pennys_room#audio=opus"
     prusa_i3_mk3s_plus:
     - ${FRIGATE_CAMERA_PRUSA_I3_MK3S_PLUS_HOST}
-    - "ffmpeg:prusa_i3_mk3s_plus#audio=opus"
+    - "ffmpeg:prusa_i3_mk3s_plus"
     sadies_room:
     - ${FRIGATE_CAMERA_SADIES_ROOM_HOST}
     - "ffmpeg:sadies_room#audio=opus"
