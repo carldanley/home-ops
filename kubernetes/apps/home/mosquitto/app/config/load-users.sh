@@ -22,3 +22,4 @@ done
 
 # Append the combined values to the output file
 printf "%s\n" "$combined_array" > "$output_file"
+chmod 0400 "$output_file"

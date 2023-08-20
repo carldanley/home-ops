@@ -26,7 +26,7 @@ spec:
 
     image:
       repository: public.ecr.aws/docker/library/eclipse-mosquitto
-      tag: 2.0.16
+      tag: 2.0.15
 
     initContainers:
       user-import:
@@ -35,7 +35,7 @@ spec:
         - "/bin/sh"
         - -c
         args:
-        - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && chmod 0644 /data/external_config/mosquitto_pwd && echo "User import Completed"
+        - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
         volumeMounts:
         - name: mosquitto-secret
           mountPath: /data/mosquitto_secret
