@@ -34,7 +34,7 @@ spec:
 
     image:
       repository: briis/weatherflow2mqtt
-      tag: 3.1.6
+      tag: 3.2.0
 
     envFrom:
     - secretRef:
