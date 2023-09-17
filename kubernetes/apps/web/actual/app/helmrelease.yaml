@@ -42,6 +42,7 @@ spec:
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "tdesign:money"
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
         - host: "actual.${EXTERNAL_DNS_1_DOMAIN}"
           paths:
