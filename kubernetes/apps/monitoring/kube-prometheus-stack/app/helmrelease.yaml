@@ -87,6 +87,10 @@ spec:
       enabled: true
 
     kube-state-metrics:
+      image:
+        registry: docker.io
+        repository: bitnami/kube-state-metrics
+        tag: 2.10.0
       metricLabelsAllowlist:
       - "pods=[*]"
       - "deployments=[*]"
