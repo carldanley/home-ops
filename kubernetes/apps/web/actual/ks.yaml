@@ -13,6 +13,8 @@ spec:
   wait: true
   postBuild:
     substituteFrom: []
+  decryption:
+    provider: sops
   interval: 30m
   retryInterval: 1m
   timeout: 5m
