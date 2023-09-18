@@ -17,7 +17,7 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-  - name: system-node-feature-discovery-rules
+  # - name: system-node-feature-discovery-rules
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

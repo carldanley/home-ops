@@ -42,6 +42,6 @@ spec:
   dependsOn:
   - name: nvr-frigate-secrets
   - name: storage-rook-ceph
-  - name: system-node-feature-discovery-rules
+  # - name: system-node-feature-discovery-rules
   - name: system-intel-device-plugins-gpu
   - name: nvr-wyze-bridge
