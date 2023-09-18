@@ -20,6 +20,10 @@ spec:
     kind: Deployment
     replicas: 2
 
+    image:
+      repository: docker.io/giantswarm/descheduler
+      tag: v0.28.0
+
     leaderElection:
       enabled: true
 
