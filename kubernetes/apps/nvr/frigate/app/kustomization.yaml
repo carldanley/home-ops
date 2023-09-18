@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: nvr
 resources:
 - ./helmrelease.yaml
+- ./volsync.yaml
 configMapGenerator:
 - name: frigate-configmap
   files:
