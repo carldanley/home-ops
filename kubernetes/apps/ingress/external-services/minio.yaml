@@ -27,7 +27,7 @@ metadata:
   name: external-service-minio
   namespace: ingress
   annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: "${ç}"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     hajimari.io/enable: "true"
     hajimari.io/appName: "MinIO"
