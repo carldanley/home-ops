@@ -6,3 +6,4 @@ resources:
 - ./snapshot-controller/ks.yaml
 # - ./synology-csi/ks.yaml
 - ./rook-ceph/ks.yaml
+- ./volsync/ks.yaml
