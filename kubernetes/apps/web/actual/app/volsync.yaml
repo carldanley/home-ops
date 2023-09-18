@@ -19,7 +19,7 @@ metadata:
 spec:
   sourcePVC: data-actual-0
   trigger:
-    schedule: "*/2 * * * *"
+    schedule: "* * * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 7
