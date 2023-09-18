@@ -7,3 +7,4 @@ resources:
 - ./fully-kiosk.yaml
 - ./octoprint.yaml
 - ./synology.yaml
+- ./minio.yaml
