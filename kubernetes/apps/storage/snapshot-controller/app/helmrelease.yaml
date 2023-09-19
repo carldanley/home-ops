@@ -28,5 +28,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    # TODO: CHANGE THIS BACK TO REGISTRY.K8S.IO (JUST REMOVE)
+    image:
+      repository: docker.io/dyrnq/snapshot-controller
+      tag: v6.3.0
+
     serviceMonitor:
       create: true
