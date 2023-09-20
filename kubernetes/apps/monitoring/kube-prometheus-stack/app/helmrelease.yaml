@@ -87,11 +87,6 @@ spec:
       enabled: true
 
     kube-state-metrics:
-      image:
-        # TODO: CHANGE THIS BACK TO REGISTRY.K8S.IO (JUST REMOVE)
-        registry: docker.io
-        repository: bitnami/kube-state-metrics
-        tag: 2.10.0
       metricLabelsAllowlist:
       - "pods=[*]"
       - "deployments=[*]"

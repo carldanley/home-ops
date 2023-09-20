@@ -18,23 +18,12 @@ spec:
   values:
     controller:
       replicaCount: 3
-      image:
-        # TODO: CHANGE THIS BACK TO REGISTRY.K8S.IO (JUST REMOVE)
-        registry: docker.io
-        image: dyrnq/controller
 
       extraArgs:
         default-ssl-certificate: ingress/wildcard-tls
 
       updateStrategy:
         type: RollingUpdate
-
-      admissionWebhooks:
-        patch:
-          image:
-            # TODO: CHANGE THIS BACK TO REGISTRY.K8S.IO (JUST REMOVE)
-            registry: docker.io
-            image: dyrnq/kube-webhook-certgen
 
       config:
         # custom-http-errors: 404,401,403,500,503

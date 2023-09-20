@@ -27,10 +27,5 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
-    image:
-      # TODO: CHANGE THIS BACK TO REGISTRY.K8S.IO (JUST REMOVE)
-      repository: dyrnq/snapshot-validation-webhook
-      tag: v6.3.0
   dependsOn:
   - name: snapshot-controller
