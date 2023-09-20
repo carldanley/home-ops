@@ -80,3 +80,14 @@ spec:
         gpu.intel.com/i915: 1
       limits:
         gpu.intel.com/i915: 1
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values:
+              - frigate
+          topologyKey: "app.kubernetes.io"
