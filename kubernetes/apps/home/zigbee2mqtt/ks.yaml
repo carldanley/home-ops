@@ -19,4 +19,4 @@ spec:
   dependsOn:
   - name: home-mosquitto
   - name: storage-rook-ceph
-  # - name: system-node-feature-discovery-rules
+  - name: system-node-feature-discovery-rules
