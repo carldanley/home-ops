@@ -24,3 +24,4 @@ resources:
 - ./rook-ceph.yaml
 - ./stakater.yaml
 - ./synology-csi.yaml
+- ./vector.yaml

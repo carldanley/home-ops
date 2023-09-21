@@ -1,0 +1,40 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vector-agent
+  labels:
+    app.kubernetes.io/instance: vector-agent
+    app.kubernetes.io/name: vector-agent
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: vector-agent
+    meta.helm.sh/release-namespace: monitoring
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - nodes
+  - pods
+  verbs:
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vector-agent
+  labels:
+    app.kubernetes.io/instance: vector-agent
+    app.kubernetes.io/name: vector-agent
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: vector-agent
+    meta.helm.sh/release-namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vector-agent
+subjects:
+- kind: ServiceAccount
+  name: vector-agent
+  namespace: monitoring
