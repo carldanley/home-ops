@@ -45,6 +45,14 @@ spec:
           kubernetes-logs:
             enabled: true
             port: 6000
+          talos-kernel:
+            enabled: true
+            port: 6050
+            protocol: UDP
+          talos-service:
+            enabled: true
+            port: 6051
+            protocol: UDP
 
     persistence:
       config:
