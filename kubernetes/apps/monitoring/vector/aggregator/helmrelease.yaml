@@ -4,73 +4,145 @@ kind: HelmRelease
 metadata:
   name: vector-aggregator
   namespace: monitoring
-  labels:
-    app.kubernetes.io/instance: vector-aggregator
-    app.kubernetes.io/name: vector-aggregator
 spec:
+  interval: 15m
   chart:
     spec:
-      chart: app-template
-      version: 1.5.1
-      interval: 30m
+      chart: vector
+      version: 0.21.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: vector
         namespace: flux-system
-  interval: 30m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    controller:
-      replicas: 1
-      strategy: Recreate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/onedr0p/vector
-      tag: 0.32.2-debian@sha256:9d0f6ced010f7edbe7e35a75929c4ab8f3043a2d096dc10e2063c98aca1bbcfc
-
-    args:
-    - "--config"
-    - "/etc/vector/vector.yaml"
-
+    role: Stateless-Aggregator
+    podMonitor:
+      enabled: true
     service:
-      main:
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_VECTOR_AGGREGATOR}
-        externalTrafficPolicy: Cluster
-        ports:
-          http:
-            port: 8686
-          kubernetes-logs:
-            enabled: true
-            port: 6000
-          talos-kernel:
-            enabled: true
-            port: 6050
-            protocol: UDP
-          talos-service:
-            enabled: true
-            port: 6051
-            protocol: UDP
-
-    persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: vector-aggregator-configmap
-        subPath: vector.yaml
-        mountPath: /etc/vector/vector.yaml
-        readOnly: true
-      data:
-        enabled: true
-        type: emptyDir
-        mountPath: /vector-data-dir
-
-    topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/name: vector-aggregator
+      enabled: true
+      type: LoadBalancer
+      annotations:
+        io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_VECTOR_AGGREGATOR}
+      externalTrafficPolicy: Cluster
+    customConfig:
+      data_dir: /vector-data-dir
+      api:
+        enabled: false
+      sources:
+        kubernetes_logs:
+          address: 0.0.0.0:6000
+          type: vector
+          version: "2"
+        talos_kernel_logs:
+          address: 0.0.0.0:6001
+          type: socket
+          mode: udp
+          max_length: 102400
+          decoding:
+            codec: json
+          host_key: __host
+        talos_service_logs:
+          address: 0.0.0.0:6002
+          type: socket
+          mode: udp
+          max_length: 102400
+          decoding:
+            codec: json
+          host_key: __host
+      transforms:
+        kubernetes_remap:
+          type: remap
+          inputs:
+          - kubernetes_logs
+          source: |-
+            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+        kernel_hostname_transform:
+          type: remap
+          inputs:
+          - talos_kernel_logs
+          source: |-
+            r1 = replace!(.__host, "192.168.10.41", "sc1")
+            r2 = replace(r1, "192.168.10.42", "sc2")
+            r3 = replace(r2, "192.168.10.43", "sc3")
+            r4 = replace(r3, "192.168.10.44", "sc4")
+            r5 = replace(r4, "192.168.10.45", "sc5")
+            .node = r5
+        service_hostname_transform:
+          type: remap
+          inputs:
+          - talos_service_logs
+          source: |-
+            r1 = replace!(.__host, "192.168.10.41", "sc1")
+            r2 = replace(r1, "192.168.10.42", "sc2")
+            r3 = replace(r2, "192.168.10.43", "sc3")
+            r4 = replace(r3, "192.168.10.44", "sc4")
+            r5 = replace(r4, "192.168.10.45", "sc5")
+            .node = r5
+      sinks:
+        loki_kubernetes:
+          type: loki
+          inputs:
+          - kubernetes_remap
+          endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+          encoding:
+            codec: json
+          batch:
+            max_bytes: 524288
+          out_of_order_action: rewrite_timestamp
+          remove_label_fields: true
+          remove_timestamp: true
+          labels:
+            app: >-
+              {{`{{ custom_app_name }}`}}
+            container: >-
+              {{`{{ kubernetes.container_name }}`}}
+            namespace: >-
+              {{`{{ kubernetes.pod_namespace }}`}}
+            node: >-
+              {{`{{ kubernetes.pod_node_name }}`}}
+        talos_kernel:
+          type: loki
+          inputs:
+          - kernel_hostname_transform
+          endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+          encoding:
+            codec: json
+            except_fields:
+            - __host
+          batch:
+            max_bytes: 524288
+          out_of_order_action: rewrite_timestamp
+          labels:
+            node: >-
+              {{`{{ node }}`}}
+            facility: >-
+              {{`{{ facility }}`}}
+            namespace: "talos:kernel"
+        talos_service:
+          type: loki
+          inputs:
+          - service_hostname_transform
+          endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+          encoding:
+            codec: json
+            except_fields:
+            - __host
+          batch:
+            max_bytes: 524288
+          out_of_order_action: rewrite_timestamp
+          labels:
+            node: >-
+              {{`{{ node }}`}}
+            talos_service: >-
+              {{`{{ "talos-service" }}`}}
+            namespace: "talos:service"

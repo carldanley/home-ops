@@ -5,82 +5,51 @@ metadata:
   name: vector-agent
   namespace: monitoring
 spec:
+  interval: 15m
   chart:
     spec:
-      chart: app-template
-      version: 1.5.1
-      interval: 30m
+      chart: vector
+      version: 0.21.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: vector
         namespace: flux-system
-  interval: 30m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    controller:
-      type: daemonset
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
-
-    image:
-      repository: ghcr.io/onedr0p/vector
-      tag: 0.32.2-debian@sha256:9d0f6ced010f7edbe7e35a75929c4ab8f3043a2d096dc10e2063c98aca1bbcfc
-
-    args: ["--config", "/etc/vector/vector.yaml"]
-
-    env:
-      PROCFS_ROOT: /host/proc
-      SYSFS_ROOT: /host/sys
-      VECTOR_SELF_NODE_NAME:
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: spec.nodeName
-      VECTOR_SELF_POD_NAME:
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.name
-      VECTOR_SELF_POD_NAMESPACE:
-        valueFrom:
-          fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.namespace
-
-    persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: vector-agent-configmap
-        subPath: vector.yaml
-        mountPath: /etc/vector/vector.yaml
-        readOnly: true
-      data:
-        enabled: true
-        type: emptyDir
-        mountPath: /vector-data-dir
-
+    role: Agent
     podMonitor:
       enabled: true
-
-    resources:
-      requests:
-        cpu: 23m
-        memory: 249M
-      # limits:
-      #   memory: 918M
-
-    securityContext:
-      privileged: true
-
     service:
-      main:
-        enabled: false
-
-    serviceAccount:
-      create: true
-      name: vector-agent
-
+      enabled: false
     tolerations:
-    - key: node-role.kubernetes.io/master
+    - key: node-role.kubernetes.io/control-plane
       effect: NoSchedule
+    customConfig:
+      data_dir: /vector-data-dir
+      api:
+        enabled: false
+      sources:
+        kubernetes_logs:
+          type: kubernetes_logs
+          pod_annotation_fields:
+            container_image: "image"
+            pod_annotations: "pod_annotations"
+            pod_labels: "pod_labels"
+            pod_name: "pod_name"
+      sinks:
+        loki_kubernetes_sink:
+          type: vector
+          inputs:
+          - kubernetes_logs
+          address: "vector-aggregator.monitoring.svc.cluster.local:6000"
+          version: "2"

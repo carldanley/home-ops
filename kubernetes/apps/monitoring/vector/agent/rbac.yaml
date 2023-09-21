@@ -6,6 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/instance: vector-agent
     app.kubernetes.io/name: vector-agent
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: vector-agent
+    meta.helm.sh/release-namespace: monitoring
 rules:
 - apiGroups:
   - ""
@@ -24,6 +27,9 @@ metadata:
   labels:
     app.kubernetes.io/instance: vector-agent
     app.kubernetes.io/name: vector-agent
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: vector-agent
+    meta.helm.sh/release-namespace: monitoring
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
