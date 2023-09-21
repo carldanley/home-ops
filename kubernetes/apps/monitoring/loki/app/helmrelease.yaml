@@ -30,6 +30,8 @@ spec:
           grpc_server_max_send_msg_size: 8388608
 
         memberlist:
+          service:
+            publishNotReadyAddresses: true
           join_members: ["loki-memberlist"]
 
         limits_config:
