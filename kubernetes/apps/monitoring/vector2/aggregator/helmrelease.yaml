@@ -25,7 +25,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    role: stateless-aggregator
+    role: Stateless-Aggregator
     podMonitor:
       enabled: true
     service:
