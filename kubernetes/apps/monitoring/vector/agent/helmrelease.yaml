@@ -1,0 +1,86 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vector-agent
+  namespace: monitoring
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  interval: 30m
+  values:
+    controller:
+      type: daemonset
+      strategy: RollingUpdate
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: ghcr.io/onedr0p/vector
+      tag: 0.32.2-debian@sha256:9d0f6ced010f7edbe7e35a75929c4ab8f3043a2d096dc10e2063c98aca1bbcfc
+
+    args: ["--config", "/etc/vector/vector.yaml"]
+
+    env:
+      PROCFS_ROOT: /host/proc
+      SYSFS_ROOT: /host/sys
+      VECTOR_SELF_NODE_NAME:
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: spec.nodeName
+      VECTOR_SELF_POD_NAME:
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      VECTOR_SELF_POD_NAMESPACE:
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.namespace
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: vector-agent-configmap
+        subPath: vector.yaml
+        mountPath: /etc/vector/vector.yaml
+        readOnly: true
+      data:
+        enabled: true
+        type: emptyDir
+        mountPath: /vector-data-dir
+
+    podMonitor:
+      enabled: true
+
+    resources:
+      requests:
+        cpu: 23m
+        memory: 249M
+      # limits:
+      #   memory: 918M
+
+    securityContext:
+      privileged: true
+
+    service:
+      main:
+        enabled: false
+
+    serviceAccount:
+      create: true
+      name: vector-agent
+
+    tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
