@@ -69,8 +69,9 @@ spec:
               store: memberlist
 
         ruler:
-          enable_api: true
-          enable_alertmanager_v2: true
+          # TODO: change these to true
+          enable_api: false
+          enable_alertmanager_v2: false
           alertmanager_url: http://alert-manager.monitoring.svc.cluster.local:9093
           storage:
             type: local
