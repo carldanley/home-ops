@@ -76,7 +76,7 @@ spec:
             type: local
             local:
               directory: /rules
-          rule_path: /rules
+          rule_path: /tmp/scratch
           ring:
             kvstore:
               store: memberlist
@@ -161,6 +161,20 @@ spec:
                 matchLabels:
                   {{- include "loki.readSelectorLabels" . | nindent 12 }}
               topologyKey: kubernetes.io/hostname
+      extraVolumeMounts:
+      - name: loki-rules
+        mountPath: /rules/fake
+      - name: loki-rules-tmp
+        mountPath: /tmp/scratch
+      - name: loki-tmp
+        mountPath: /tmp/loki-tmp
+      extraVolumes:
+      - name: loki-rules
+        emptyDir: {}
+      - name: loki-rules-tmp
+        emptyDir: {}
+      - name: loki-tmp
+        emptyDir: {}
       persistence:
         size: 20Gi
         storageClass: ceph-block
