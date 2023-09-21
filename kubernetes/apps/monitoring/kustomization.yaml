@@ -7,3 +7,4 @@ resources:
 - ./grafana/ks.yaml
 - ./node-exporter/ks.yaml
 - ./metrics-server/ks.yaml
+- ./loki/ks.yaml
