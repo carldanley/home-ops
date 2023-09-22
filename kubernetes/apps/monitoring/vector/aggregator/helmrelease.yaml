@@ -65,7 +65,12 @@ spec:
           inputs:
           - kubernetes_logs
           source: |-
+            # standardize 'app' index
             .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+            # drop pod labels
+            del(.pod_labels)
+            # drop node labels
+            del(.kubernetes_node_labels)
         kernel_hostname_transform:
           type: remap
           inputs:
