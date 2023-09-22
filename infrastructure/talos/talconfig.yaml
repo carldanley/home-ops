@@ -1,8 +1,8 @@
 ---
 clusterName: ${CLUSTER_NAME}
 
-talosVersion: v1.4.5
-kubernetesVersion: 1.27.2
+talosVersion: v1.5.2
+kubernetesVersion: 1.28.1
 endpoint: "https://${CLUSTER_NAME}.${DOMAIN}:6443"
 
 clusterPodNets:
@@ -128,6 +128,12 @@ controlPlane:
       install:
         extensions:
         - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
+        extraKernelArgs:
+        - "talos.logging.kernel=udp://192.168.12.19:6001/"
+      logging:
+        destinations:
+        - endpoint: "udp://192.168.12.19:6002/"
+          format: json_lines
       sysctls:
         fs.inotify.max_user_watches: 1048576
         fs.inotify.max_user_instances: 8192
