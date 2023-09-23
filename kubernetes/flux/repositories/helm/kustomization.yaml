@@ -8,6 +8,7 @@ resources:
 - ./cilium.yaml
 - ./drone.yaml
 - ./emberstack.yaml
+- ./fairwinds.yaml
 - ./grafana.yaml
 - ./hajimari.yaml
 - ./ingress-nginx.yaml
