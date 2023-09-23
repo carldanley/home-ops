@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: databases
+resources:
+- ./secret-cloudnative-pg.sops.yaml
+- ./helmrelease.yaml
+- ./prometheusrule.yaml
+configMapGenerator:
+- name: cloudnative-pg-grafana-dashboards
+  files:
+  - ./dashboards/cloudnative-pg.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana.io/folder: Databases
+  labels:
+    grafana.io/dashboard: "true"

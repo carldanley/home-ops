@@ -6,7 +6,7 @@ resources:
 - ./backube.yaml
 - ./bjw-s.yaml
 - ./cilium.yaml
-- ./crunchydata.yaml
+- ./cloudnative-pg.yaml
 - ./drone.yaml
 - ./emberstack.yaml
 - ./fairwinds.yaml
