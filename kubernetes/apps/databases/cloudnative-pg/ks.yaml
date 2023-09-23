@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: databases-crunchy-postgres-operator
+  name: databases-cloudnative-pg
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/databases/crunchy-postgres-operator/app"
+  path: "./kubernetes/apps/databases/cloudnative-pg/app"
   prune: true
   sourceRef:
     kind: GitRepository
