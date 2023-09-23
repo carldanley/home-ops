@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: databases-crunchy-postgres-operator
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/databases/crunchy-postgres-operator/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  decryption:
+    provider: sops
