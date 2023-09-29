@@ -6,4 +6,4 @@ resources:
 - ./hajimari/ks.yaml
 - ./vaultwarden/ks.yaml
 - ./actual/ks.yaml
-- ./immich/ks.yaml
+# - ./immich/ks.yaml
