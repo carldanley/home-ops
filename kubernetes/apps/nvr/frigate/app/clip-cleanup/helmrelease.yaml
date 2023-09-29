@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: frigate-clip-cleanup
+  namespace: nvr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controller:
+      type: cronjob
+      cronjob:
+        schedule: "*/5 * * * *"
+        ttlSecondsAfterFinished: 86400
+
+    restartPolicy: OnFailure
+
+    image:
+      repository: ghcr.io/carldanley/frigate-clip-cleanup
+      tag: v0.1.0
+
+    command: ["/bin/frigate-clip-cleaner"]
+    args:
+    - "--dry-run"
+    - "--log-level=debug"
+
+    env:
+    - name: FCC_CONFIG_FILE
+      value: &configFilePath "/config/config.yml"
+    - name: FCC_CLIP_DIR
+      value: &clipDirectory "/media/frigate/clips"
+
+    service:
+      main:
+        enabled: false
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: frigate-configmap
+        subPath: config.yaml
+        mountPath: *configFilePath
+        readOnly: true
+      clips:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/clips
+        mountPath: *clipDirectory
+        readOnly: false

@@ -5,6 +5,7 @@ namespace: nvr
 resources:
 - ./helmrelease.yaml
 - ./volsync.yaml
+- ./clip-cleanup/helmrelease.yaml
 configMapGenerator:
 - name: frigate-configmap
   files:
