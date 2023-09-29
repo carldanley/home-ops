@@ -31,7 +31,6 @@ spec:
 
     command: ["/bin/frigate-clip-cleaner"]
     args:
-    - "--dry-run"
     - "--log-level=debug"
 
     env:
