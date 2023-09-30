@@ -44,3 +44,4 @@ spec:
   - name: home-mosquitto
   - name: nvr-frigate
   - name: storage-rook-ceph
+  - name: nvr-deepstack
