@@ -20,14 +20,14 @@ spec:
     controller:
       type: cronjob
       cronjob:
-        schedule: "*/5 * * * *"
+        schedule: "@daily"
         ttlSecondsAfterFinished: 86400
 
     restartPolicy: OnFailure
 
     image:
       repository: ghcr.io/carldanley/frigate-clip-cleaner
-      tag: v0.1.0
+      tag: v0.1.2
 
     command: ["/bin/frigate-clip-cleaner"]
     args:
