@@ -125,6 +125,13 @@ cameras:
     motion:
       mask:
       - 0,131,265,86,669,39,683,74,1063,137,1718,315,1920,400,1920,0,0,0
+    mqtt: &cameraMQTTSettings
+      enabled: true
+      timestamp: true
+      bounding_box: false
+      crop: true
+      height: 500
+      quality: 100
 
   driveway:
     ffmpeg:
@@ -145,6 +152,7 @@ cameras:
     motion:
       mask:
       - 181,662,93,348,270,267,372,243,535,230,816,222,1067,228,1379,249,1734,298,1920,330,1920,0,0,0,0,762
+    mqtt: *cameraMQTTSettings
 
   front_doorbell:
     ffmpeg:
@@ -167,6 +175,7 @@ cameras:
     zones:
       at_front_door:
         coordinates: 1060,808,1600,1121,1600,1200,635,1200,625,894
+    mqtt: *cameraMQTTSettings
 
   garage:
     ffmpeg:
@@ -184,6 +193,7 @@ cameras:
       filters:
         person:
           min_area: 50000
+    mqtt: *cameraMQTTSettings
 
   great_room:
     ffmpeg:
@@ -201,6 +211,7 @@ cameras:
       mask:
       - 1048,248,1081,524,623,732,551,389
       - 63,250,942,69,1058,210,1529,250,1921,200,2560,0,0,0,0,608
+    mqtt: *cameraMQTTSettings
 
   kitchen:
     ffmpeg:
@@ -220,6 +231,7 @@ cameras:
     motion:
       mask:
       - 923,330,1637,492,2560,414,2560,0,0,0,0,339
+    mqtt: *cameraMQTTSettings
 
   patio:
     ffmpeg:
@@ -236,6 +248,7 @@ cameras:
     motion:
       mask:
       - 175,999,1599,570,2303,959,2560,517,2560,0,0,0
+    mqtt: *cameraMQTTSettings
 
   pennys_room:
     ffmpeg:
@@ -246,6 +259,7 @@ cameras:
     detect:
       width: 2560
       height: 1440
+    mqtt: *cameraMQTTSettings
 
   prusa_i3_mk3s_plus:
     ffmpeg:
@@ -256,6 +270,7 @@ cameras:
     detect:
       width: 1920
       height: 1080
+    mqtt: *cameraMQTTSettings
 
   sadies_room:
     ffmpeg:
@@ -272,6 +287,7 @@ cameras:
       filters:
         person:
           min_area: 65000
+    mqtt: *cameraMQTTSettings
 
   side_left:
     ffmpeg:
@@ -291,6 +307,7 @@ cameras:
     motion:
       mask:
       - 0,394,305,274,575,191,936,109,1227,64,1546,44,1777,89,1920,1080,1920,0,0,0
+    mqtt: *cameraMQTTSettings
 
   side_right:
     ffmpeg:
@@ -311,3 +328,4 @@ cameras:
     motion:
       mask:
       - 0,702,318,322,680,74,998,50,1100,0,1920,390,1920,0,0,0
+    mqtt: *cameraMQTTSettings

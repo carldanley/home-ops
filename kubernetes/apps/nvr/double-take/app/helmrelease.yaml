@@ -75,6 +75,13 @@ spec:
 
             frigate:
               url: http://frigate.nvr.svc.cluster.local:5000
+              update_sub_labels: true
+              stop_on_match: true
+              min_area: 40000
+
+              labels:
+              - person
+
               cameras:
               - backyard
               - driveway
@@ -97,6 +104,7 @@ spec:
             detect:
               match:
                 save: true
+                min_area: 10000
               unknown:
                 save: true
 
@@ -115,7 +123,7 @@ spec:
         cpu: 30m
         memory: 200M
       limits:
-        memory: 200M
+        memory: 1Gi
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: *config
