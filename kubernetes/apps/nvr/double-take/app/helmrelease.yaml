@@ -101,7 +101,7 @@ spec:
 
             detectors:
               compreface:
-                enabled: true
+                enabled: false
 
             time:
               timezone: America/New_York
