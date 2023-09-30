@@ -68,8 +68,8 @@ spec:
           config.yml: |-
             mqtt:
               host: mosquitto.home.svc.cluster.local
-              username: "${MOSQUITTO_USER}"
-              password: "${MOSQUITTO_PASS}"
+              username: "${MQTT_USERNAME}"
+              password: "${MQTT_PASSWORD}"
 
             frigate:
               url: http://frigate.nvr.svc.cluster.local:5000
