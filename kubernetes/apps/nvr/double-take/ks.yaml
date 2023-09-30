@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nvr-double-take
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/enabled: "true"
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/nvr/double-take/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom:
+    - kind: Secret
+      name: mosquitto-secret
+      optional: false
+  dependsOn:
+  - name: home-mosquitto
+  - name: nvr-frigate
+  - name: storage-rook-ceph
