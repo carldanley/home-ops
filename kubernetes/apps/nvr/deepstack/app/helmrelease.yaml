@@ -78,3 +78,14 @@ spec:
       accessMode: ReadWriteOnce
       size: 1Gi
       stoageClass: ceph-block
+
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values:
+              - frigate
+          topologyKey: "app.kubernetes.io"
