@@ -86,8 +86,8 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchExpressions:
-            - key: name
+            - key: "app.kubernetes.io/name"
               operator: In
               values:
               - frigate
-          topologyKey: "app.kubernetes.io"
+          topologyKey: "kubernetes.io/hostname"
