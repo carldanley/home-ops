@@ -37,7 +37,7 @@ spec:
     - name: FCC_CONFIG_FILE
       value: &configFilePath "/config/config.yml"
     - name: FCC_CLIP_DIR
-      value: &clipDirectory "/media/frigate/clips"
+      value: &clipDirectory "/media/frigate/clips/"
 
     service:
       main:
