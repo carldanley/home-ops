@@ -91,7 +91,7 @@ spec:
               - camera: front_doorbell
                 zone: at_front_door
 
-              events: []
+              events: {}
 
             detect:
               match:
@@ -99,14 +99,12 @@ spec:
               unknown:
                 save: true
 
-            detectors:
-              compreface:
-                enabled: false
+            detectors: {}
 
             time:
               timezone: America/New_York
 
-            notify:
+            notify: {}
 
     resources:
       requests:
