@@ -91,7 +91,7 @@ spec:
               - camera: front_doorbell
                 zone: at_front_door
 
-              events:
+              events: []
 
             detect:
               match:
