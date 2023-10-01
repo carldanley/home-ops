@@ -109,9 +109,9 @@ spec:
                 save: true
 
             detectors:
-              deepstack:
-                url: "http://deepstack.nvr.svc.cluster.local:5000"
-                key: "${DEEPSTACK_API_KEY}"
+              # deepstack:
+              #   url: "http://deepstack.nvr.svc.cluster.local:5000"
+              #   key: "${DEEPSTACK_API_KEY}"
 
               compreface:
                 url: "http://compreface.nvr.svc.cluster.local:8000"
