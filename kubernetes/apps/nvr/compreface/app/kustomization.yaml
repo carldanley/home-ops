@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: nvr
 resources:
 - ./pgcluster.yaml
+- ./helmrelease.yaml
 labels:
 - pairs:
     app.kubernetes.io/name: compreface
