@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: photoprism
+  name: photoprism-cvd
   namespace: media
 spec:
   interval: 30m
@@ -54,9 +54,9 @@ spec:
       PHOTOPRISM_DATABASE_NAME: "${MARIADB_DATABASE}"         # MariaDB or MySQL database schema name
       PHOTOPRISM_DATABASE_USER: "${MARIADB_USERNAME}"         # MariaDB or MySQL database user name
       PHOTOPRISM_DATABASE_PASSWORD: "${MARIADB_PASSWORD}"       # MariaDB or MySQL database user password
-      PHOTOPRISM_SITE_CAPTION: "Krisarl Media"
-      PHOTOPRISM_SITE_DESCRIPTION: "Krisarl Media"                # meta site description
-      PHOTOPRISM_SITE_AUTHOR: ""                     # meta site author
+      PHOTOPRISM_SITE_CAPTION: "CVD"
+      PHOTOPRISM_SITE_DESCRIPTION: "CVD"                # meta site description
+      PHOTOPRISM_SITE_AUTHOR: "CVD"                     # meta site author
       ## Video Transcoding (https://docs.photoprism.app/getting-started/advanced/transcoding/):
       # PHOTOPRISM_FFMPEG_ENCODER: "software"        # H.264/AVC encoder (software, intel, nvidia, apple, raspberry, or vaapi)
       # PHOTOPRISM_FFMPEG_SIZE: "1920"               # video size limit in pixels (720-7680) (default: 3840)
@@ -75,7 +75,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
-            path: "/volume1/photoprism/storage"
+            path: "/volume1/photoprism/cvd/storage"
         mountPath: /photoprism/storage
         readOnly: false
 
@@ -85,7 +85,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
-            path: "/volume1/photoprism/originals"
+            path: "/volume1/photoprism/cvd/originals"
         mountPath: /photoprism/originals
         readOnly: false
 
@@ -105,7 +105,7 @@ spec:
           nginx.ingress.kubernetes.io/proxy-body-size: 4G
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
-        - host: media.${EXTERNAL_DNS_2_DOMAIN}
+        - host: photoprism-cvd.${EXTERNAL_DNS_2_DOMAIN}
           paths:
           - path: /
             pathType: Prefix

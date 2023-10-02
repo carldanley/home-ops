@@ -50,7 +50,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/media/photoprism/app"
+  path: "./kubernetes/apps/media/photoprism/app-cvd"
   prune: true
   sourceRef:
     kind: GitRepository
