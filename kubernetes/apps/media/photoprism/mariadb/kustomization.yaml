@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: media
 resources:
 - ./pvc.yaml
+- ./volsync.yaml
 - ./helmrelease.yaml
 commonLabels:
   app.kubernetes.io/name: photoprism
