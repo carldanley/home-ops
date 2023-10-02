@@ -25,8 +25,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    image:
+      registry: docker.io
+      repository: bitnami/mariadb
+      tag: 11.0.3-debian-11-r30
     auth:
       rootPassword: ${MARIADB_ROOT_PASSWORD}
+      database: ${MARIADB_DATABASE}
+      username: ${MARIADB_USERNAME}
+      password: ${MARIADB_PASSWORD}
     primary:
       persistence:
         enabled: true
