@@ -1,0 +1,83 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: photoprism
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 30m
+  values:
+    image:
+      repository: docker.io/photoprism/photoprism
+      tag: latest@sha256:53c504ee6272cc8ddc6f25d49e621926df25842d87a41bd822fd0637acaa1836
+
+    env:
+      PHOTOPRISM_STORAGE_PATH: /photoprism/storage
+      PHOTOPRISM_ORIGINALS_PATH: /photoprism/originals
+      ## See other config options from PhotoPrism documentation: https://docs.photoprism.org/getting-started/config-options/
+      # PHOTOPRISM_ADMIN_PASSWORD: "please-change"     # Initial admin password: PLEASE CHANGE!
+      # PHOTOPRISM_DEBUG: "false"                      # Run in debug mode (shows additional log messages)
+      PHOTOPRISM_PUBLIC: "false"                       # No authentication required (disables password protection)
+      # PHOTOPRISM_READONLY: "false"                   # Don't modify originals directory (reduced functionality)
+      # PHOTOPRISM_EXPERIMENTAL: "false"               # Enable experimental features
+      PHOTOPRISM_SITE_URL: "https://media.${EXTERNAL_DNS_2_DOMAIN}/"  # Canonical / public site URL
+      PHOTOPRISM_SITE_TITLE: "Krisarl Media"
+      PHOTOPRISM_SITE_CAPTION: "Krisarl Media"
+      PHOTOPRISM_SITE_DESCRIPTION: "Krisarl Media"
+      # PHOTOPRISM_SITE_AUTHOR: ""
+      # # You may optionally set user, group and/or file permissions using environment variables:
+      # UID: 1000
+      # GID: 1000
+      # UMASK: 0000
+      PHOTOPRISM_ORIGINALS_LIMIT: 4000 # in MB (default 1000)
+
+    persistence:
+      config:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: "/volume1/photoprism/storage"
+        mountPath: /photoprism/storage
+        readOnly: false
+
+      originals:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: "/volume1/photoprism/originals"
+        mountPath: /photoprism/originals
+        readOnly: false
+
+    service:
+      main:
+        ports:
+          http:
+            port: 2342
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: arcticons:photoprism
+          hajimari.io/info: Manage Photos
+          nginx.ingress.kubernetes.io/proxy-body-size: 4G
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: media.${EXTERNAL_DNS_2_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
