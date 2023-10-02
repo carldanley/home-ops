@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-photoprism
+  name: media-photoprism-secrets
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/media/photoprism/app"
+  path: "./kubernetes/apps/media/photoprism/secrets"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -16,5 +16,50 @@ spec:
     substituteFrom: []
   decryption:
     provider: sops
+  dependsOn: []
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: media-photoprism-mariadb
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./kubernetes/apps/media/photoprism/mariadb"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom:
+    - kind: Secret
+      name: photoprism-secrets
+      optional: false
+  decryption:
+    provider: sops
   dependsOn:
+  - name: media-photoprism-secrets
   - name: storage-rook-ceph-cluster
+  - name: storage-volsync
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: media-photoprism
+#   namespace: flux-system
+# spec:
+#   interval: 10m
+#   path: "./kubernetes/apps/media/photoprism/app"
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: k8s-home-ops
+#   wait: true
+#   postBuild:
+#     substituteFrom: []
+#   decryption:
+#     provider: sops
+#   dependsOn:
+#   - name: storage-rook-ceph-cluster
+#   - name: media-photoprism-mariadb
