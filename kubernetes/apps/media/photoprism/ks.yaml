@@ -65,5 +65,5 @@ spec:
     provider: sops
   dependsOn:
   - name: storage-rook-ceph-cluster
-  - name: media-photoprism-mariadb
+  - name: media-photoprism-cvd-mariadb
   - name: ingress-ingress-nginx
