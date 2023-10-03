@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: photoprism-mariadb
+  name: photoprism-cvd-mariadb
   namespace: media
 spec:
   accessModes:

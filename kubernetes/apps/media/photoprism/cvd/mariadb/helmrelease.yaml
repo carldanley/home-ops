@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: photoprism-mariadb
+  name: photoprism-cvd-mariadb
   namespace: media
 spec:
   interval: 10m
@@ -30,14 +30,14 @@ spec:
       repository: bitnami/mariadb
       tag: 11.0.3-debian-11-r30
     auth:
-      rootPassword: ${MARIADB_ROOT_PASSWORD}
-      database: ${MARIADB_DATABASE}
-      username: ${MARIADB_USERNAME}
-      password: ${MARIADB_PASSWORD}
+      rootPassword: ${MARIADB_CVD_ROOT_PASSWORD}
+      database: ${MARIADB_CVD_DATABASE}
+      username: ${MARIADB_CVD_USERNAME}
+      password: ${MARIADB_CVD_PASSWORD}
     primary:
       persistence:
         enabled: true
-        existingClaim: photoprism-mariadb
+        existingClaim: photoprism-cvd-mariadb
     metrics:
       enabled: true
       serviceMonitor:
