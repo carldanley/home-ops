@@ -11,6 +11,7 @@ logger:
   logs:
     frigate.record: debug
 
+# 4GB volume atm
 database:
   path: /db/frigate.db
 
