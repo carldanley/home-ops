@@ -85,6 +85,9 @@ go2rtc:
     kitchen:
     - ${FRIGATE_CAMERA_KITCHEN_HOST}
     - "ffmpeg:kitchen#audio=opus"
+    mobile_cam:
+    - ${FRIGATE_CAMERA_MOBILE_CAM_HOST}
+    - "ffmpeg:mobile_cam"
     patio:
     - ${FRIGATE_CAMERA_PATIO_HOST}
     - "ffmpeg:patio#audio=opus"
@@ -231,6 +234,17 @@ cameras:
     motion:
       mask:
       - 923,330,1637,492,2560,414,2560,0,0,0,0,339
+    mqtt: *cameraMQTTSettings
+
+  mobile_cam:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_MOBILE_CAM_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1920
+      height: 1080
     mqtt: *cameraMQTTSettings
 
   patio:
