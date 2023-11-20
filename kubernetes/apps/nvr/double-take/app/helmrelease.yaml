@@ -22,7 +22,7 @@ spec:
 
     image:
       repository: ghcr.io/skrashevich/double-take
-      tag: v1.13.11.7
+      tag: v1.13.11.8
 
     env:
       TZ: "America/New_York"
