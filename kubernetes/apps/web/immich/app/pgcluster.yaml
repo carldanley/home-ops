@@ -6,7 +6,7 @@ metadata:
   namespace: web
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:15.5-6
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.5-8
 
   # let k8s handle upgrades
   primaryUpdateStrategy: unsupervised
