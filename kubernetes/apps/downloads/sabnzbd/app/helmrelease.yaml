@@ -126,8 +126,8 @@ spec:
       requests:
         cpu: 5m
         memory: "2392M"
-      limits:
-        memory: "2392M"
+      # limits:
+      #   memory: "2392M"
 
     serviceMonitor:
       metrics:
