@@ -26,7 +26,7 @@ spec:
 
     image:
       repository: ghcr.io/mrlt8/docker-wyze-bridge
-      tag: dev-qsv@sha256:fa61713e5c6317a40adff9b52994e1e44d6769b85eed3848fd94d144cf623dbe
+      tag: dev-qsv@sha256:5159f388e114f9fb4ee52dcca392171346511e40d63fc309f89c8087ed1b9f03
 
     envFrom:
     - secretRef:
