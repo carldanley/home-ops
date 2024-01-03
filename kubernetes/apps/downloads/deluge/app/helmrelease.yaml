@@ -20,8 +20,8 @@ spec:
       type: statefulset
 
     image:
-      repository: tccr.io/truecharts/deluge
-      tag: 17.1.6@sha256:2e8bc07b3a74a98535213c46751af67f71f733d1838e0e775279974afadcf4ee
+      repository: linuxserver/deluge
+      tag: 2.1.1
 
     podAnnotations:
       vpn.home.arpa/enabled: "true"
