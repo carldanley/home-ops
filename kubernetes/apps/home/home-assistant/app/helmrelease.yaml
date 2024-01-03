@@ -115,9 +115,9 @@ spec:
           main:
             main:
             - path: /root/.ssh/id_rsa
-              subPath: ssh-private-key
+              subPath: ssh-privatekey
             - path: /root/.ssh/known_hosts
-              subPath: known-hosts
+              subPath: known_hosts
 
       config:
         enabled: true
