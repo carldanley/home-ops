@@ -106,6 +106,19 @@ spec:
         - path: /config
           readOnly: false
 
+      deploy-key:
+        enabled: true
+        type: secret
+        name: home-assistant-deploy-key
+        defaultMode: 256
+        advancedMounts:
+          main:
+            main:
+            - path: /root/.ssh/id_rsa
+              subPath: ssh-private-key
+            - path: /root/.ssh/known_hosts
+              subPath: known-hosts
+
       config:
         enabled: true
         type: custom
