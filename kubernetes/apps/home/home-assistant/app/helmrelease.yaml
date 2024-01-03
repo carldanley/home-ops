@@ -37,6 +37,23 @@ spec:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          clone-repo:
+            image: alpine/git:latest
+            command:
+            - "/bin/sh"
+            - -c
+            - |
+              cd /config
+              git fetch origin
+              git reset origin/main --hard
+            volumeMounts:
+            - name: deploy-key
+              mountPath: /root/.ssh/id_rsa
+              subPath: ssh-privatekey
+            - name: deploy-key
+              mountPath: /root/.ssh/known_hosts
+              subPath: known_hosts
         containers:
           main:
             image:
@@ -111,13 +128,6 @@ spec:
         type: secret
         name: home-assistant-deploy-key
         defaultMode: 256
-        advancedMounts:
-          main:
-            main:
-            - path: /root/.ssh/id_rsa
-              subPath: ssh-privatekey
-            - path: /root/.ssh/known_hosts
-              subPath: known_hosts
 
       config:
         enabled: true
