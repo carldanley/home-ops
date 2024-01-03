@@ -55,6 +55,9 @@ spec:
               tag: 2023.12.4
             env:
               TZ: "America/New York"
+            envFrom:
+            - secretRef:
+                name: home-assistant-secret
             probes:
               liveness:
                 custom: true

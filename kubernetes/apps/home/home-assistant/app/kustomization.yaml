@@ -7,6 +7,7 @@ commonLabels:
   app.kubernetes.io/instance: home-assistant
 resources:
 - ./secret-deploy-key.sops.yaml
+- ./secret-home-assistant.sops.yaml
 - ./helmrelease.yaml
 patchesStrategicMerge:
 - ./patches/codeserver.yaml
