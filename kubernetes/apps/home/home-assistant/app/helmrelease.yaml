@@ -88,11 +88,15 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:homeassistant"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-        ingressClassName: nginx
+        className: nginx
         hosts:
         - host: ${EXTERNAL_DNS_2_DOMAIN}
           paths:
           - path: /
+            pathType: Prefix
+            service:
+              name: main
+              port: http
 
     persistence:
       config:
@@ -113,5 +117,6 @@ spec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/backups/home-assistant
-        mountPath: /config/backups
-        readOnly: false
+        globalMounts:
+        - path: /config/backups
+          readOnly: false
