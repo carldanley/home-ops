@@ -21,7 +21,7 @@ spec:
 
     image:
       repository: tccr.io/truecharts/deluge
-      tag: 2.1.1@sha256:fb4841fbf1184c0ac2ef1712fdcf41a5253b916aaca1fead2093be257c5959bd
+      tag: 17.1.6@sha256:2e8bc07b3a74a98535213c46751af67f71f733d1838e0e775279974afadcf4ee
 
     podAnnotations:
       vpn.home.arpa/enabled: "true"
