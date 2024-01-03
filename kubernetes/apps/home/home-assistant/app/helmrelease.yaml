@@ -99,6 +99,13 @@ spec:
               port: http
 
     persistence:
+      shared:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+        - path: /config
+          readOnly: false
+
       config:
         enabled: true
         type: custom

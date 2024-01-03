@@ -7,5 +7,5 @@ commonLabels:
   app.kubernetes.io/instance: home-assistant
 resources:
 - ./helmrelease.yaml
-# patchesStrategicMerge:
-# - ./patches/addons.yaml
+patchesStrategicMerge:
+- ./patches/codeserver.yaml
