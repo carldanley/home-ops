@@ -139,9 +139,14 @@ spec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/home-assistant/.storage
-        globalMounts:
-        - path: /config/.storage
-          readOnly: false
+        advancedMounts:
+          main:
+            main:
+            - path: /config/.storage
+              readOnly: false
+            codeserver:
+            - path: /config/.storage
+              readOnly: false
 
       backups:
         enabled: true
