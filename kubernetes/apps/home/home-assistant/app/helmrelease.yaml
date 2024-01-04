@@ -64,7 +64,7 @@ spec:
                 spec:
                   httpGet:
                     path: /manifest.json
-                    port: 8123
+                    port: &httpPort 8123
                   initialDelaySeconds: 3
                   periodSeconds: 3
               readiness:
@@ -86,7 +86,7 @@ spec:
         ports:
           http:
             enabled: true
-            port: 8123
+            port: *httpPort
           sonos:
             enabled: true
             port: 1400
@@ -127,13 +127,14 @@ spec:
         defaultMode: 256
         advancedMounts:
           main:
-            clone-repo:
+            clone-repo: &sshKeyMounts
             - path: /root/.ssh/id_rsa
               readOnly: true
               subPath: ssh-privatekey
             - path: /root/.ssh/known_hosts
               readOnly: true
               subPath: known_hosts
+            main: *sshKeyMounts
 
       config:
         enabled: true
@@ -144,12 +145,10 @@ spec:
             path: /volume1/home-assistant/.storage
         advancedMounts:
           main:
-            main:
+            main: &configStorageMount
             - path: /config/.storage
               readOnly: false
-            codeserver:
-            - path: /config/.storage
-              readOnly: false
+            codeserver: *configStorageMount
 
       backups:
         enabled: true
@@ -160,9 +159,7 @@ spec:
             path: /volume1/backups/home-assistant
         advancedMounts:
           main:
-            main:
+            main: &configBackupMount
             - path: /config/backups
               readOnly: false
-            codeserver:
-            - path: /config/backups
-              readOnly: false
+            codeserver: *configBackupMount
