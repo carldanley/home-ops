@@ -5,6 +5,3 @@ resources:
 - ./namespace.yaml
 - ./wyze-bridge/ks.yaml
 - ./frigate/ks.yaml
-# - ./deepstack/ks.yaml
-- ./double-take/ks.yaml
-- ./compreface/ks.yaml
