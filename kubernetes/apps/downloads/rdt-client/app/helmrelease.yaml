@@ -45,6 +45,8 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
         - host: &host "rdt.${EXTERNAL_DNS_1_DOMAIN}"
           paths:
