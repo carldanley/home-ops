@@ -1,0 +1,70 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: rdt-client
+  namespace: downloads
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+
+    image:
+      repository: rogerfar/rdtclient 
+      tag: 2.0.59
+
+    dnsConfig:
+      options:
+      - name: ndots
+        value: "1"
+
+    hostname: rdt
+
+    service:
+      main:
+        ports:
+          http:
+            port: 6500
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "mdi:download-circle-outline"
+        hosts:
+        - host: &host "rdt.${EXTERNAL_DNS_1_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+
+    volumeClaimTemplates:
+    - name: data
+      mountPath: /data/db
+      accessMode: ReadWriteOnce
+      size: 5Gi
+      storageClass: ceph-block
+
+    persistence:
+      media:
+        enabled: true
+        existingClaim: nfs-downloads
+        mountPath: /data/downloads
+
+    resources:
+      requests:
+        cpu: 49m
+        memory: 765M
