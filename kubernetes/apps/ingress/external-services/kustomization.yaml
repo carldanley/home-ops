@@ -8,3 +8,4 @@ resources:
 - ./octoprint.yaml
 - ./synology.yaml
 - ./minio.yaml
+- ./plex.yaml
