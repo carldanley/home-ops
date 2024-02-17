@@ -18,16 +18,12 @@
       "labels": ["type/digest"]
     },
     {
-      "matchDatasources": ["docker"],
-      "addLabels": ["renovate/container"]
-    },
-    {
       "matchDatasources": ["helm"],
       "addLabels": ["renovate/helm"]
     },
     {
-      "matchDatasources": ["github-releases", "github-tags"],
-      "addLabels": ["renovate/github-release"]
+      "matchDatasources": ["docker"],
+      "addLabels": ["renovate/container"]
     }
   ]
 }

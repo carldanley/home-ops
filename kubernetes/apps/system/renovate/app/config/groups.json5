@@ -12,6 +12,30 @@
       "separateMinorPatch": true
     },
     {
+      description: "Rook-Ceph image and chart",
+      groupName: "Rook Ceph",
+      matchPackagePatterns: ["rook.ceph"],
+      matchDatasources: ["docker", "helm"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
+      description: "Cilium image and chart",
+      groupName: "cilium",
+      matchPackageNames: [
+        "quay.io/cilium/cilium",
+        "quay.io/cilium/operator-generic",
+        "cilium",
+      ],
+      matchDatasources: ["helm", "docker"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
+    },
+    {
       "description": "External Snapshotter Group",
       "groupName": "External Snapshotter",
       "matchPackageNames": ["snapshot-controller", "snapshot-validation-webhook"],

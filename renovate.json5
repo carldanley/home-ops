@@ -1,20 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    "docker:enableMajor",
-    ":disableRateLimiting",
+    "config:recommended",
     ":dependencyDashboard",
-    ":semanticCommits",
-    ":automergeDigest",
-    ":automergeBranch",
+    ":disableRateLimiting",
+    "docker:enableMajor",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/allowedVersions.json5",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/commitMessage.json5",
+    "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/customManagers.json5",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/groups.json5",
-    "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/labels.json5",
+    "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/pr-labels.json5",
     "github>carldanley/home-ops//kubernetes/apps/system/renovate/app/config/semanticCommits.json5",
   ],
-  "enabled": true,
   "timezone": "America/New_York",
   "platform": "github",
   "onboarding": false,
@@ -30,38 +27,5 @@
   },
   "kubernetes": {
     "fileMatch": ["kubernetes/.+\\.ya?ml$"]
-  },
-  "regexManagers": [
-    {
-      "description": "Process custom dependencies",
-      "fileMatch": [
-        "infrastructure/.+\\.ya?ml$",
-        "kubernetes/.+\\.ya?ml$"
-      ],
-      "matchStrings": [
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    },
-    {
-      "description": "Process imageName values",
-      "fileMatch": [
-        "kubernetes/.+\\.ya?ml$"
-      ],
-      "matchStrings": [
-        "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "redhat"
-    }
-  ],
-  "packageRules": [
-    {
-      "description": "Loose versioning for non-semver packages",
-      "matchDatasources": ["docker"],
-      "versioning": "loose",
-      "matchPackagePatterns": ["changedetection", "plex"]
-    }
-  ]
+  }
 }
