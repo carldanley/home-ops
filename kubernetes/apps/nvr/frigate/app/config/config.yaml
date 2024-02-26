@@ -64,7 +64,6 @@ record:
     retain:
       default: 14
       mode: active_objects
-  sync_on_startup: true
 
 rtmp:
   enabled: false
