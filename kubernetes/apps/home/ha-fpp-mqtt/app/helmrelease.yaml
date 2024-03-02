@@ -38,7 +38,9 @@ spec:
             envFrom:
             - secretRef:
                 name: ha-fpp-mqtt-secret
-
+            args:
+            - -v
+            - "3"
     service:
       main:
         enabled: false
