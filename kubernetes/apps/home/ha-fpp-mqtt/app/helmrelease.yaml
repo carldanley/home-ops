@@ -23,6 +23,15 @@ spec:
     keepHistory: false
   values:
 
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-iot",
+            "namespace": "networking",
+            "ips": [ "192.168.4.12/22" ]
+          }]
+
     controllers:
       main:
         type: deployment
