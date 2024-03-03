@@ -41,7 +41,7 @@ spec:
           main:
             image:
               repository: ghcr.io/carldanley/ha-fpp-mqtt
-              tag: v1.0.5
+              tag: v1.0.7
             env:
               TZ: "America/New York"
             envFrom:
