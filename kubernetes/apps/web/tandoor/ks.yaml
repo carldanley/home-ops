@@ -19,3 +19,23 @@ spec:
   dependsOn:
   - name: databases-cloudnative-pg
   - name: storage-rook-ceph-cluster
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: web-tandoor-app
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/web/tandoor/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substituteFrom: []
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+  - name: web-tandoor-database

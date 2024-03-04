@@ -1,0 +1,156 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: tandoor
+  namespace: web
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          main:
+            image:
+              repository: ghcr.io/tandoorrecipes/recipes
+              tag: 1.5.13
+            env:
+            - name: COMMENT_PREF_DEFAULT
+              value: 0
+            - name: DEBUG
+              value: 1
+            - name: ENABLE_SIGNUP
+              value: 0
+            - name: FRACTION_PREF_DEFAULT
+              value: 0
+            - name: GUNICORN_MEDIA
+              value: 0
+            - name: MAX_OWNED_SPACES_PREF_DEFAULT
+              value: 0
+            - name: SHOPPING_MIN_AUTOSYNC_INTERVAL
+              value: 5
+            - name: TANDOOR_PORT
+              value: &tandoorPort 8000
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: pg-tandoor-app
+                  key: uri
+            envFrom:
+            - secretRef:
+                name: tandoor-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /accounts/login/
+                    port: *tandoorPort
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /accounts/login/
+                    port: *tandoorPort
+                  failureThreshold: 30
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+
+          nginx:
+            image:
+              repository: ghcr.io/nginxinc/nginx-unprivileged
+              tag: 1.25.4
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: "recipes.${EXTERNAL_DNS_2_DOMAIN}"
+          paths:
+          - path: /
+            service:
+              name: main
+              port: http
+
+    persistence:
+      files:
+        existingClaim: "tandoor-data"
+        advancedMounts:
+          main:
+            main:
+            - path: /opt/recipes/mediafiles
+              subPath: mediafiles
+            - path: /opt/recipes/staticfiles
+              subPath: staticfiles
+            nginx:
+            - path: /media
+              subPath: mediafiles
+            - path: /static
+              subPath: staticfiles
+      nginx-config:
+        type: configMap
+        name: tandoor-nginx
+        advancedMounts:
+          main:
+            nginx:
+            - path: /etc/nginx/nginx.conf
+              subPath: nginx-config
+              readOnly: true
+      temp:
+        type: emptyDir
+        advancedMounts:
+          main:
+            main:
+            - path: /tmp
+              subPath: app-tmp
+            - path: /opt/recipes/cookbook/static/django_js_reverse
+              subPath: django_js_reverse
