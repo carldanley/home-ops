@@ -1,0 +1,12 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-tandoor-backup
+  namespace: web
+spec:
+  schedule: "@weekly"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: pg-tandoor

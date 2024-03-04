@@ -6,3 +6,4 @@ resources:
 - ./hajimari/ks.yaml
 - ./vaultwarden/ks.yaml
 - ./actual/ks.yaml
+- ./tandoor/ks.yaml
