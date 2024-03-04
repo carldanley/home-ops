@@ -41,6 +41,8 @@ spec:
               value: 0
             - name: DEBUG
               value: 1
+            - name: ALLOWED_HOSTS
+              value: "*"
             - name: ENABLE_SIGNUP
               value: 0
             - name: FRACTION_PREF_DEFAULT
@@ -48,7 +50,7 @@ spec:
             - name: GUNICORN_MEDIA
               value: 0
             - name: MAX_OWNED_SPACES_PREF_DEFAULT
-              value: 0
+              value: 1
             - name: SHOPPING_MIN_AUTOSYNC_INTERVAL
               value: 5
             - name: TANDOOR_PORT
