@@ -22,3 +22,21 @@ This Git repository contains the following directories under [kubernetes](./kube
 │   ├── 📁 flux                   # core flux configuration
 └── └── 📁 talos                  # talos configuration
 ```
+
+### Cleanup Tracker
+
+You can most likely skip over this part of the README; I'm using it to track the progress of an audit across all of my apps. Lots of different fields and configurations have been applied as I've borrowed a lot of the manifests from various different places; as an effort to unify my approach, I'm auditing all apps to make sure they are properly configured the way I'd like them to be.
+
+- [ ] databases
+- [ ] development
+- [ ] downloads
+    - [x] flaresolverr
+- [ ] home
+- [ ] ingress
+- [ ] media
+- [ ] monitoring
+- [ ] networking
+- [ ] nvr
+- [ ] storage
+- [ ] system
+- [ ] web
