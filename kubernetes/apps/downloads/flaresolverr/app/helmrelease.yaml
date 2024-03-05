@@ -3,30 +3,35 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: flaresolverr
-  namespace: downloads
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.6.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   values:
-    image:
-      repository: flaresolverr/flaresolverr
-      tag: v3.3.16
-    service:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: flaresolverr/flaresolverr
+              tag: v3.3.16
+          resources:
+            requests:
+              cpu: 50m
+              memory: 150Mi
+            limits:
+              memory: 1Gi
+
+    services:
       main:
         ports:
           http:
             port: 8191
-    resources:
-      requests:
-        cpu: 50m
-        memory: 150Mi
-      limits:
-        memory: 1Gi

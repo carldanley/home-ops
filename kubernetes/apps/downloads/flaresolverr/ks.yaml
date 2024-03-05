@@ -6,12 +6,15 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/downloads/flaresolverr/app"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/downloads/flaresolverr/app
+  targetNamespace: downloads
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
     substituteFrom: []
   dependsOn:
