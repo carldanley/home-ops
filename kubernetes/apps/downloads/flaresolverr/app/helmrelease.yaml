@@ -23,12 +23,12 @@ spec:
             image:
               repository: flaresolverr/flaresolverr
               tag: v3.3.16
-          resources:
-            requests:
-              cpu: 50m
-              memory: 150Mi
-            limits:
-              memory: 1Gi
+            resources:
+              requests:
+                cpu: 50m
+                memory: 150Mi
+              limits:
+                memory: 1Gi
 
     service:
       main:
