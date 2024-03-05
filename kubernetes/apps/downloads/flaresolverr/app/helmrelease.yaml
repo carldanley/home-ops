@@ -25,10 +25,14 @@ spec:
     keepHistory: false
 
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+
     controllers:
       main:
         containers:
           main:
+            strategy: RollingUpdate
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
               tag: v3.3.16
