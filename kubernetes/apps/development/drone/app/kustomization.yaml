@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - ./secret-drone.sops.yaml
 - ./helmrelease.yaml
+- ../../../../templates/volsync
