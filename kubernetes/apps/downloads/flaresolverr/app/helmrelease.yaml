@@ -30,7 +30,7 @@ spec:
             limits:
               memory: 1Gi
 
-    services:
+    service:
       main:
         ports:
           http:
