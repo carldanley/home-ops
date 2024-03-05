@@ -6,16 +6,17 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/development/drone/app"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/development/drone/app
+  targetNamespace: development
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
   - name: storage-rook-ceph-cluster
 ---
@@ -26,15 +27,16 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/development/drone/runner-docker"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/development/drone/runner-docker
+  targetNamespace: development
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
   - name: development-drone

@@ -3,30 +3,46 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: drone-runner-docker
-  namespace: development
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: drone-runner-docker
       version: 0.6.2
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: drone
         namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
   values:
     replicaCount: 3
+
     image:
       repository: drone/drone-runner-docker
       tag: 1.8.3
+
     podAnnotations:
       reloader.stakater.com/search: "true"
+
     dind:
       repository: docker
       tag: 23.0.6-dind
+
     env:
       DRONE_RPC_HOST: drone:8080
       DRONE_RPC_PROTO: http
+
   valuesFrom:
   - kind: Secret
     name: drone-secret
