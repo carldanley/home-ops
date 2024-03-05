@@ -8,7 +8,6 @@ spec:
   interval: 10m
   timeout: 3m
   retryInterval: 2m
-  maxHistory: 3
   path: ./kubernetes/apps/databases/cloudnative-pg/app
   targetNamespace: databases
   prune: true
