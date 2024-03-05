@@ -30,7 +30,7 @@ You can most likely skip over this part of the README; I'm using it to track the
 - [ ] databases
 - [ ] development
 - [ ] downloads
-    - [x] flaresolverr
+  - [x] flaresolverr
 - [ ] home
 - [ ] ingress
 - [ ] media
@@ -40,3 +40,10 @@ You can most likely skip over this part of the README; I'm using it to track the
 - [ ] storage
 - [ ] system
 - [ ] web
+
+### Remaining Tasks
+
+This is just a list of things that I'd like to accomplish when I have time to cleanup this repository.
+
+- [ ] Re-work grafana dashboards
+- [ ] Remove "common" folders
