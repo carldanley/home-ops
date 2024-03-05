@@ -6,13 +6,18 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/databases/cloudnative-pg/app"
+  timeout: 3m
+  retryInterval: 2m
+  maxHistory: 3
+  path: ./kubernetes/apps/databases/cloudnative-pg/app
+  targetNamespace: databases
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
+  dependsOn:
+  - name: monitoring-kube-prometheus-stack-crds
+  - name: system-reflector
