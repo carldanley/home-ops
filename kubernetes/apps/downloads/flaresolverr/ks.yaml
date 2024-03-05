@@ -8,6 +8,7 @@ spec:
   interval: 10m
   timeout: 3m
   retryInterval: 2m
+  maxHistory: 3
   path: ./kubernetes/apps/downloads/flaresolverr/app
   targetNamespace: downloads
   prune: true
