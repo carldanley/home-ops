@@ -29,7 +29,9 @@ You can most likely skip over this part of the README; I'm using it to track the
 
 - [x] databases
   - [x] cloudnative-pg
-- [ ] development
+- [x] development
+  - [x] drone
+  - [x] drone-runner-docker
 - [ ] downloads
   - [x] flaresolverr
 - [ ] home
