@@ -21,7 +21,7 @@ spec:
         containers:
           main:
             image:
-              repository: flaresolverr/flaresolverr
+              repository: ghcr.io/flaresolverr/flaresolverr
               tag: v3.3.16
             resources:
               requests:
