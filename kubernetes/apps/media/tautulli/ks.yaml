@@ -15,6 +15,5 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
-  - name: media-plex
   - name: storage-rook-ceph-cluster
   - name: monitoring-kube-prometheus-stack-crds
