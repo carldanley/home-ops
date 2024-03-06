@@ -3,62 +3,60 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: weatherflow2mqtt
-  namespace: home
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.6.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   values:
-    controller:
-      type: statefulset
-      replicas: 1
-      strategy: RollingUpdate
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
 
-    podAnnotations:
-      k8s.v1.cni.cncf.io/networks: |
-        [{
-          "name":"multus-iot",
-          "namespace": "networking",
-          "ips": [ "192.168.4.11/22" ]
-        }]
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": [ "192.168.4.11/22" ]
+              }]
 
-    image:
-      repository: briis/weatherflow2mqtt
-      tag: 3.2.2
-
-    envFrom:
-    - secretRef:
-        name: weatherflow2mqtt-secret
-
-    env:
-      TZ: "America/New_York"
-      UNIT_SYSTEM: "imperial"
-      LANGUAGE: "en"
-      RAPID_WIND_INTERVAL: "2"
-      DEBUG: "true"
-      ELEVATION: "11.00328"
-      MQTT_DEBUG: "false"
-      FORECAST_INTERVAL: "30"
-      MQTT_USERNAME:
-        valueFrom:
-          secretKeyRef:
-            name: mosquitto-secret
-            key: MOSQUITTO_USER
-      MQTT_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: mosquitto-secret
-            key: MOSQUITTO_PASS
+        containers:
+          main:
+            strategy: RollingUpdate
+            image:
+              repository: briis/weatherflow2mqtt
+              tag: 3.2.2
+            env:
+              TZ: America/New_York
+              UNIT_SYSTEM: imperial
+              LANGUAGE: en
+              RAPID_WIND_INTERVAL: 2
+              DEBUG: "true"
+              ELEVATION: 11.00328
+              MQTT_DEBUG: "false"
+              FORECAST_INTERVAL: 30
+            envFrom:
+            - secretRef:
+                name: weatherflow2mqtt-secret
 
     service:
       main:

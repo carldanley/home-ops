@@ -40,7 +40,7 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [x] ha-fpp-mqtt
   - [ ] home-assistant
   - [ ] mosquitto
-  - [ ] weatherflow2mqtt
+  - [x] weatherflow2mqtt
   - [ ] wyoming-piper
   - [ ] zigbee2mqtt
   - [ ] zwavejs2mqtt
