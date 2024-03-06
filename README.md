@@ -37,6 +37,13 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [x] prowlarr
   - [x] rdt-client
 - [ ] home
+  - [x] ha-fpp-mqtt
+  - [ ] home-assistant
+  - [ ] mosquitto
+  - [ ] weatherflow2mqtt
+  - [ ] wyoming-piper
+  - [ ] zigbee2mqtt
+  - [ ] zwavejs2mqtt
 - [ ] ingress
 - [ ] media
 - [ ] monitoring

@@ -25,3 +25,4 @@ spec:
   - name: storage-rook-ceph-cluster
   - name: monitoring-kube-prometheus-stack-crds
   - name: networking-pod-gateway
+  - name: ingress-ingress-nginx

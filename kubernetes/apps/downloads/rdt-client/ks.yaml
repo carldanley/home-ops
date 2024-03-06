@@ -24,3 +24,4 @@ spec:
   dependsOn:
   - name: storage-rook-ceph-cluster
   - name: networking-pod-gateway
+  - name: ingress-ingress-nginx

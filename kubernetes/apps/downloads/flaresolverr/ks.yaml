@@ -18,4 +18,6 @@ spec:
   postBuild:
     substituteFrom: []
   dependsOn:
+  - name: monitoring-kube-prometheus-stack-crds
   - name: networking-pod-gateway
+  - name: ingress-ingress-nginx

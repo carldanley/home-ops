@@ -23,6 +23,7 @@ spec:
     substituteFrom: []
   dependsOn:
   - name: storage-rook-ceph-cluster
+  - name: ingress-ingress-nginx
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
