@@ -3,92 +3,118 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: prowlarr
-  namespace: downloads
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.6.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 30m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/onedr0p/prowlarr-develop
-      tag: 1.14.0.4286@sha256:c77d84ebf7a64844c858f249cb3fbb59b0d2d2de21709126c339be14386a804f
+        pod:
+          annotations:
+            vpn.home.arpa/enabled: "true"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
 
-    env:
-      TZ: America/New_York
-      PROWLARR__INSTANCE_NAME: Prowlarr
-      PROWLARR__PORT: &port 9696
-      PROWLARR__AUTHENTICATION_METHOD: External
-      PROWLARR__APPLICATION_URL: "https://prowlarr.${EXTERNAL_DNS_1_DOMAIN}"
-      PROWLARR__LOG_LEVEL: info
-      PROWLARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: PROWLARR_API_KEY
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/prowlarr-nightly  
+              tag: 1.14.2.4318@sha256:2bdf13ce928e272686927e485d0e5a63a2f2c104a19f0eb7b5268206e5b946de
+            env:
+              COMPlus_EnableDiagnostics: "0"
+              TZ: America/New_York
+              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__PORT: &port 9696
+              PROWLARR__AUTHENTICATION_METHOD: External
+              PROWLARR__APPLICATION_URL: "https://prowlarr.${EXTERNAL_DNS_1_DOMAIN}"
+              PROWLARR__ANALYTICS_ENABLED: "False"
+              PROWLARR__LOG_LEVEL: info
+            envFrom:
+            - secretRef:
+                name: prowlarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/onedr0p/exportarr:v2.0.0
-        args:
-        - prowlarr
-        - --enable-additional-metrics
-        env:
-        - name: URL
-          value: "http://localhost:9696"
-        - name: PORT
-          value: &metricsPort 9710
-        - name: APIKEY
-          valueFrom:
-            secretKeyRef:
-              name: starr-apps-secret
-              key: PROWLARR_API_KEY
-        ports:
-        - name: metrics
-          containerPort: *metricsPort
+          exporter:
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.0.0
+            args:
+            - prowlarr
+            - --enable-additional-metrics
+            env:
+              URL: "http://localhost:9696"
+              PORT: &metricsPort 9710
+            envFrom:
+            - secretRef:
+                name: prowlarr-secret
+            ports:
+            - name: metrics
+              containerPort: *metricsPort
 
     service:
       main:
         ports:
           http:
             port: *port
-      metrics:
-        ports:
           metrics:
             port: *metricsPort
-
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
 
     ingress:
       main:
         enabled: true
-        ingressClassName: nginx
+        className: nginx
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:movie-search"
@@ -99,39 +125,14 @@ spec:
           paths:
           - path: /
             pathType: Prefix
+            service:
+              name: main
+              port: http
 
     persistence:
-      backups:
+      config:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${SYNOLOGY_ADDRESS}"
-            path: /volume1/backups/prowlarr
-        mountPath: /config/Backups
-        readOnly: false
-
-    volumeClaimTemplates:
-    - name: config
-      mountPath: /config
-      accessMode: ReadWriteOnce
-      size: 1Gi
-      storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-      - 65539
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        existingClaim: ${VOLSYNC_CLAIM}
 
     serviceMonitor:
       metrics:

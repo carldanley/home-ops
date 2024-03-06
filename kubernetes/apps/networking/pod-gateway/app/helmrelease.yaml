@@ -92,15 +92,6 @@ spec:
       configmap.reloader.stakater.com/reload: pod-gateway
       secret.reloader.stakater.com/reload: pod-gateway-secret
 
-    publicPorts:
-    - IP: 10
-      hostname: deluge-0
-      ports:
-      - port: 57120
-        type: udp
-      - port: 57120
-        type: tcp
-
     routed_namespaces:
     - downloads
 
@@ -115,7 +106,7 @@ spec:
 
     webhook:
       gatewayAnnotation: vpn.home.arpa/enabled
-      gatewayDefault: true
+      gatewayDefault: false
       gatewayLabel: vpn.home.arpa/enabled
       namespaceSelector:
         type: label
