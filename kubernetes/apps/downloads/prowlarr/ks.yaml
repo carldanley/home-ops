@@ -22,6 +22,6 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
   dependsOn:
-  - name: storage-rook-ceph
+  - name: storage-rook-ceph-cluster
   - name: monitoring-kube-prometheus-stack-crds
   - name: networking-pod-gateway

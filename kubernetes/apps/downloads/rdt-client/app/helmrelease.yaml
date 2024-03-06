@@ -3,34 +3,52 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: rdt-client
-  namespace: downloads
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
-      interval: 15m
+      version: 2.6.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: rogerfar/rdtclient 
-      tag: 2.0.63
+        pod:
+          annotations:
+            vpn.home.arpa/enabled: "true"
+          dnsConfig:
+            options:
+            - name: ndots
+              value: "1"
+          hostname: rdt-client
 
-    dnsConfig:
-      options:
-      - name: ndots
-        value: "1"
-
-    hostname: rdt
+        containers:
+          main:
+            image:
+              repository: ghcr.io/rogerfar/rdtclient
+              tag: 2.0.63
+            resources:
+              requests:
+                cpu: 49m
+                memory: 765M
 
     service:
       main:
@@ -52,21 +70,29 @@ spec:
           paths:
           - path: /
             pathType: Prefix
-
-    volumeClaimTemplates:
-    - name: data
-      mountPath: /data/db
-      accessMode: ReadWriteOnce
-      size: 5Gi
-      storageClass: ceph-block
+            service:
+              name: main
+              port: http
 
     persistence:
-      media:
+      database:
         enabled: true
-        existingClaim: nfs-downloads
-        mountPath: /data/downloads
+        existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          main:
+            main:
+            - path: /data/db
+              readOnly: false
 
-    resources:
-      requests:
-        cpu: 49m
-        memory: 765M
+      downloads:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/media/downloads
+        advancedMounts:
+          main:
+            main:
+            - path: /data/downloads
+              readOnly: false
