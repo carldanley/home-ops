@@ -36,6 +36,7 @@ spec:
       defaultEnable: false
       namespaceSelector:
         matchNames:
+        - development
         - downloads
         - home
         - ingress
