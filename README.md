@@ -32,8 +32,10 @@ You can most likely skip over this part of the README; I'm using it to track the
 - [x] development
   - [x] drone
   - [x] drone-runner-docker
-- [ ] downloads
+- [x] downloads
   - [x] flaresolverr
+  - [x] prowlarr
+  - [x] rdt-client
 - [ ] home
 - [ ] ingress
 - [ ] media
