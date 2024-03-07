@@ -30,6 +30,7 @@ spec:
   values:
     controllers:
       main:
+        type: statefulset
 
         pod:
           annotations:
@@ -101,6 +102,14 @@ spec:
             port: *mqttPort
 
     persistence:
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+            - path: /mosquitto/data
+              readOnly: false
+
       mosquitto-config:
         type: configMap
         name: mosquitto-config
