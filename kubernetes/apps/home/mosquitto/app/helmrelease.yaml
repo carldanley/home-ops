@@ -3,67 +3,91 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: mosquitto
-  namespace: home
   labels:
     substitution.flux.home.arpa/enabled: "false"
 spec:
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.6.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  interval: 30m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      main:
 
-    image:
-      repository: public.ecr.aws/docker/library/eclipse-mosquitto
-      tag: 2.0.18
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
 
-    initContainers:
-      user-import:
-        image: public.ecr.aws/docker/library/eclipse-mosquitto:2.0.18@sha256:da38d58ee0037af94f746dc3d884c57f50140ef5f592bf6fcbb80d66d131a77b
-        command:
-        - "/bin/sh"
-        - -c
-        args:
-        - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
-        volumeMounts:
-        - name: mosquitto-secret
-          mountPath: /data/mosquitto_secret
-        - name: mosquitto-init-config
-          mountPath: /data/mosquitto_init
-        - name: external-config
-          mountPath: /data/external_config
+        initContainers:
+          user-import:
+            image: 
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.18
+            command:
+            - /bin/sh
+            - -c
+            args:
+            - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: sapcc/mosquitto-exporter:0.8.0
-        env:
-        - name: BROKER_ENDPOINT
-          value: "tcp://127.0.0.1:1883"
-        - name: MQTT_USER
-          valueFrom:
-            secretKeyRef:
-              name: mosquitto-secret
-              key: MOSQUITTO_USER
-        - name: MQTT_PASS
-          valueFrom:
-            secretKeyRef:
-              name: mosquitto-secret
-              key: MOSQUITTO_PASS
-        ports:
-        - name: metrics
-          containerPort: &metricsPort 9234
+        containers:
+          main:
+            image:
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.18
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 10Mi
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &mqttPort 1883
+              readiness:
+                enabled: false
+
+          exporter:
+            image:
+              repository: sapcc/mosquitto-exporter
+              tag: 0.8.0
+            env:
+              BROKER_ENDPOINT: tcp://127.0.0.1:1883
+            envFrom:
+            - secretRef:
+                name: mosquitto-secret
+            ports:
+            - name: metrics
+              containerPort: &metricsPort 9234
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: *metricsPort
+              readiness: *probes
 
     service:
       main:
@@ -72,58 +96,52 @@ spec:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_MQTT}
         ports:
           http:
-            enabled: false
-          mqtt:
-            enabled: true
-            port: 1883
-      metrics:
-        ports:
-          metrics:
             port: *metricsPort
+          mqtt:
+            port: *mqttPort
 
     persistence:
       mosquitto-config:
-        enabled: true
         type: configMap
         name: mosquitto-config
-        mountPath: /mosquitto/config/mosquitto.conf
-        subPath: mosquitto.conf
+        advancedMounts:
+          main:
+            main:
+            - path: /mosquitto/config/mosquitto.conf
+              subPath: mosquitto.conf
+
       mosquitto-secret:
-        enabled: true
         type: secret
         name: mosquitto-secret
-        mountPath: "-"
+        advancedMounts:
+          main:
+            user-import:
+            - path: /data/mosquitto_secret
+
       mosquitto-init-config:
-        enabled: true
         type: configMap
         name: mosquitto-init-config
-        mountPath: "-"
         defaultMode: 0755
+        advancedMounts:
+          main:
+            user-import:
+            - path: /data/mosquitto_init
+
       external-config:
-        enabled: true
         type: emptyDir
-        mountPath: /mosquitto/external_config
-
-    resources:
-      requests:
-        cpu: 5m
-        memory: 10Mi
-      limits:
-        memory: 10Mi
-
-    volumeClaimTemplates:
-    - name: data
-      mountPath: /data
-      accessMode: ReadWriteOnce
-      size: 1Gi
-      storageClass: ceph-block
+        advancedMounts:
+          main:
+            main:
+            - path: /mosquitto/external_config
+            user-import:
+            - path: /data/external_config
 
     serviceMonitor:
       metrics:
         enabled: true
         serviceName: mosquitto-metrics
         endpoints:
-        - port: metrics
+        - port: http
           scheme: http
           path: /metrics
           interval: 30s

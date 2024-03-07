@@ -1,7 +1,6 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: home
 resources:
 - ./secret-mosquitto.sops.yaml
 - ./helmrelease.yaml
@@ -11,10 +10,10 @@ commonLabels:
 configMapGenerator:
 - name: mosquitto-config
   files:
-  - config/mosquitto.conf
+  - files/mosquitto.conf
 - name: mosquitto-init-config
   files:
-  - config/load-users.sh
+  - files/load-users.sh
 - name: mosquitto-grafana-dashboards
   files:
   - ./dashboards/mosquitto.json
