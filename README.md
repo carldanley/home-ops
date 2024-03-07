@@ -41,7 +41,7 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [ ] home-assistant
   - [ ] mosquitto
   - [x] weatherflow2mqtt
-  - [ ] wyoming-piper
+  - [x] wyoming-piper
   - [ ] zigbee2mqtt
   - [ ] zwavejs2mqtt
 - [ ] ingress
