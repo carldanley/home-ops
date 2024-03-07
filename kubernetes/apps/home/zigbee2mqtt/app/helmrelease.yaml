@@ -26,16 +26,6 @@ spec:
     env:
       TZ: "American/New York"
       ZIGBEE2MQTT_DATA: /data
-      ZIGBEE2MQTT_CONFIG_MQTT_USER:
-        valueFrom:
-          secretKeyRef:
-            name: mosquitto-secret
-            key: MOSQUITTO_USER
-      ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: mosquitto-secret
-            key: MOSQUITTO_PASS
     service:
       main:
         ports:
