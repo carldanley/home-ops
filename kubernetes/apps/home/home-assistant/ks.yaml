@@ -9,9 +9,9 @@ spec:
   timeout: 3m
   retryInterval: 2m
   path: ./kubernetes/apps/home/home-assistant/app
+  targetNamespace: home
   prune: true
   wait: true
-  targetNamespace: home
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops

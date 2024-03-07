@@ -118,14 +118,12 @@ spec:
 
     persistence:
       shared:
-        enabled: true
         type: emptyDir
         globalMounts:
         - path: /config
           readOnly: false
 
       deploy-key:
-        enabled: true
         type: secret
         name: home-assistant-deploy-key
         defaultMode: 256
@@ -155,7 +153,6 @@ spec:
             codeserver: *configStorageMount
 
       backups:
-        enabled: true
         type: custom
         volumeSpec:
           nfs:

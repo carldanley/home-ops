@@ -79,7 +79,6 @@ spec:
 
     persistence:
       database:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           main:
@@ -88,7 +87,6 @@ spec:
               readOnly: false
 
       downloads:
-        enabled: true
         type: custom
         volumeSpec:
           nfs:
