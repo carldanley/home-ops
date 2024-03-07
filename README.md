@@ -42,7 +42,7 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [x] mosquitto
   - [x] weatherflow2mqtt
   - [x] wyoming-piper
-  - [ ] zigbee2mqtt
+  - [x] zigbee2mqtt
   - [ ] zwavejs2mqtt
 - [ ] ingress
 - [ ] media
