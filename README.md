@@ -38,7 +38,7 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [x] rdt-client
 - [ ] home
   - [x] ha-fpp-mqtt
-  - [ ] home-assistant
+  - [x] home-assistant
   - [ ] mosquitto
   - [x] weatherflow2mqtt
   - [x] wyoming-piper
@@ -59,3 +59,4 @@ This is just a list of things that I'd like to accomplish when I have time to cl
 
 - [ ] Re-work grafana dashboards
 - [ ] Remove "common" folders
+- [ ] Determine if we want to support `app.kubernetes.io/name` and `app.kubernetes.io/instance` everywhere
