@@ -72,6 +72,8 @@ go2rtc:
   streams:
     backyard:
     - ${FRIGATE_CAMERA_BACKYARD_HOST}
+    bambu_x1_carbon:
+    - ${FRIGATE_CAMERA_BAMBU_X1_CARBON_HOST}
     driveway:
     - ${FRIGATE_CAMERA_DRIVEWAY_HOST}
     front_doorbell:
