@@ -136,6 +136,17 @@ cameras:
       height: 500
       quality: 100
 
+  bambu_x1_carbon:
+    ffmpeg:
+      inputs:
+      - path: ${FRIGATE_CAMERA_BAMBU_X1_CARBON_HOST}
+        roles:
+        - detect
+    detect:
+      width: 1280
+      height: 720
+    mqtt: *cameraMQTTSettings
+
   driveway:
     ffmpeg:
       inputs:
