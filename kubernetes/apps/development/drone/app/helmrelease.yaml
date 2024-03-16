@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -28,12 +28,12 @@ spec:
   values:
 
     controllers:
-      main:
+       drone:
         annotations:
           reloader.stakater.com/auto: "true"
           
         containers:
-          main:
+          server:
             image:
               repository: drone/drone
               tag: 2.22.0
@@ -57,15 +57,13 @@ spec:
               readiness: *probes
 
     service:
-      main:
+      drone:
         ports:
           http:
-            enabled: true
             port: *httpPort
 
     ingress:
-      main:
-        enabled: true
+      drone:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:drone"
@@ -84,7 +82,7 @@ spec:
       files:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          drone:
+            server:
             - path: /data
               readOnly: false
