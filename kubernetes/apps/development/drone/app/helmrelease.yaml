@@ -58,6 +58,7 @@ spec:
 
     service:
       drone:
+        controller: drone
         ports:
           http:
             port: *httpPort
