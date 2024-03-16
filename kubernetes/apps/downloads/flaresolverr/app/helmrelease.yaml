@@ -38,7 +38,6 @@ spec:
 
         containers:
           app:
-            strategy: RollingUpdate
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
               tag: v3.3.16
@@ -66,6 +65,7 @@ spec:
 
     serviceMonitor:
       flaresolverr:
+        serviceName: flaresolverr
         endpoints:
         - port: metrics
           scheme: http
