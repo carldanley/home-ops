@@ -62,7 +62,7 @@ spec:
 
     ingress:
       rdt-client:
-        ingressClassName: nginx
+        className: nginx
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:download-circle-outline"
