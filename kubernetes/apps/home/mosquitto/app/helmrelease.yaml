@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.4.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -29,7 +29,7 @@ spec:
 
   values:
     controllers:
-      main:
+      mosquitto:
         type: statefulset
 
         pod:
@@ -48,7 +48,7 @@ spec:
             - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
 
         containers:
-          main:
+          app:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18
@@ -92,6 +92,7 @@ spec:
 
     service:
       main:
+        controller: mosquitto
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_MQTT}
@@ -105,8 +106,8 @@ spec:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
             - path: /mosquitto/data
               readOnly: false
 
@@ -114,8 +115,8 @@ spec:
         type: configMap
         name: mosquitto-config
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
             - path: /mosquitto/config/mosquitto.conf
               subPath: mosquitto.conf
 
@@ -123,7 +124,7 @@ spec:
         type: secret
         name: mosquitto-secret
         advancedMounts:
-          main:
+          mosquitto:
             user-import:
             - path: /data/mosquitto_secret
 
@@ -132,23 +133,22 @@ spec:
         name: mosquitto-init-config
         defaultMode: 0755
         advancedMounts:
-          main:
+          mosquitto:
             user-import:
             - path: /data/mosquitto_init
 
       external-config:
         type: emptyDir
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
             - path: /mosquitto/external_config
             user-import:
             - path: /data/external_config
 
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: mosquitto-metrics
+        serviceName: mosquitto
         endpoints:
         - port: http
           scheme: http
