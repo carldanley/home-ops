@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -30,7 +30,7 @@ spec:
       automountServiceAccountToken: false
 
     controllers:
-      main:
+      rdt-client:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -44,7 +44,7 @@ spec:
           hostname: rdt-client
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/rogerfar/rdtclient
               tag: 2.0.63
@@ -54,14 +54,14 @@ spec:
                 memory: 765M
 
     service:
-      main:
+      rdt-client:
+        controller: rdt-client
         ports:
           http:
             port: 6500
 
     ingress:
-      main:
-        enabled: true
+      rdt-client:
         ingressClassName: nginx
         annotations:
           hajimari.io/enable: "true"
@@ -74,15 +74,15 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: rdt-client
               port: http
 
     persistence:
       database:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          main:
-            main:
+          rdt-client:
+            app:
             - path: /data/db
               readOnly: false
 
@@ -93,7 +93,7 @@ spec:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/media/downloads
         advancedMounts:
-          main:
-            main:
+          rdt-client:
+            app:
             - path: /data/downloads
               readOnly: false
