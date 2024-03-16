@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -30,14 +30,14 @@ spec:
       automountServiceAccountToken: false
 
     controllers:
-      main:
+      flaresolverr:
 
         pod:
           annotations:
             vpn.home.arpa/enabled: "true"
 
         containers:
-          main:
+          app:
             strategy: RollingUpdate
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
@@ -56,7 +56,8 @@ spec:
                 memory: 1Gi
 
     service:
-      main:
+      flaresolverr:
+        controller: flaresolverr
         ports:
           http:
             port: *port
@@ -64,8 +65,7 @@ spec:
             port: *metricsPort
 
     serviceMonitor:
-      main:
-        enabled: true
+      flaresolverr:
         endpoints:
         - port: metrics
           scheme: http

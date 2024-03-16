@@ -33,7 +33,7 @@ spec:
           reloader.stakater.com/auto: "true"
           
         containers:
-          server:
+          app:
             image:
               repository: drone/drone
               tag: 2.22.0
@@ -84,6 +84,6 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
           drone:
-            server:
+            app:
             - path: /data
               readOnly: false
