@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -27,7 +27,7 @@ spec:
 
   values:
     controllers:
-      main:
+      zigbee2mqtt:
         type: statefulset
 
         pod:
@@ -37,7 +37,7 @@ spec:
             feature.node.kubernetes.io/zigbee: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 1.36.0
@@ -59,7 +59,8 @@ spec:
               privileged: true
 
     service:
-      main:
+      zigbee2mqtt:
+        controller: zigbee2mqtt
         ports:
           http:
             port: &httpPort 8080
@@ -67,8 +68,7 @@ spec:
             port: &metricsPort 9000
 
     ingress:
-      main:
-        enabled: true
+      zigbee2mqtt:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:zigbee"
@@ -80,7 +80,7 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: zigbee2mqtt
               port: http
 
     persistence:
