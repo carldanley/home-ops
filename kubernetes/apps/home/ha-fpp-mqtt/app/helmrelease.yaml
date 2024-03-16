@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -37,12 +37,14 @@ spec:
           }]
 
     controllers:
-      main:
-        type: deployment
-        annotations:
-          reloader.stakater.com/auto: "true"
+      ha-fpp-mqtt:
+
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/carldanley/ha-fpp-mqtt
               tag: v1.0.7
@@ -54,7 +56,3 @@ spec:
             # args:
             # - -v
             # - "4"
-
-    service:
-      main:
-        enabled: false
