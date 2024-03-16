@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -27,14 +27,14 @@ spec:
 
   values:
     controllers:
-      main:
+      wyoming-piper:
 
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
 
         containers:
-          main:
+          app:
             image:
               repository: rhasspy/wyoming-piper
               tag: latest@sha256:66e7c9f323edb12ce167ea9967a861079dcb881af27270fa8e7ed11c9bf890a5
@@ -50,7 +50,8 @@ spec:
                 memory: 500Mi
 
     service:
-      main:
+      wyoming-piper:
+        controller: wyoming-piper
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_WYOMING_PIPER}
