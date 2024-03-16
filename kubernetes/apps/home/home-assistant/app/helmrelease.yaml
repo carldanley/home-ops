@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -36,7 +36,7 @@ spec:
           }]
 
     controllers:
-      main:
+      home-assistant:
         type: statefulset
 
         annotations:
@@ -55,7 +55,7 @@ spec:
               git clone git@github.com:carldanley/hass-config.git .
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2024.3.1
@@ -83,7 +83,8 @@ spec:
                 memory: 1254Mi
 
     service:
-      main:
+      home-assistant:
+        controller: home-assistant
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_HOME_ASSISTANT}
@@ -99,8 +100,7 @@ spec:
             port: 8095
 
     ingress:
-      main:
-        enabled: true
+      home-assistant:
         annotations:
           nginx.org/websocket-services: home-assistant
           hajimari.io/enable: "true"
@@ -113,7 +113,7 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: home-assistant
               port: http
 
     persistence:
@@ -128,7 +128,7 @@ spec:
         name: home-assistant-deploy-key
         defaultMode: 256
         advancedMounts:
-          main:
+          home-assistant:
             clone-repo: &sshKeyMounts
             - path: /root/.ssh/id_rsa
               readOnly: true
@@ -136,7 +136,7 @@ spec:
             - path: /root/.ssh/known_hosts
               readOnly: true
               subPath: known_hosts
-            main: *sshKeyMounts
+            app: *sshKeyMounts
 
       config:
         enabled: true
@@ -146,8 +146,8 @@ spec:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/home-assistant/.storage
         advancedMounts:
-          main:
-            main: &configStorageMount
+          home-assistant:
+            app: &configStorageMount
             - path: /config/.storage
               readOnly: false
             codeserver: *configStorageMount
@@ -159,8 +159,8 @@ spec:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/backups/home-assistant
         advancedMounts:
-          main:
-            main: &configBackupMount
+          home-assistant:
+            app: &configBackupMount
             - path: /config/backups
               readOnly: false
             codeserver: *configBackupMount
