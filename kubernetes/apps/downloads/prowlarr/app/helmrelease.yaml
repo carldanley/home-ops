@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -30,7 +30,7 @@ spec:
       automountServiceAccountToken: false
 
     controllers:
-      main:
+      prowlarr:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -45,7 +45,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/prowlarr-nightly  
               tag: 1.14.3.4326@sha256:b598973eb1c213a208c6dadf00264aecddda49269c0b29fa33198b7f5bbc166f
@@ -107,7 +107,8 @@ spec:
               containerPort: *metricsPort
 
     service:
-      main:
+      prowlarr:
+        controller: prowlarr
         ports:
           http:
             port: *port
@@ -115,8 +116,7 @@ spec:
             port: *metricsPort
 
     ingress:
-      main:
-        enabled: true
+      prowlarr:
         className: nginx
         annotations:
           hajimari.io/enable: "true"
@@ -129,7 +129,7 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: prowlarr
               port: http
 
     persistence:
@@ -137,14 +137,13 @@ spec:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          main:
-            main:
+          prowlarr:
+            app:
             - path: /config
               readOnly: false
 
     serviceMonitor:
       metrics:
-        enabled: true
         serviceName: prowlarr-metrics
         endpoints:
         - port: metrics
