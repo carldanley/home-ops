@@ -7,10 +7,11 @@ spec:
   values:
 
     controllers:
-      main:
+      home-assistant:
+
         containers:
           codeserver:
-            dependsOn: main
+            dependsOn: app
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.22.1
@@ -29,7 +30,7 @@ spec:
 
     service:
       codeserver:
-        controller: main
+        controller: home-assistant
         type: ClusterIP
         ports:
           http:
@@ -52,7 +53,7 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              name: codeserver
+              identifier: codeserver
               port: http
 
     persistence:
@@ -64,7 +65,7 @@ spec:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/home-assistant/.vscode
         advancedMounts:
-          main:
+          home-assistant:
             codeserver:
             - path: /config/.vscode
               readOnly: false
