@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -27,7 +27,7 @@ spec:
 
   values:
     controllers:
-      main:
+      weatherflow2mqtt:
 
         pod:
           annotations:
@@ -40,8 +40,7 @@ spec:
               }]
 
         containers:
-          main:
-            strategy: RollingUpdate
+          app:
             image:
               repository: briis/weatherflow2mqtt
               tag: 3.2.2
@@ -57,7 +56,3 @@ spec:
             envFrom:
             - secretRef:
                 name: weatherflow2mqtt-secret
-
-    service:
-      main:
-        enabled: false
