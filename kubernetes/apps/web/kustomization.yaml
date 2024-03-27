@@ -7,3 +7,4 @@ resources:
 - ./vaultwarden/ks.yaml
 - ./actual/ks.yaml
 - ./tandoor/ks.yaml
+- ./temporal/ks.yaml
