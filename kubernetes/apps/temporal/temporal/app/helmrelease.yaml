@@ -28,6 +28,9 @@ spec:
   values:
 
     web:
+      image:
+        repository: temporalio/ui
+        tag: 2.25.0
       ingress:
         enabled: true
         className: nginx
