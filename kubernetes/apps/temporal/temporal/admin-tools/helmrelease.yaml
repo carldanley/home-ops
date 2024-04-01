@@ -1,0 +1,42 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: temporal-admin-tools
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.0.4
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+
+    controllers:
+       admin-tools:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          
+        containers:
+          app:
+            image:
+              repository: temporalio/admin-tools
+              tag: 1.22.7
+            env:
+              TEMPORAL_ADDRESS: temporal-server:7233
+              TEMPORAL_CORS_ORIGINS: http://localhost:3000
