@@ -56,6 +56,20 @@ spec:
                   name: pg-temporal-app
                   key: password
             - name: POSTGRES_SEEDS
-              value: postgresql
+              valueFrom:
+                secretKeyRef:
+                  name: pg-temporal-app
+                  key: host
             - name: DYNAMIC_CONFIG_FILE_PATH
               value: config/dynamicconfig/dev-dynamic-config.yaml
+
+
+    persistence:
+      dynamic-config:
+        type: configMap
+        name: temporal-dynamic-config
+        advancedMounts:
+          server:
+            app:
+            - path: /etc/temporal/config/dynamicconfig
+              subPath: dev-dynamic-config.yaml
