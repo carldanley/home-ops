@@ -77,7 +77,7 @@ spec:
         controller: server
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_MQTT}
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_TEMPORAL}
         ports:
           http:
             port: 7233
