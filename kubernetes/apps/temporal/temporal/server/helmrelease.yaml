@@ -71,3 +71,10 @@ spec:
           server:
             app:
             - path: /etc/temporal/config/dynamicconfig
+
+    service:
+      main:
+        controller: server
+        ports:
+          http:
+            port: 7233
