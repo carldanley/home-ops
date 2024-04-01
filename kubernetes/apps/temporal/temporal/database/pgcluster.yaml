@@ -28,6 +28,7 @@ spec:
       encoding: "UTF8"
       localeCollate: en_US.utf8
       localeCType: en_US.utf8
+  enableSuperuserAccess: true
   backup:
     retentionPolicy: 30d
     barmanObjectStore:

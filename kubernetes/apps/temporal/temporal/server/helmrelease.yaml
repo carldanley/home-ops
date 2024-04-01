@@ -43,26 +43,25 @@ spec:
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: pg-temporal-app
+                  name: pg-temporal-superuser
                   key: port
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: pg-temporal-app
+                  name: pg-temporal-superuser
                   key: user
             - name: POSTGRES_PWD
               valueFrom:
                 secretKeyRef:
-                  name: pg-temporal-app
+                  name: pg-temporal-superuser
                   key: password
             - name: POSTGRES_SEEDS
               valueFrom:
                 secretKeyRef:
-                  name: pg-temporal-app
+                  name: pg-temporal-superuser
                   key: host
             - name: DYNAMIC_CONFIG_FILE_PATH
               value: config/dynamicconfig/dev-dynamic-config.yaml
-
 
     persistence:
       dynamic-config:
@@ -72,4 +71,3 @@ spec:
           server:
             app:
             - path: /etc/temporal/config/dynamicconfig
-              subPath: dev-dynamic-config.yaml
