@@ -2,6 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: temporal-temporal-database
+  namespace: flux-system
+spec:
+  interval: 30m
+  timeout: 5m
+  retryInterval: 1m
+  path: ./kubernetes/apps/temporal/temporal/database
+  targetNamespace: temporal
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+  - name: databases-cloudnative-pg
+  - name: storage-rook-ceph-cluster
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: temporal-temporal-app
   namespace: flux-system
 spec:
@@ -17,3 +39,5 @@ spec:
     name: k8s-home-ops
   postBuild:
     substituteFrom: []
+  dependsOn:
+  - name: temporal-temporal-database
