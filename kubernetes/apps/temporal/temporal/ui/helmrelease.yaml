@@ -35,6 +35,30 @@ spec:
         containers:
           app:
             image:
-              repository: temporalio/auto-setup
-              tag: 1.22.7
-            env: {}
+              repository: temporalio/ui
+              tag: 2.25.0
+            env:
+              TEMPORAL_ADDRESS: temporal-server:7233
+              TEMPORAL_CORS_ORIGINS: http://localhost:3000
+
+    service:
+      temporal-ui:
+        controller: ui
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      ui:
+        className: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: &host temporal.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: temporal-ui
+              port: http
