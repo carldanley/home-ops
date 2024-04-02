@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - ./pgcluster.yaml
 - ./scheduledbackup.yaml
+- ./svc.yaml
