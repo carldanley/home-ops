@@ -16,6 +16,10 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
+
+    tcp:
+      "7233": "temporal/temporal-server:7233"
+
     controller:
       replicaCount: 3
 
