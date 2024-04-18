@@ -49,13 +49,24 @@ spec:
             port: 8080
 
     ingress:
-      ui:
+      ui-internal:
         className: nginx
         annotations:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
         - host: &host temporal.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: temporal-ui
+              port: http
+      ui-external:
+        className: nginx
+        annotations: {}
+        hosts:
+        - host: &host temporal.${EXTERNAL_DNS_3_DOMAIN}
           paths:
           - path: /
             pathType: Prefix
