@@ -35,7 +35,7 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://cnpg/temporal/
+      destinationPath: s3://cnpg/
       endpointURL: http://${SYNOLOGY_ADDRESS}:9000
       s3Credentials:
         accessKeyId:

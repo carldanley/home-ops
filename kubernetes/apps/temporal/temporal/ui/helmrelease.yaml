@@ -49,7 +49,7 @@ spec:
             port: 8080
 
     ingress:
-      ui-internal:
+      internal:
         className: nginx
         annotations:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
@@ -62,7 +62,7 @@ spec:
             service:
               identifier: temporal-ui
               port: http
-      ui-external:
+      external:
         className: nginx
         annotations: {}
         hosts:
