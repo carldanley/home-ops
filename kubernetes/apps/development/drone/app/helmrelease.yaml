@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: drone/drone
-              tag: 2.22.0
+              tag: 2.23.0
             env:
               DRONE_SERVER_HOST: &host ci.${EXTERNAL_DNS_1_DOMAIN}
               DRONE_SERVER_PROTO: https
