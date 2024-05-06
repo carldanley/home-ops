@@ -17,8 +17,8 @@ spec:
       interval: 30m
   values:
 
-    tcp:
-      "7233": "temporal/temporal-server:7233"
+    # tcp:
+    #   "7233": "temporal/temporal-server:7233"
 
     controller:
       replicaCount: 3
