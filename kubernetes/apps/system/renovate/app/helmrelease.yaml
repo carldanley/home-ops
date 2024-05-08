@@ -10,7 +10,7 @@ spec:
     # renovate: registryUrl=https://docs.renovatebot.com/helm-charts
     spec:
       chart: renovate
-      version: 37.342.1
+      version: 37.349.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
