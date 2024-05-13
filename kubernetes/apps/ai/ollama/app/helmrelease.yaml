@@ -38,12 +38,12 @@ spec:
           app:
             image: docker.io/ollama/ollama
             tag: 0.1.37
-          env:
-            TZ: America/New_York
-            LIBVA_DRIVER_NAME: i965
-            OLLAMA_HOST: 0.0.0.0
-            OLLAMA_ORIGINS: "*"
-            OLLAMA_MODELS: &modelsPath /models
+            env:
+              TZ: America/New_York
+              LIBVA_DRIVER_NAME: i965
+              OLLAMA_HOST: 0.0.0.0
+              OLLAMA_ORIGINS: "*"
+              OLLAMA_MODELS: &modelsPath /models
           resources:
             requests:
               cpu: 2000m
