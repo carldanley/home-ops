@@ -45,14 +45,14 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_ORIGINS: "*"
               OLLAMA_MODELS: &modelsPath /models
-          resources:
-            requests:
-              cpu: 2000m
-              memory: 16Gi
-              gpu.intel.com/i915: "1"
-            limits:
-              memory: 16Gi
-              gpu.intel.com/i915: "1"
+            resources:
+              requests:
+                cpu: 2000m
+                memory: 16Gi
+                gpu.intel.com/i915: "1"
+              limits:
+                memory: 16Gi
+                gpu.intel.com/i915: "1"
 
         pod:
           affinity:
@@ -83,13 +83,17 @@ spec:
           ollama:
             app:
             - path: /.ollama
+
       models:
-        enabled: true
-        existingClaim: ${VOLSYNC_CLAIM}
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        storageClass: ceph-block
         advancedMounts:
           ollama:
             app:
             - path: *modelsPath
+
       tmp:
         enabled: true
         type: emptyDir
