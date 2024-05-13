@@ -17,7 +17,7 @@ metadata:
   namespace: ingress
 subsets:
 - addresses:
-  - ip: 192.168.8.197
+  - ip: "${DABEAST_ADDRESS}"
   ports:
   - port: 32400
 ---

@@ -40,7 +40,7 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: main
             env:
-              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
+              OLLAMA_BASE_URL: "http://${DABEAST_ADDRESS}:11434"
             resources:
               requests:
                 cpu: 200m
