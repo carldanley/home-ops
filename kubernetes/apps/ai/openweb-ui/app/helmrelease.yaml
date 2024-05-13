@@ -29,7 +29,7 @@ spec:
     defaultPodOptions:
       automountServiceAccountToken: false
 
-    containers:
+    controllers:
       openweb-ui:
         annotations:
           reloader.stakater.com/auto: "true"
