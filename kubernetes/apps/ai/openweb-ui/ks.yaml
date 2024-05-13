@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ai-openweb-ui
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/ai/openweb-ui/app
+  targetNamespace: ai
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  postBuild:
+    substitute:
+      APP: openweb-ui
+      VOLSYNC_CLAIM: openweb-ui-data
+      VOLSYNC_CAPACITY: 2Gi
+    substituteFrom: []
+  dependsOn:
+  - name: storage-rook-ceph-cluster
+  - name: storage-volsync

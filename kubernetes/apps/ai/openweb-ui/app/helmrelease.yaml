@@ -1,0 +1,88 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: openweb-ui
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+
+    containers:
+      openweb-ui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: main
+            env:
+              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
+            resources:
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 2Gi
+
+    service:
+      openweb-ui:
+        controller: openweb-ui
+        ports:
+          http:
+            port: &httpPort 8080
+
+    ingress:
+      openweb-ui:
+        className: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: &host ollama.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: openweb-ui
+              port: http
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          openweb-ui:
+            app:
+            - path: /app/backend/data
+
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        globalMounts:
+        - path: /tmp
