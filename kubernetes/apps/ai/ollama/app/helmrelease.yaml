@@ -36,8 +36,9 @@ spec:
 
         containers:
           app:
-            image: docker.io/ollama/ollama
-            tag: 0.1.37
+            image:
+              repository: docker.io/ollama/ollama
+              tag: 0.1.37
             env:
               TZ: America/New_York
               LIBVA_DRIVER_NAME: i965
