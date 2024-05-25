@@ -21,12 +21,6 @@ spec:
       type: statefulset
       annotations:
         reloader.stakater.com/auto: "true"
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "networking",
-            "ips": [ "192.168.4.13/22" ]
-          }]
 
     image:
       repository: ghcr.io/blakeblackshear/frigate
@@ -37,6 +31,13 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
+          k8s.v1.cni.cncf.io/networks: |
+            [{
+              "name":"multus-iot",
+              "namespace": "networking",
+              "ips": [ "192.168.4.32/22" ],
+              "mac": "52:55:40:71:4f:2a"
+            }]
         ports:
           http:
             port: &port 5000
