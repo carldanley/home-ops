@@ -23,6 +23,9 @@ spec:
               }
             ]
           }
+        }, {
+          "capabilities": { "mac": true },
+          "type": "tuning"
         }
       ]
     }

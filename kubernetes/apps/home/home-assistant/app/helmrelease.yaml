@@ -32,7 +32,8 @@ spec:
           [{
             "name":"multus-iot",
             "namespace": "networking",
-            "ips": [ "192.168.4.10/22" ]
+            "ips": [ "192.168.4.10/22" ],
+            "mac": "46:f0:12:1f:cd:f9"
           }]
 
     controllers:
