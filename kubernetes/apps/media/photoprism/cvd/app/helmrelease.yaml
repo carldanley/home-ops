@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: docker.io/photoprism/photoprism
-      tag: latest@sha256:a2655c4cdf72d4c4fb89ce17efe67099a7dfab27adbb3595e4cfba39828616a4
+      tag: latest@sha256:14f9c29fc5cdfcb294b4d318ee98aa03fd571066c0b41cf1e75300c4bf678c48
 
     env:
       ## See other config options from PhotoPrism documentation: https://docs.photoprism.org/getting-started/config-options/
