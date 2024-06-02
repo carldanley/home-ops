@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: docker.io/ollama/ollama
-              tag: 0.1.40
+              tag: 0.1.41
             env:
               TZ: America/New_York
               LIBVA_DRIVER_NAME: i965
