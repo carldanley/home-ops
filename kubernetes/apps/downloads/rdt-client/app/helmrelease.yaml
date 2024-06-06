@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/rogerfar/rdtclient
-              tag: 2.0.78
+              tag: 2.0.79
             resources:
               requests:
                 cpu: 49m
