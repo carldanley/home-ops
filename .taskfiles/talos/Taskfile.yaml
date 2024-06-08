@@ -59,10 +59,19 @@ tasks:
       namespaces: networking system
 
   reset-nodes:
-    desc: Reset a specific node
+    desc: Reset all nodes in the cluster
     prompt: This will reset all nodes... continue?
     dir: "{{.TALOS_DIR}}"
     cmd: talhelper gencommand reset | bash
+
+  reboot-node:
+    desc: Reboot a specific node
+    prompt: This will reboot the '{{.node}}' node... continue?
+    dir: "{{.TALOS_DIR}}"
+    cmds:
+    - talosctl reboot -n '{{.node}}'
+    requires:
+      vars: ["node"]
 
   .create-namespace:
     internal: true
