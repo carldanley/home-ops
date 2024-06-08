@@ -17,8 +17,8 @@ sops:
             MnlHOElJWElUUjhqa2JOUXpCZVR6ZEEKN+qe5H9Snw5hdF8YrB54FfkfPdjaeIts
             RPdmcuoXxT9tIqzpadTWD5kmTV83gCA4Z76uU3BCiWNwFC/4AbJzbg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-06-14T06:47:47Z"
-    mac: ENC[AES256_GCM,data:vhUS9QaJ4In3aJhXIQlvmemy9bLryUF45nefGQsYsSyQMJvId4llIbPcr9ugE+h1Enu5xdGVvZzbZ3UHzI8HaNBB4B+7fZUEOvL2pnZ7G/Nnf1CR/KxLMG65Hd2AnpxrYE0t6pKnqgmk20PVZN1+MD750pL4Ec3b0vT8YERAtH4=,iv:TxMW4gxD7r+h4qxNWms3esaHujbR/poTEmx4vZCHdpg=,tag:cOkofJBc2o0YnK6yzQps/g==,type:str]
+    lastmodified: "2024-06-08T05:41:00Z"
+    mac: ENC[AES256_GCM,data:xhWy7mTbSMhjFFZYgyKIrKk9cvqJf/Ehf3SZm0YhOvjlwQr/M3MWQ8kL51qF3xbBH/6A4RrbCbDxOUernrO8Dr1u55SdTKWxCz3TdndaJvd0Ze6fnVTsvW4UU/RezmjYy8IL2KZu8hUXrl3NGW0ezY34aXKNi+jcSyLVpQ5u038=,iv:rBd42usYmJarmyDOo4Sp27y7dfHJoD49UXjErVA34zs=,tag:u/eoiEUnJMXBce3EnYmitg==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
-    version: 3.7.3
+    version: 3.8.1

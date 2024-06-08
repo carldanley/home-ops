@@ -16,17 +16,8 @@ creation_rules:
 - path_regex: apps/.*\.sops\.yaml
   age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw
 
-- path_regex: infrastructure/.*\.sops\.yaml
-  age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw
-
-- path_regex: apps/.*\.sops\.ini
-  age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw
-
-- path_regex: apps/.*\.sops\.toml
-  age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw
-
-- path_regex: apps/.*\.sops\.json
-  age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw
-
 - path_regex: apps/.*\.sops\.env
+  age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw
+
+- path_regex: talos/.*\.sops\.yaml
   age: age1c9fm6mxmshwpucy9ma2hzun0g0fnkrm2p3mhaahdnwd0p8mjqp7qzpkqnw

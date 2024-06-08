@@ -5,4 +5,4 @@ resources:
 - ./namespace.yaml
 - ./cilium/ks.yaml
 - ./multus/ks.yaml
-- ./pod-gateway/ks.yaml
+# - ./pod-gateway/ks.yaml

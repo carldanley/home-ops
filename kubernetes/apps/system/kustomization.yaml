@@ -3,11 +3,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ./namespace.yaml
-- ./node-dashboards/
+# - ./node-dashboards/
 - ./kubelet-csr-approver/ks.yaml
 - ./node-feature-discovery/ks.yaml
 - ./intel-device-plugins/ks.yaml
 - ./reloader/ks.yaml
 - ./reflector/ks.yaml
 - ./descheduler/ks.yaml
-- ./renovate/ks.yaml
+# - ./renovate/ks.yaml

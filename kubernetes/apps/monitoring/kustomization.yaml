@@ -4,8 +4,8 @@ kind: Kustomization
 resources:
 - ./namespace.yaml
 - ./kube-prometheus-stack/kustomization.yaml
-- ./grafana/ks.yaml
+# - ./grafana/ks.yaml
 - ./node-exporter/ks.yaml
 - ./metrics-server/ks.yaml
-- ./loki/ks.yaml
-- ./vector/ks.yaml
+# - ./loki/ks.yaml
+# - ./vector/ks.yaml
