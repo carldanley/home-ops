@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
 - ./namespace.yaml
 # - ./common/ks.yaml
-# - ./plex/ks.yaml
 # - ./sonarr/ks.yaml
 # - ./radarr/ks.yaml
 # - ./overseerr/ks.yaml
