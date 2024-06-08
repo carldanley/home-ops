@@ -46,18 +46,30 @@ tasks:
   apply-extras:
     desc: Apply extras
     cmds:
+    - for: { var: namespaces }
+      task: .create-namespace
+      vars:
+        namespace: "{{.ITEM}}"
     - for: { var: apps }
       task: .bootstrap-helm-app
       vars:
         app: "{{.ITEM}}"
     vars:
       apps: cilium kubelet-csr-approver
+      namespaces: networking system
 
   reset-nodes:
     desc: Reset a specific node
     prompt: This will reset all nodes... continue?
     dir: "{{.TALOS_DIR}}"
     cmd: talhelper gencommand reset | bash
+
+  .create-namespace:
+    internal: true
+    cmds:
+    - kubectl create namespace '{{.namespace}}'
+    requires:
+      vars: ["namespace"]
 
   .bootstrap-helm-app:
     internal: true

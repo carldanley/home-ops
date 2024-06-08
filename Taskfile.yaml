@@ -13,6 +13,7 @@ env:
 
 includes:
   flux: .taskfiles/flux
+  rook: .taskfiles/rook
   talos: .taskfiles/talos
 
 tasks:
