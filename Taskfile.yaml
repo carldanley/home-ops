@@ -12,6 +12,7 @@ env:
   KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
 
 includes:
+  flux: .taskfiles/flux
   talos: .taskfiles/talos
 
 tasks:

@@ -1,0 +1,26 @@
+---
+version: "3"
+
+vars:
+  BOOTSTRAP_FLUX_DIR: "{{.KUBERNETES_DIR}}/bootstrap/flux"
+  FLUX_DIR: "{{.KUBERNETES_DIR}}/flux"
+
+tasks:
+
+  bootstrap:
+    desc: Bootstrap Flux into a Kubernetes cluster
+    cmds:
+
+    # Install Flux
+    - kubectl apply --server-side --kustomize {{.BOOTSTRAP_FLUX_DIR}}
+
+    # Install secrets
+    - sops --decrypt {{.BOOTSTRAP_FLUX_DIR}}/secret-age-key.sops.yaml | kubectl apply -f -
+    - sops --decrypt {{.BOOTSTRAP_FLUX_DIR}}/secret-github-deploy-key.sops.yaml | kubectl apply -f -
+    - sops --decrypt {{.FLUX_DIR}}/vars/cluster-secrets.sops.yaml | kubectl apply -f -
+
+    # Install configmap
+    - kubectl apply --server-side -f {{.FLUX_DIR}}/vars/cluster-settings.yaml
+
+    # Install flux config
+    - kubectl apply --server-side --kustomize {{.FLUX_DIR}}/config

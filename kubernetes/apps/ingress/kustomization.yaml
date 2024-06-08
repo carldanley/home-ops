@@ -3,9 +3,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ./namespace.yaml
-# - ./cert-manager/ks.yaml
-# - ./external-dns-1/ks.yaml
-# - ./external-dns-2/ks.yaml
-# - ./external-dns-dashboards/
-# - ./ingress-nginx/ks.yaml
-# - ./external-services/
+- ./cert-manager/ks.yaml
+- ./external-dns-1/ks.yaml
+- ./external-dns-2/ks.yaml
+- ./external-dns-dashboards/
+- ./ingress-nginx/ks.yaml
+- ./external-services/
