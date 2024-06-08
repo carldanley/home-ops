@@ -24,3 +24,8 @@ tasks:
 
     # Install flux config
     - kubectl apply --server-side --kustomize {{.FLUX_DIR}}/config
+
+  reconcile-git-source:
+    desc: Reconciles Flux git source
+    cmds:
+    - flux reconcile source git k8s-home-ops
