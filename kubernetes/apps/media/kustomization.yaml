@@ -11,6 +11,6 @@ resources:
 - ./recyclarr/ks.yaml
 - ./bazarr/ks.yaml
 - ./tautulli/ks.yaml
-- ./tdarr/ks.yaml
+# - ./tdarr/ks.yaml
 - ./photoprism/ks.yaml
 - ./lidarr/ks.yaml

@@ -1,9 +1,12 @@
 ---
 clusterName: ${CLUSTER_NAME}
 
-talosVersion: v1.5.2
-kubernetesVersion: 1.28.1
+talosVersion: v1.7.4
+kubernetesVersion: 1.30.1
 endpoint: "https://${CLUSTER_NAME}.${DOMAIN}:6443"
+
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
 
 clusterPodNets:
 - 172.22.0.0/16
@@ -12,12 +15,11 @@ clusterSvcNets:
 cniConfig:
   name: none
 
-additionalApiServerCertSans:
-- ${CLUSTER_ENDPOINT_IP}
-
-additionalMachineCertSans:
+additionalApiServerCertSans: &certSans
 - ${CLUSTER_ENDPOINT_IP}
 - ${CLUSTER_NAME}.${DOMAIN}
+- "127.0.0.1" # KubePrism
+additionalMachineCertSans: *certSans
 
 nodes:
 
@@ -103,68 +105,128 @@ nodes:
         routeMetric: 4096
 
 controlPlane:
-  inlinePatch:
-    cluster:
-      allowSchedulingOnMasters: true
-      proxy:
-        disabled: true
-      etcd:
-        extraArgs:
-          listen-metrics-urls: http://0.0.0.0:2381
-        advertisedSubnets:
-        - 192.168.10.0/23
-      controllerManager:
-        extraArgs:
-          bind-address: 0.0.0.0
-      scheduler:
-        extraArgs:
-          bind-address: 0.0.0.0
-      apiServer:
-        admissionControl: null
-      extraManifests:
-      - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/cni/cilium.yaml
-      - https://raw.githubusercontent.com/carldanley/home-ops/main/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
-    machine: &machine
-      install:
-        extensions:
-        - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
-        extraKernelArgs:
-        - "talos.logging.kernel=udp://192.168.12.19:6001/"
-      logging:
-        destinations:
-        - endpoint: "udp://192.168.12.19:6002/"
-          format: json_lines
-      sysctls:
-        fs.inotify.max_user_watches: 1048576
-        fs.inotify.max_user_instances: 8192
+  schematic:
+    customization:
+      extraKernelArgs:
+      - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+        - siderolabs/i915-ucode
+        - siderolabs/intel-ucode
+        - siderolabs/iscsi-tools
+
+  patches:
+  # Configure containerd
+  - &containerdPatch |-
+    machine:
+      files:
+        - op: create
+          path: /etc/cri/conf.d/20-customization.part
+          content: |-
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+            [plugins."io.containerd.grpc.v1.cri".containerd]
+              discard_unpacked_layers = false
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+              discard_unpacked_layers = false
+
+  # Disable search domain everywhere
+  - &disableSearchDomainPatch |-
+    machine:
       network:
-        extraHostEntries:
-        - ip: ${CLUSTER_ENDPOINT_IP}
-          aliases:
-          - ${CLUSTER_NAME}.${DOMAIN}
-      time:
-        disabled: false
-        servers:
-        - ${NTP_SERVER}
+        disableSearchDomain: true
+
+  # Configure kubelet
+  - &kubeletConfigPatch |-
+    machine:
       kubelet:
         extraArgs:
-          feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-          rotate-server-certificates: "true"
+          feature-gates: GracefulNodeShutdown=true
+          rotate-server-certificates: true
         extraConfig:
           maxPods: 250
         nodeIP:
           validSubnets:
           - 192.168.10.0/23
-      files:
-      - op: create
-        path: /etc/cri/conf.d/20-customization.part
-        content: |
-          [plugins]
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
+
+  # Enable KubePrism
+  - &kubeprismPatch |-
+    machine:
+      features:
+        kubePrism:
+          enabled: true
+          port: 7445
+
+  # Configure NTP
+  - &ntpPatch |-
+    machine:
+      time:
+        disabled: false
+        servers:
+        - ${NTP_SERVER}
+
+  # Static host entries
+  - &staticHostEntriesPatch |-
+    machine:
+      network:
+        extraHostEntries:
+        - ip: ${CLUSTER_ENDPOINT_IP}
+          aliases:
+          - ${CLUSTER_NAME}.${DOMAIN}
+
+  # Custom sysctl settings
+  - &customSysctlPatch |-
+    machine:
+      sysctls:
+        fs.inotify.max_user_watches: 1048576
+        fs.inotify.max_user_instances: 8192
+
+  # Cluster configuration
+  - &clusterConfigPatch |-
+    cluster:
+      allowSchedulingOnMasters: true
+      controllerManager:
+        extraArgs:
+          bind-address: 0.0.0.0
+      proxy:
+        disabled: true
+      scheduler:
+        extraArgs:
+          bind-address: 0.0.0.0
+
+  # ETCD configuration
+  - &etcdConfigPatch |-
+    cluster:
+      etcd:
+        extraArgs:
+          listen-metrics-urls: http://0.0.0.0:2381
+        advertisedSubnets:
+        - 192.168.10.0/23
+
+  # Disable default API server admission plugins.
+  - &admissionControlDisablePatch |-
+    - op: remove
+      path: /cluster/apiServer/admissionControl
+
+  # Enable K8s Talos API Access
+  - &talosAPIAccessPatch |-
+    machine:
+      features:
+        kubernetesTalosAPIAccess:
+          enabled: true
+          allowedRoles:
+          - os:admin
+          allowedKubernetesNamespaces:
+          - system
 
 worker:
-  inlinePatch:
-    machine:
-      <<: *machine
+  patches:
+  - *containerdPatch
+  - *disableSearchDomainPatch
+  - *kubeletConfigPatch
+  - *kubeprismPatch
+  - *ntpPatch
+  - *staticHostEntriesPatch
+  - *customSysctlPatch
+  - *clusterConfigPatch

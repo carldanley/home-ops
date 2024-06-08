@@ -33,7 +33,7 @@ spec:
         provider: host
 
       mon:
-        count: 2
+        count: 3
 
       mgr:
         modules:
