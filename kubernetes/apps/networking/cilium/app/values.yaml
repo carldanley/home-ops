@@ -29,8 +29,8 @@ endpointStatus:
   enabled: true
   status: "policy"
 
-k8sServiceHost: k8s-home-ops.batcave
-k8sServicePort: 6443
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
 
 ipam:
   mode: "kubernetes"

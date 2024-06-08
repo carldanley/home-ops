@@ -1,0 +1,21 @@
+---
+version: "3"
+
+# TODO: Clean up `--context` usage
+# Ref: https://github.com/go-task/task/issues/1038
+
+vars:
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  TALOS_DIR: "{{.ROOT_DIR}}/talos"
+
+env:
+  KUBECONFIG: "{{.ROOT_DIR}}/kubeconfig"
+
+includes:
+  talos: .taskfiles/talos
+
+tasks:
+
+  default:
+    silent: true
+    cmd: task -l
