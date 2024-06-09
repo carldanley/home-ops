@@ -31,12 +31,12 @@ spec:
        server:
         annotations:
           reloader.stakater.com/auto: "true"
-          
+
         containers:
           app:
             image:
               repository: temporalio/auto-setup
-              tag: 1.24.1
+              tag: 1.24.0
             env:
             - name: DB
               value: postgresql
