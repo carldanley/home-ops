@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 - ./namespace.yaml
 - ./mosquitto/ks.yaml
-- ./weatherflow2mqtt/ks.yaml
+# - ./weatherflow2mqtt/ks.yaml
 - ./zigbee2mqtt/ks.yaml
 - ./zwavejs2mqtt/ks.yaml
 - ./wyoming-piper/ks.yaml
