@@ -85,7 +85,7 @@ nodes:
   controlPlane: false
   installDisk: /dev/nvme1n1
   networkInterfaces:
-  - interface: false
+  - interface: eth0
     dhcp: true
     vlans:
     - vlanId: 4
