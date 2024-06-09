@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.2.1
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -38,7 +38,7 @@ spec:
 
         initContainers:
           user-import:
-            image: 
+            image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18
             command:
