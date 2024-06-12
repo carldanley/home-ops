@@ -6,16 +6,21 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/media/bazarr/app"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/media/bazarr/app
+  targetNamespace: media
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
+    substitute:
+      APP: bazaar
+      VOLSYNC_CLAIM: bazaar-data
+      VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
   - name: media-common
   - name: media-common-mounts
