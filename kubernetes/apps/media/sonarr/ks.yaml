@@ -6,16 +6,21 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/media/sonarr/app"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/media/sonarr/app
+  targetNamespace: media
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
+    substitute:
+      APP: sonarr
+      VOLSYNC_CLAIM: sonarr-data
+      VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
   - name: media-common-resources
   - name: media-common-mounts

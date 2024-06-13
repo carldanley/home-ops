@@ -50,6 +50,7 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [x] common
   - [x] lidarr
   - [x] radarr
+  - [x] sonarr
 - [ ] monitoring
 - [ ] networking
 - [ ] nvr

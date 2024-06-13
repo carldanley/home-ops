@@ -25,3 +25,4 @@ spec:
     - name: media-common-resources
     - name: media-common-mounts
     - name: storage-rook-ceph-cluster
+    - name: monitoring-kube-prometheus-stack-crds
