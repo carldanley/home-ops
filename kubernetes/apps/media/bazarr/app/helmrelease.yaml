@@ -125,12 +125,12 @@ spec:
             - path: /config/backup
               readOnly: false
 
-    serviceMonitor:
-      *app:
-        serviceName: *app
-        endpoints:
-        - port: *port
-          scheme: http
-          path: /metrics
-          interval: 10m
-          scrapeTimeout: 2m
+    # serviceMonitor:
+    #   *app:
+    #     serviceName: *app
+    #     endpoints:
+    #     - port: metrics
+    #       scheme: http
+    #       path: /metrics
+    #       interval: 10m
+    #       scrapeTimeout: 2m
