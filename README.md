@@ -46,6 +46,10 @@ You can most likely skip over this part of the README; I'm using it to track the
   - [ ] zwavejs2mqtt
 - [ ] ingress
 - [ ] media
+  - [x] bazarr
+  - [x] common
+  - [x] lidarr
+  - [x] radarr
 - [ ] monitoring
 - [ ] networking
 - [ ] nvr

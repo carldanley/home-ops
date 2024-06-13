@@ -21,8 +21,6 @@ spec:
       VOLSYNC_CLAIM: lidarr-data
       VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
-  decryption:
-    provider: sops
   dependsOn:
     - name: media-common-resources
     - name: media-common-mounts

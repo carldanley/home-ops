@@ -5,11 +5,11 @@ resources:
 - ./namespace.yaml
 - ./common/ks.yaml
 # - ./sonarr/ks.yaml
-# - ./radarr/ks.yaml
+- ./radarr/ks.yaml
 # - ./overseerr/ks.yaml
 # - ./recyclarr/ks.yaml
 - ./bazarr/ks.yaml
 # - ./tautulli/ks.yaml
 # - ./tdarr/ks.yaml
-- ./photoprism/ks.yaml
+# - ./photoprism/ks.yaml
 - ./lidarr/ks.yaml

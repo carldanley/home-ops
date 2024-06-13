@@ -2,75 +2,117 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: radarr
-  namespace: media
+  name: &app radarr
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 30m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    defaultPodOptions:
+      automountServiceAccountToken: false
 
-    image:
-      repository: ghcr.io/onedr0p/radarr
-      tag: 5.6.0.8846@sha256:6d9fe01aab867098e79d1041f7b71eca5b668b8254944ab89c23eef26042570c
-    env:
-      TZ: America/New_York
-      RADARR__INSTANCE_NAME: Radarr
-      RADARR__PORT: &port 7878
-      RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DNS_1_DOMAIN}
-      RADARR__LOG_LEVEL: info
-      RADARR__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: starr-apps-secret
-            key: RADARR_API_KEY
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/onedr0p/exportarr:v2.0.1
-        args:
-        - radarr
-        - --enable-additional-metrics
-        env:
-        - name: URL
-          value: "http://localhost:7878"
-        - name: PORT
-          value: &metricsPort 9710
-        - name: APIKEY
-          valueFrom:
-            secretKeyRef:
-              name: starr-apps-secret
-              key: RADARR_API_KEY
-        ports:
-        - name: metrics
-          containerPort: *metricsPort
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+            - 65539
+            - 1030
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/onedr0p/radarr
+              tag: 5.6.0.8846@sha256:6d9fe01aab867098e79d1041f7b71eca5b668b8254944ab89c23eef26042570c
+            env:
+              TZ: America/New_York
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 7878
+              RADARR__APPLICATION_URL: https://radarr.${EXTERNAL_DNS_1_DOMAIN}
+              RADARR__LOG_LEVEL: info
+              RADARR__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: starr-apps-secret
+                    key: RADARR_API_KEY
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          exporter:
+            image:
+              repository: ghcr.io/onedr0p/exportarr
+              tag: v2.0.1
+            args:
+            - radarr
+            env:
+            - name: URL
+              value: "http://localhost:7878"
+            - name: CONFIG
+              value: "/config/config.xml"
+            - name: PORT
+              value: &metricsPort 9710
+            - name: ENABLE_ADDITIONAL_METRICS
+              value: true
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: starr-apps-secret
+                  key: RADARR_API_KEY
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
 
     service:
-      main:
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      metrics:
-        ports:
+            primary: true
           metrics:
             port: *metricsPort
 
     ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
+      *app :
+        className: nginx
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:movie-open-outline"
@@ -79,54 +121,43 @@ spec:
         hosts:
         - host: &host radarr.${EXTERNAL_DNS_1_DOMAIN}
           paths:
-            - path: /
-              pathType: Prefix
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: *app
+              port: *port
 
     persistence:
       media:
-        enabled: true
         existingClaim: nfs-media
+        advancedMounts:
+          *app :
+            *app :
+            - path: /media
+
+      config:
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+        - path: /config
 
       backups:
-        enabled: true
         type: custom
         volumeSpec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/backups/radarr
-        mountPath: /config/Backups
-        readOnly: false
-
-    volumeClaimTemplates:
-    - name: config
-      mountPath: /config
-      accessMode: ReadWriteOnce
-      size: 1Gi
-      storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-      - 65539
-      - 1030
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+        advancedMounts:
+          *app :
+            *app :
+            - path: /config/backup
+              readOnly: false
 
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: radarr-metrics
+        serviceName: *app
         endpoints:
-        - port: metrics
+        - port: *metricsPort
           scheme: http
           path: /metrics
-          interval: 5m
-          scrapeTimeout: 2m
+          interval: 10m
+          scrapeTimeout: 10s
