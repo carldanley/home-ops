@@ -134,12 +134,9 @@ spec:
             - path: /media
 
       config:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
-        advancedMounts:
-          *app :
-            *app :
-            - path: /config
+        globalMounts:
+        - path: /config
 
       backups:
         type: custom

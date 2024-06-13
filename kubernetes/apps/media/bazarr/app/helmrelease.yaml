@@ -107,7 +107,6 @@ spec:
             - path: /media
 
       config:
-        enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           bazarr:
