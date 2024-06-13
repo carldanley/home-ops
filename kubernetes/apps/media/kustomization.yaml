@@ -7,7 +7,7 @@ resources:
 - ./sonarr/ks.yaml
 - ./radarr/ks.yaml
 - ./overseerr/ks.yaml
-# - ./recyclarr/ks.yaml
+- ./recyclarr/ks.yaml
 - ./bazarr/ks.yaml
 - ./tautulli/ks.yaml
 # - ./photoprism/ks.yaml
