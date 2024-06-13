@@ -110,4 +110,4 @@ spec:
           scheme: http
           path: /metrics
           interval: 10m
-          scrapeTimeout: 2m
+          scrapeTimeout: 10s

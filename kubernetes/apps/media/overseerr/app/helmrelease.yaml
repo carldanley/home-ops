@@ -2,62 +2,89 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr
-  namespace: media
+  name: &app overseerr
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 30m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/sct/overseerr
-      tag: 1.33.2
+    defaultPodOptions:
+      automountServiceAccountToken: false
 
-    env:
-      LOG_LEVEL: "info"
-      PORT: &port 5055
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    sidecars:
-      exporter:
-        name: exporter
-        image: ghcr.io/willfantom/overseerr-exporter:1.2.1
-        args:
-        - --overseerr.address
-        - "http://localhost:5055"
-        - --overseerr.api-key
-        - "$(OVERSEERR_API_KEY)"
-        envFrom:
-        - secretRef:
-            name: starr-apps-secret
-        ports:
-        - name: metrics
-          containerPort: &metricsPort 9850
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+            - 65539
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/sct/overseerr
+              tag: 1.33.2
+            env:
+              LOG_LEVEL: "info"
+              PORT: &port 5055
+            resources:
+              requests:
+                memory: 350Mi
+                cpu: 5m
+              limits:
+                memory: 431Mi
+
+          exporter:
+            image:
+              repository: ghcr.io/willfantom/overseerr-exporter
+              tag: 1.2.1
+            args:
+            - --overseerr.address
+            - "http://localhost:5055"
+            - --overseerr.api-key
+            - "$(OVERSEERR_API_KEY)"
+            envFrom:
+            - secretRef:
+                name: starr-apps-secret
 
     service:
-      main:
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
-      metrics:
-        ports:
+            primary: true
           metrics:
-            port: *metricsPort
+            port: &metricsPort 9850
 
     ingress:
-      main:
-        enabled: true
-        ingressClassName: nginx
+      *app :
+        className: nginx
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "mdi:eye-circle-outline"
@@ -66,36 +93,22 @@ spec:
           paths:
           - path: /
             pathType: Prefix
+            service:
+              identifier: *app
+              port: *port
 
-    volumeClaimTemplates:
-    - name: config
-      mountPath: /app/config
-      accessMode: ReadWriteOnce
-      size: 1Gi
-      storageClass: ceph-block
-
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups:
-      - 65539
-
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 5m
-      limits:
-        memory: 431Mi
+    persistence:
+      config:
+        existingClaim: ${VOLSYNC_CLAIM}
+        globalMounts:
+        - path: /app/config
 
     serviceMonitor:
       metrics:
-        enabled: true
-        serviceName: overseerr-metrics
+        serviceName: *app
         endpoints:
         - port: metrics
           scheme: http
           path: /metrics
-          interval: 4m
-          scrapeTimeout: 30s
+          interval: 10m
+          scrapeTimeout: 10s

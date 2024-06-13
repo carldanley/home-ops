@@ -6,7 +6,7 @@ resources:
 - ./common/ks.yaml
 - ./sonarr/ks.yaml
 - ./radarr/ks.yaml
-# - ./overseerr/ks.yaml
+- ./overseerr/ks.yaml
 # - ./recyclarr/ks.yaml
 - ./bazarr/ks.yaml
 - ./tautulli/ks.yaml

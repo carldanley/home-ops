@@ -6,13 +6,20 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/apps/media/overseerr/app"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/media/overseerr/app
+  targetNamespace: media
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
+    substitute:
+      APP: overseerr
+      VOLSYNC_CLAIM: overseerr-data
+      VOLSYNC_CAPACITY: 1Gi
     substituteFrom: []
   dependsOn:
   - name: storage-rook-ceph-cluster
