@@ -117,7 +117,7 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
-        - host: &host "lidarr.${EXTERNAL_DNS_1_DOMAIN}"
+        - host: &host lidarr.${EXTERNAL_DNS_1_DOMAIN}
           paths:
           - path: /
             pathType: Prefix
@@ -154,7 +154,7 @@ spec:
       metrics:
         serviceName: *app
         endpoints:
-        - port: metrics
+        - port: *metricsPort
           scheme: http
           path: /metrics
           interval: 10m

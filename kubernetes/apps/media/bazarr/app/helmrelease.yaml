@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: bazarr
+  name: &app bazarr
 spec:
   interval: 30m
   chart:
@@ -30,7 +30,7 @@ spec:
       automountServiceAccountToken: false
 
     controllers:
-      bazarr:
+      *app :
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -46,7 +46,7 @@ spec:
             - 1030
 
         containers:
-          app:
+          *app :
             image:
               repository: ghcr.io/onedr0p/bazarr
               tag: 1.4.3@sha256:742693933be67a3d66fdd6c8fb1b4e9fcaa010dc8c6fd1adb150d11614d2b497
@@ -75,14 +75,14 @@ spec:
                 memory: 431Mi
 
     service:
-      bazarr:
-        controller: bazarr
+      *app :
+        controller: *app
         ports:
           http:
             port: *port
 
     ingress:
-      bazarr:
+      *app :
         className: nginx
         annotations:
           hajimari.io/enable: "true"
@@ -95,22 +95,22 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              identifier: bazarr
-              port: http
+              identifier: *app
+              port: *port
 
     persistence:
       media:
         existingClaim: nfs-media
         advancedMounts:
-          bazarr:
-            bazarr:
+          *app :
+            *app :
             - path: /media
 
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
-          bazarr:
-            app:
+          *app :
+            *app :
             - path: /config
 
       backups:
@@ -120,16 +120,16 @@ spec:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/backups/bazarr
         advancedMounts:
-          bazarr:
-            app:
+          *app :
+            *app :
             - path: /config/backup
               readOnly: false
 
     serviceMonitor:
-      bazarr:
-        serviceName: bazarr
+      *app:
+        serviceName: *app
         endpoints:
-        - port: http
+        - port: *port
           scheme: http
           path: /metrics
           interval: 10m
