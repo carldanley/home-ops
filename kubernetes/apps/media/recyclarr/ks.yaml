@@ -17,4 +17,4 @@ spec:
   decryption:
     provider: sops
   dependsOn:
-  - name: media-common
+  - name: media-common-resources

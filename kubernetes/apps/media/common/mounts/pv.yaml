@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: ${SYNOLOGY_ADDRESS}
-    path: "/volume1/media"
+    path: /volume1/media
   mountOptions:
   - nfsvers=3
   - tcp
