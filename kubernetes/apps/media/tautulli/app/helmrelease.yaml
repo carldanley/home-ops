@@ -95,7 +95,7 @@ spec:
         volumeSpec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
-            path: /volume1/backups/radarr
+            path: /volume1/backups/tautulli
         advancedMounts:
           *app :
             *app :
