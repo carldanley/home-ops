@@ -12,3 +12,4 @@ resources:
 - ./tautulli/ks.yaml
 # - ./photoprism/ks.yaml
 - ./lidarr/ks.yaml
+- ./unpackerr/ks.yaml

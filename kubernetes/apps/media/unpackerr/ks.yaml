@@ -1,0 +1,27 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: media-unpackerr
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/media/unpackerr/app
+  targetNamespace: media
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  postBuild:
+    substitute:
+      APP: unpackerr
+      VOLSYNC_CLAIM: unpackerr-data
+      VOLSYNC_CAPACITY: 1Gi
+    substituteFrom: []
+  dependsOn:
+  - name: media-sonarr
+  - name: media-radarr
+  - name: media-lidarr
