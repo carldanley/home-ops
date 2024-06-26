@@ -39,7 +39,7 @@ spec:
               tag: 1.24.2
             env:
             - name: DB
-              value: postgresql
+              value: postgres12
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
