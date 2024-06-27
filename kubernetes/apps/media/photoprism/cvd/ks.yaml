@@ -1,38 +1,40 @@
 ---
-apiVersion: &apiVersion kustomize.toolkit.fluxcd.io/v1
-kind: &kind Kustomization
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
 metadata:
   name: media-photoprism-cvd-secrets
-  namespace: &namespace flux-system
+  namespace: flux-system
 spec:
-  interval: &interval 10m
-  timeout: &timeout 3m
-  retryInterval: &retryInterval 2m
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
   path: ./kubernetes/apps/media/photoprism/cvd/secrets
-  targetNamespace: &targetNamespace media
+  targetNamespace: media
   prune: true
   wait: true
-  sourceRef: &sourceRef
+  sourceRef:
     kind: GitRepository
     name: k8s-home-ops
   postBuild:
     substituteFrom: []
   dependsOn: []
 ---
-apiVersion: *apiVersion
-kind: *kind
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
 metadata:
   name: media-photoprism-cvd-mariadb
-  namespace: *namespace
+  namespace: flux-system
 spec:
-  interval: *interval
-  timeout: *timeout
-  retryInterval: *retryInterval
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
   path: ./kubernetes/apps/media/photoprism/cvd/mariadb
-  targetNamespace: *targetNamespace
+  targetNamespace: media
   prune: true
   wait: true
-  sourceRef: *sourceRef
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
   postBuild:
     substitute:
       APP: photoprism-cvd-mariadb
