@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: photoprism-cvd-mariadb
-  namespace: media
+  name: &app photoprism-cvd-mariadb
 spec:
-  interval: 10m
+  interval: 30m
   chart:
     spec:
       chart: mariadb
       version: 18.2.4
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -24,6 +24,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+
   values:
     image:
       registry: docker.io
@@ -37,7 +38,7 @@ spec:
     primary:
       persistence:
         enabled: true
-        existingClaim: photoprism-cvd-mariadb
+        existingClaim: ${VOLSYNC_CLAIM}
     metrics:
       enabled: true
       serviceMonitor:

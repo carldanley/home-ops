@@ -10,6 +10,6 @@ resources:
 - ./recyclarr/ks.yaml
 - ./bazarr/ks.yaml
 - ./tautulli/ks.yaml
-# - ./photoprism/ks.yaml
+- ./photoprism/cvd/ks.yaml
 - ./lidarr/ks.yaml
 - ./unpackerr/ks.yaml
