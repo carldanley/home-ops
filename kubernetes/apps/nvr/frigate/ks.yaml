@@ -44,7 +44,10 @@ spec:
       APP: frigate
       VOLSYNC_CLAIM: frigate-data
       VOLSYNC_CAPACITY: 4Gi
-    substituteFrom: []
+    substituteFrom:
+    - kind: Secret
+      name: flux-frigate-secret
+      optional: false
   dependsOn:
   - name: nvr-frigate-secret
   - name: storage-rook-ceph
