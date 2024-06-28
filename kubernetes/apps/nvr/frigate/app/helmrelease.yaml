@@ -36,6 +36,19 @@ spec:
           "mac": "52:55:40:71:4f:2a"
         }]
 
+    service:
+      *app :
+        controller: *app
+        annotations:
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
+        ports:
+          http:
+            port: &httpPort 5000
+          rtsp:
+            port: &rtspPort 8554
+          webrtc:
+            port: &webrtcPort 8555
+
     controllers:
       *app :
         annotations:
@@ -65,7 +78,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/version
-                    port: *port
+                    port: *httpPort
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -76,7 +89,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/version
-                    port: *port
+                    port: *httpPort
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -87,22 +100,9 @@ spec:
                 spec:
                   httpGet:
                     path: /api/version
-                    port: *port
+                    port: *httpPort
                   failureThreshold: 30
                   periodSeconds: 10
-
-    service:
-      *app :
-        controller: *app
-        annotations:
-          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
-        ports:
-          http:
-            port: &httpPort 5000
-          rtsp:
-            port: &rtspPort 8554
-          webrtc:
-            port: &webrtcPort 8555
 
     ingress:
       *app :
