@@ -2,152 +2,174 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: frigate
-  namespace: nvr
+  name: &app frigate
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
       interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
 
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name":"multus-iot",
+          "namespace": "networking",
+          "ips": [ "192.168.4.32/22" ],
+          "mac": "52:55:40:71:4f:2a"
+        }]
 
-    image:
-      repository: ghcr.io/blakeblackshear/frigate
-      tag: "0.13.2"
+    controllers:
+      *app :
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          nodeSelector:
+            google.feature.node.kubernetes.io/coral: "true"
+            intel.feature.node.kubernetes.io/gpu: "true"
+
+        containers:
+          *app :
+            image:
+              repository: ghcr.io/blakeblackshear/frigate
+              tag: "0.13.2"
+            resources:
+              requests:
+                gpu.intel.com/i915: 1
+              limits:
+                gpu.intel.com/i915: 1
+            securityContext:
+              privileged: true
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 10
 
     service:
-      main:
-        type: LoadBalancer
+      *app :
+        controller: *app
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
-          k8s.v1.cni.cncf.io/networks: |
-            [{
-              "name":"multus-iot",
-              "namespace": "networking",
-              "ips": [ "192.168.4.32/22" ],
-              "mac": "52:55:40:71:4f:2a"
-            }]
         ports:
           http:
-            port: &port 5000
+            port: &httpPort 5000
           rtsp:
-            enabled: true
-            port: 8554
+            port: &rtspPort 8554
           webrtc:
-            enabled: true
-            port: 8555
+            port: &webrtcPort 8555
 
-    probes:
-      liveness: &probe
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      startup:
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
-            port: *port
-          failureThreshold: 30
-          periodSeconds: 10
+    ingress:
+      *app :
+        className: nginx
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:cctv
+          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+        - host: &host frigate.${EXTERNAL_DNS_1_DOMAIN}
+          paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: *app
+              port: *httpPort
 
     persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: frigate-configmap
-        subPath: config.yaml
-        mountPath: /config/config.yml
-        readOnly: true
       usb:
-        enabled: true
         type: hostPath
         hostPath: /dev/bus/usb
+
+      database:
+        existingClaim: ${VOLSYNC_CLAIM}
+        advancedMounts:
+          *app :
+            *app :
+            - path: /db
+
       cache:
-        enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 512Mi
-        mountPath: /dev/shm
-      clips:
-        enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "${SYNOLOGY_ADDRESS}"
-            path: /volume1/batcave-nvr/clips
-        mountPath: /media/frigate/clips
-        readOnly: false
+        globalMounts:
+        - path: /dev/shm
+
+      mosquitto-config:
+        type: configMap
+        name: frigate-config
+        advancedMounts:
+          *app :
+            *app :
+            - path: /config/config.yaml
+              subPath: config.yaml
+              readOnly: true
+
       recordings:
-        enabled: true
         type: custom
         volumeSpec:
           nfs:
             server: "${SYNOLOGY_ADDRESS}"
             path: /volume1/batcave-nvr/recordings
-        mountPath: /media/frigate/recordings
-        readOnly: false
+        advancedMounts:
+          *app :
+            *app :
+            - path: /media/frigate/recordings
+              readOnly: false
 
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: "nginx"
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "mdi:cctv"
-        hosts:
-        - host: "frigate.${EXTERNAL_DNS_1_DOMAIN}"
-          paths:
-          - path: /
-
-    securityContext:
-      privileged: true
-
-    nodeSelector:
-      google.feature.node.kubernetes.io/coral: "true"
-      intel.feature.node.kubernetes.io/gpu: "true"
-
-    resources:
-      requests:
-        gpu.intel.com/i915: 1
-      limits:
-        gpu.intel.com/i915: 1
-
-    volumeClaimTemplates:
-    - name: database
-      mountPath: /db
-      accessMode: ReadWriteOnce
-      size: 2Gi
-      stoageClass: ceph-block
+      clips:
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/clips
+        advancedMounts:
+          *app :
+            *app :
+            - path: /media/frigate/clips
+              readOnly: false

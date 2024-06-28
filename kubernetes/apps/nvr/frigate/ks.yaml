@@ -2,45 +2,49 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: nvr-frigate-secrets
+  name: nvr-frigate-secret
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/enabled: "false"
 spec:
   interval: 10m
-  path: "./kubernetes/apps/nvr/frigate/secret"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/nvr/frigate/secret
+  targetNamespace: nvr
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
     substituteFrom: []
-  decryption:
-    provider: sops
+  dependsOn: []
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: nvr-frigate
+  name: nvr-frigate-app
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/enabled: "true"
 spec:
   interval: 10m
-  path: "./kubernetes/apps/nvr/frigate/app"
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/nvr/frigate/app
+  targetNamespace: nvr
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: true
   postBuild:
-    substituteFrom:
-    - kind: Secret
-      name: flux-frigate-secret
-      optional: false
+    substitute:
+      APP: frigate
+      VOLSYNC_CLAIM: frigate-data
+      VOLSYNC_CAPACITY: 4Gi
+    substituteFrom: []
   dependsOn:
-  - name: nvr-frigate-secrets
+  - name: nvr-frigate-secret
   - name: storage-rook-ceph
   - name: system-node-feature-discovery-rules
   - name: system-intel-device-plugins-gpu
