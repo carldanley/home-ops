@@ -111,7 +111,7 @@ nodes:
   nodeLabels: *nodeLabels
 
 controlPlane:
-  schematic:
+  schematic: &schematic
     customization:
       extraKernelArgs:
       - net.ifnames=0
@@ -234,6 +234,7 @@ controlPlane:
           - system
 
 worker:
+  schematic: *schematic
   patches:
   - *containerdPatch
   - *disableSearchDomainPatch

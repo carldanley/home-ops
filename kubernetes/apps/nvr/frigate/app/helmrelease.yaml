@@ -28,19 +28,20 @@ spec:
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-iot",
+            "namespace": "networking",
+            "ips": [ "192.168.4.13/22" ],
+            "mac": "52:55:40:71:4f:2a"
+          }]
 
     service:
       *app :
         controller: *app
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
-          k8s.v1.cni.cncf.io/networks: |
-            [{
-              "name":"multus-iot",
-              "namespace": "networking",
-              "ips": [ "192.168.4.32/22" ],
-              "mac": "52:55:40:71:4f:2a"
-            }]
         ports:
           http:
             port: &httpPort 5000
