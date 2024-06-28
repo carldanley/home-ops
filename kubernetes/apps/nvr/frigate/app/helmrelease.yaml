@@ -141,7 +141,7 @@ spec:
         globalMounts:
         - path: /dev/shm
 
-      mosquitto-config:
+      config:
         type: configMap
         name: frigate-config
         advancedMounts:
