@@ -39,6 +39,7 @@ spec:
 
     service:
       *app :
+        type: LoadBalancer
         controller: *app
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FRIGATE}
