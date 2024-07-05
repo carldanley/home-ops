@@ -29,7 +29,7 @@ spec:
     image:
       registry: docker.io
       repository: bitnami/mariadb
-      tag: 11.3.2-debian-12-r8
+      tag: 11.3.2-debian-12-r9
     auth:
       rootPassword: ${MARIADB_CVD_ROOT_PASSWORD}
       database: ${MARIADB_CVD_DATABASE}
