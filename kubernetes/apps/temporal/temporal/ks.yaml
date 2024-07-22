@@ -22,7 +22,6 @@ spec:
       VOLSYNC_CAPACITY: 10Gi
     substituteFrom: []
   dependsOn:
-  - name: databases-cloudnative-pg
   - name: storage-rook-ceph-cluster
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
