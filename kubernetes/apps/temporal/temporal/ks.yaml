@@ -23,66 +23,66 @@ spec:
     substituteFrom: []
   dependsOn:
   - name: storage-rook-ceph-cluster
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: temporal-temporal-server
-#   namespace: flux-system
-# spec:
-#   interval: 10m
-#   timeout: 3m
-#   retryInterval: 2m
-#   path: ./kubernetes/apps/temporal/temporal/server
-#   targetNamespace: temporal
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-home-ops
-#   postBuild:
-#     substituteFrom: []
-#   dependsOn:
-#   - name: temporal-temporal-database
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: temporal-temporal-ui
-#   namespace: flux-system
-# spec:
-#   interval: 10m
-#   timeout: 3m
-#   retryInterval: 2m
-#   path: ./kubernetes/apps/temporal/temporal/ui
-#   targetNamespace: temporal
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-home-ops
-#   postBuild:
-#     substituteFrom: []
-#   dependsOn:
-#   - name: temporal-temporal-server
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: temporal-temporal-admin-tools
-#   namespace: flux-system
-# spec:
-#   interval: 10m
-#   timeout: 3m
-#   retryInterval: 2m
-#   path: ./kubernetes/apps/temporal/temporal/admin-tools
-#   targetNamespace: temporal
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-home-ops
-#   postBuild:
-#     substituteFrom: []
-#   dependsOn:
-#   - name: temporal-temporal-server
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: temporal-temporal-server
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/temporal/temporal/server
+  targetNamespace: temporal
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+  - name: temporal-temporal-database
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: temporal-temporal-ui
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/temporal/temporal/ui
+  targetNamespace: temporal
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+  - name: temporal-temporal-server
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: temporal-temporal-admin-tools
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 3m
+  retryInterval: 2m
+  path: ./kubernetes/apps/temporal/temporal/admin-tools
+  targetNamespace: temporal
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  postBuild:
+    substituteFrom: []
+  dependsOn:
+  - name: temporal-temporal-server
