@@ -2,6 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./pgcluster.yaml
-- ./scheduledbackup.yaml
-- ./svc.yaml
+- ./secret-database.sops.yaml
+- ./helmrelease.yaml
+- ../../../../templates/volsync
