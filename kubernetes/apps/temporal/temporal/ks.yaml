@@ -40,7 +40,10 @@ spec:
       APP: temporal-database
       VOLSYNC_CLAIM: temporal-database-data
       VOLSYNC_CAPACITY: 10Gi
-    substituteFrom: []
+    substituteFrom:
+    - kind: Secret
+      name: temporal-database-secrets
+      optional: false
   dependsOn:
   - name: temporal-temporal-secrets
   - name: storage-rook-ceph-cluster
