@@ -10,7 +10,7 @@ commonLabels:
 helmCharts:
 - name: cilium
   repo: https://helm.cilium.io
-  version: 1.16.0
+  version: 1.15.7
   releaseName: *releaseName
   namespace: *namespace
   valuesInline:
@@ -59,7 +59,7 @@ helmCharts:
     hubble:
       enabled: false
 
-    kubeProxyReplacement: true
+    kubeProxyReplacement: "strict"
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
     l7Proxy: true
