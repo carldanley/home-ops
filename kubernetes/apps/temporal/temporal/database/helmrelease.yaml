@@ -45,3 +45,10 @@ spec:
       persistence:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
+
+      resources:
+        requests:
+          cpu: 2
+          memory: 512Mi
+        limits:
+          memory: 2048Mi
