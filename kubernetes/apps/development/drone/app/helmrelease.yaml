@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: drone
+  name: &app drone
 spec:
   interval: 30m
   chart:
@@ -28,12 +28,13 @@ spec:
   values:
 
     controllers:
-       drone:
+
+       *app :
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
+          *app :
             image:
               repository: drone/drone
               tag: 2.24.0
@@ -57,14 +58,14 @@ spec:
               readiness: *probes
 
     service:
-      drone:
-        controller: drone
+      *app :
+        controller: *app
         ports:
           http:
             port: *httpPort
 
     ingress:
-      drone:
+      *app :
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "simple-icons:drone"
@@ -76,14 +77,14 @@ spec:
           - path: /
             pathType: Prefix
             service:
-              identifier: drone
+              identifier: *app
               port: http
 
     persistence:
       files:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          drone:
-            app:
+          *app :
+            *app :
             - path: /data
               readOnly: false
