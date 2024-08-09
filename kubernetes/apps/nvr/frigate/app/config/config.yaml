@@ -15,9 +15,6 @@ logger:
 database:
   path: /db/frigate.db
 
-ui:
-  live_mode: webrtc
-
 detectors:
   coral:
     type: edgetpu
