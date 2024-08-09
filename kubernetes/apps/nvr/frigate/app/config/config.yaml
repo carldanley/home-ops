@@ -120,9 +120,6 @@ cameras:
       filters:
         person:
           min_area: 25800
-    motion:
-      mask:
-      - 0,131,265,86,669,39,683,74,1063,137,1718,315,1920,400,1920,0,0,0
     mqtt: &cameraMQTTSettings
       enabled: true
       timestamp: true
@@ -158,9 +155,6 @@ cameras:
       filters:
         person:
           min_area: 14000
-    motion:
-      mask:
-      - 181,662,93,348,270,267,372,243,535,230,816,222,1067,228,1379,249,1734,298,1920,330,1920,0,0,0,0,762
     mqtt: *cameraMQTTSettings
 
   front_doorbell:
@@ -178,12 +172,6 @@ cameras:
       filters:
         person:
           min_area: 4500
-    motion:
-      mask:
-      - 1360,0,1047,206,1073,522,1071,893,872,745,865,422,615,401,615,679,635,1200,0,1200,0,0
-    zones:
-      at_front_door:
-        coordinates: 1060,808,1600,1121,1600,1200,635,1200,625,894
     mqtt: *cameraMQTTSettings
 
   garage:
@@ -216,10 +204,6 @@ cameras:
     objects:
       track:
       - person
-    motion:
-      mask:
-      - 1048,248,1081,524,623,732,551,389
-      - 63,250,942,69,1058,210,1529,250,1921,200,2560,0,0,0,0,608
     mqtt: *cameraMQTTSettings
 
   kitchen:
@@ -237,9 +221,6 @@ cameras:
       filters:
         person:
           min_area: 32000
-    motion:
-      mask:
-      - 923,330,1637,492,2560,414,2560,0,0,0,0,339
     mqtt: *cameraMQTTSettings
 
   # mobile_cam:
@@ -265,9 +246,6 @@ cameras:
     objects:
       track:
       - person
-    motion:
-      mask:
-      - 175,999,1599,570,2303,959,2560,517,2560,0,0,0
     mqtt: *cameraMQTTSettings
 
   pennys_room:
@@ -324,9 +302,6 @@ cameras:
       filters:
         person:
           min_area: 8000
-    motion:
-      mask:
-      - 0,394,305,274,575,191,936,109,1227,64,1546,44,1777,89,1920,1080,1920,0,0,0
     mqtt: *cameraMQTTSettings
 
   side_right:
@@ -345,7 +320,4 @@ cameras:
         person:
           min_area: 125000
           max_area: 340000
-    motion:
-      mask:
-      - 0,702,318,322,680,74,998,50,1100,0,1920,390,1920,0,0,0
     mqtt: *cameraMQTTSettings

@@ -150,7 +150,7 @@ spec:
             *app :
             - path: /config/config.yaml
               subPath: config.yaml
-              readOnly: true
+              readOnly: false
 
       recordings:
         type: custom
