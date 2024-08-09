@@ -44,7 +44,6 @@ ffmpeg:
   - yuv420p
   output_args:
     record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -c:a aac
-    rtmp: -c:v copy -f flv -c:a aac
 
 motion:
   improve_contrast: true
@@ -64,9 +63,6 @@ record:
     retain:
       default: 14
       mode: active_objects
-
-rtmp:
-  enabled: false
 
 go2rtc:
   streams:
