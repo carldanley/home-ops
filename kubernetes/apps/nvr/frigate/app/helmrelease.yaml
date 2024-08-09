@@ -142,14 +142,26 @@ spec:
         globalMounts:
         - path: /dev/shm
 
+      # config:
+      #   type: configMap
+      #   name: frigate-config
+      #   advancedMounts:
+      #     *app :
+      #       *app :
+      #       - path: /config/config.yaml
+      #         subPath: config.yaml
+      #         readOnly: true
+
       config:
-        type: configMap
-        name: frigate-config
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/config
         advancedMounts:
           *app :
             *app :
-            - path: /config/config.yaml
-              subPath: config.yaml
+            - path: /config
               readOnly: false
 
       recordings:
