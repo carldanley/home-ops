@@ -106,6 +106,24 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
 
+      # clip-cleaner:
+      #   type: cronjob
+      #   cronjob:
+      #     schedule: "@daily"
+      #   containers:
+      #     clip-cleaner:
+      #       image:
+      #         repository: ghcr.io/carldanley/frigate-clip-cleaner
+      #         tag: v0.1.2
+      #       command: ["/bin/frigate-clip-cleaner"]
+      #       args:
+      #       - "--log-level=debug"
+      #       env:
+      #       - name: FCC_CONFIG_FILE
+      #         value: "/config/config.yml"
+      #       - name: FCC_CLIP_DIR
+      #         value: "/media/frigate/clips/"
+
     ingress:
       *app :
         className: nginx
@@ -162,6 +180,18 @@ spec:
           *app :
             *app :
             - path: /config
+              readOnly: false
+
+      exports:
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "${SYNOLOGY_ADDRESS}"
+            path: /volume1/batcave-nvr/exports
+        advancedMounts:
+          *app :
+            *app :
+            - path: /media/frigate/exports
               readOnly: false
 
       recordings:
