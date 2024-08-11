@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
 - ./namespace.yaml
 - ./wyze-bridge/ks.yaml
-- ./frigate/ks.yaml
+# - ./frigate/ks.yaml
