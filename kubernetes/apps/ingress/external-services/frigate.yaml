@@ -27,7 +27,6 @@ metadata:
   name: external-service-frigate
   namespace: ingress
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
     hajimari.io/enable: "true"
