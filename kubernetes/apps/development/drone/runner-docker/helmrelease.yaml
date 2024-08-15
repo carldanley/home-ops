@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: drone-runner-docker
-      version: 0.6.2
+      version: 0.7.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
