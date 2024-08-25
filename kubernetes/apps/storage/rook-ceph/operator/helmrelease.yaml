@@ -21,6 +21,7 @@ spec:
 
     csi:
       kubeletDirPath: /var/lib/kubelet
+      disableHolderPods: true
       enableCSIHostNetwork: true
       pluginTolerations:
       - effect: "NoExecute"
