@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: postgresql
-      version: 15.5.27
+      version: 15.5.28
       interval: 30m
       sourceRef:
         kind: HelmRepository
