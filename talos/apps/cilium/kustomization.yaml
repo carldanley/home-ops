@@ -10,7 +10,7 @@ commonLabels:
 helmCharts:
 - name: cilium
   repo: https://helm.cilium.io
-  version: 1.15.7
+  version: 1.15.10
   releaseName: *releaseName
   namespace: *namespace
   valuesInline:
