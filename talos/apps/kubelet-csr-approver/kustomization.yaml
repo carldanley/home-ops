@@ -9,7 +9,7 @@ commonLabels:
 helmCharts:
   - name: kubelet-csr-approver
     repo: https://postfinance.github.io/kubelet-csr-approver
-    version: 1.2.2
+    version: 1.2.3
     releaseName: *releaseName
     namespace: *namespace
     valuesInline:
