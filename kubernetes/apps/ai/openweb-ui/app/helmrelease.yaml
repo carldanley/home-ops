@@ -61,6 +61,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
         - host: &host ollama.${EXTERNAL_DNS_1_DOMAIN}
           paths:
