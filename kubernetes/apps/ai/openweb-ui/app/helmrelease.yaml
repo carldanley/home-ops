@@ -60,7 +60,6 @@ spec:
         className: nginx
         annotations:
           hajimari.io/enable: "true"
-          nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
         - host: &host ollama.${EXTERNAL_DNS_1_DOMAIN}
