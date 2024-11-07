@@ -52,3 +52,14 @@ spec:
           memory: 512Mi
         limits:
           memory: 2048Mi
+
+      volumePermissions:
+        enabled: true
+
+      # initContainers:
+      # - name: volume-permissions
+      #   image: busybox
+      #   command: ['sh', '-c', 'chown -R 1001:1001 /bitnami/postgresql']
+      #   volumeMounts:
+      #   - name: data
+      #     mountPath: /bitnami/postgresql
