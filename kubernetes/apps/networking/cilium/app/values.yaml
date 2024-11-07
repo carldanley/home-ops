@@ -3,6 +3,8 @@ autoDirectNodeRoutes: true
 
 bgpControlPlane:
   enabled: true
+  secretNamespace:
+    name: networking
 
 bandwidthManager:
   enabled: true
@@ -18,13 +20,13 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 
 cluster:
-  name: k8s-home-ops
+  name: ${CLUSTER_NAME}
   id: 1
 
 cni:
   exclusive: false
 
-enableCnpStatusUpdates: true
+enableRuntimeDeviceDetection: true
 endpointStatus:
   enabled: true
   status: "policy"
@@ -44,7 +46,7 @@ ipv4NativeRoutingCIDR: 172.22.0.0/16
 hubble:
   enabled: false
 
-kubeProxyReplacement: "strict"
+kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
 l7Proxy: true
