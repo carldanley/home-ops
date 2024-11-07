@@ -53,8 +53,8 @@ spec:
         limits:
           memory: 2048Mi
 
-      volumePermissions:
-        enabled: true
+    volumePermissions:
+      enabled: true
 
       # initContainers:
       # - name: volume-permissions
