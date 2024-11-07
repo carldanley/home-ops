@@ -4,12 +4,12 @@ kind: HelmRelease
 metadata:
   name: temporal-database
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: postgresql
       version: 16.1.2
-      interval: 30m
+      interval: 15m
       sourceRef:
         kind: HelmRepository
         name: bitnami
