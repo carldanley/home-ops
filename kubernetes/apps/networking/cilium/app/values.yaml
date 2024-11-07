@@ -27,9 +27,6 @@ cni:
   exclusive: false
 
 enableRuntimeDeviceDetection: true
-endpointStatus:
-  enabled: true
-  status: "policy"
 
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
