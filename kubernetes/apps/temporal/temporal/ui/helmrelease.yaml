@@ -54,6 +54,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_TEMPORAL_UI}
         hosts:
         - host: &host temporal.${EXTERNAL_DNS_1_DOMAIN}
           paths:
