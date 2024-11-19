@@ -44,6 +44,7 @@ spec:
     service:
       temporal-ui:
         controller: ui
+        type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_TEMPORAL_UI}
         ports:
