@@ -26,7 +26,7 @@ spec:
 
     image:
       repository: ghcr.io/mrlt8/docker-wyze-bridge
-      tag: nightly-hw@sha256:30c24eee95b27e66cd5bc94786807bfcfea30e9441a89798b0f325abaeb7d691
+      tag: nightly-hw@sha256:12e453daba598f684534b7f319526429e0ca4df832a4d7c6b9270464026f5968
 
     envFrom:
     - secretRef:
