@@ -49,7 +49,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/onedr0p/tautulli
-              tag: 2.15.1@sha256:23f248d5f6a887a353fe7fab34fb4c6f2e181ffda0f57e12d299d13620b4efe3
+              tag: 2.15.1@sha256:2d5a1bce27a8e29e287aec1735001e68fc23dea08806c7124587cdbfaf0ddcff
             env:
               TZ: America/New_York
               TAUTULLI__PORT: &port 8181
