@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mrlt8/docker-wyze-bridge
-              tag: nightly-hw@sha256:d46767fae46f23fa304685d72e937550d611318e1d6d97b3bb536d283cc8035f
+              tag: nightly-hw@sha256:a18eb982fa9c003bc3a92a1d7d50685a610404fc162597b7037d62530e653030
             env:
               ENABLE_AUDIO: "true"
               NET_MODE: "LAN"
