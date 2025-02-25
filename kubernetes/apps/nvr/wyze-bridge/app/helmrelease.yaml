@@ -27,6 +27,16 @@ spec:
     keepHistory: false
 
   values:
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-cameras",
+            "namespace": "networking",
+            "ips": [ "192.168.3.100/22" ],
+            "mac": "2b-e0-ee-3c-e9-53"
+          }]
+
     controllers:
       wyze-bridge:
         type: deployment
