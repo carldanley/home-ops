@@ -4,10 +4,6 @@ kind: Kustomization
 resources:
 - ./helmrelease.yaml
 - ../../../../templates/volsync
-configMapGenerator:
-- name: frigate-config
-  files:
-  - config/config.yaml
 generatorOptions:
   disableNameSuffixHash: true
 commonLabels:

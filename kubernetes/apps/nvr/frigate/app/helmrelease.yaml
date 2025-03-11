@@ -28,14 +28,6 @@ spec:
   values:
     defaultPodOptions:
       automountServiceAccountToken: false
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "networking",
-            "ips": [ "192.168.4.13/22" ],
-            "mac": "52:55:40:71:4f:2a"
-          }]
 
     service:
       *app :
@@ -65,7 +57,7 @@ spec:
           *app :
             image:
               repository: ghcr.io/blakeblackshear/frigate
-              tag: "0.14.1"
+              tag: "0.15.0"
             resources:
               requests:
                 gpu.intel.com/i915: 1
@@ -106,24 +98,6 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
 
-      # clip-cleaner:
-      #   type: cronjob
-      #   cronjob:
-      #     schedule: "@daily"
-      #   containers:
-      #     clip-cleaner:
-      #       image:
-      #         repository: ghcr.io/carldanley/frigate-clip-cleaner
-      #         tag: v0.1.2
-      #       command: ["/bin/frigate-clip-cleaner"]
-      #       args:
-      #       - "--log-level=debug"
-      #       env:
-      #       - name: FCC_CONFIG_FILE
-      #         value: "/config/config.yml"
-      #       - name: FCC_CLIP_DIR
-      #         value: "/media/frigate/clips/"
-
     ingress:
       *app :
         className: nginx
@@ -151,7 +125,7 @@ spec:
         advancedMounts:
           *app :
             *app :
-            - path: /db
+            - path: /opt/frigate/frigate/db
 
       cache:
         type: emptyDir
@@ -159,16 +133,6 @@ spec:
         sizeLimit: 512Mi
         globalMounts:
         - path: /dev/shm
-
-      # config:
-      #   type: configMap
-      #   name: frigate-config
-      #   advancedMounts:
-      #     *app :
-      #       *app :
-      #       - path: /config/config.yaml
-      #         subPath: config.yaml
-      #         readOnly: true
 
       config:
         type: custom
