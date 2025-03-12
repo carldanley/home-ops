@@ -132,7 +132,7 @@ spec:
       cache:
         type: emptyDir
         medium: Memory
-        sizeLimit: 512Mi
+        sizeLimit: 2048Mi
         globalMounts:
         - path: /dev/shm
 
