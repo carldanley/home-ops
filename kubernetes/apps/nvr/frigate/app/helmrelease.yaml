@@ -74,7 +74,7 @@ spec:
                     path: /api/version
                     port: *httpPort
                   initialDelaySeconds: 0
-                  periodSeconds: 10
+                  periodSeconds: 30
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness:
@@ -85,7 +85,7 @@ spec:
                     path: /api/version
                     port: *httpPort
                   initialDelaySeconds: 0
-                  periodSeconds: 10
+                  periodSeconds: 30
                   timeoutSeconds: 1
                   failureThreshold: 3
               startup:
@@ -96,14 +96,16 @@ spec:
                     path: /api/version
                     port: *httpPort
                   failureThreshold: 30
-                  periodSeconds: 10
+                  periodSeconds: 30
 
     ingress:
       *app :
         className: nginx
         annotations:
           hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:cctv
+          hajimari.io/appName: "frigate"
+          hajimari.io/icon: "mdi:frigate"
+          hajimari.io/url: "https://frigate.${EXTERNAL_DNS_1_DOMAIN}"
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
