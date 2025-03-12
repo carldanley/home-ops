@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - bitnami-mariadb.yaml
 - bitnami-postgresql.yaml
+- bitnami.yaml
