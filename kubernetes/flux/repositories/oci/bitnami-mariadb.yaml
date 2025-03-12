@@ -7,5 +7,4 @@ metadata:
 spec:
   interval: 30m
   url: oci://registry-1.docker.io/bitnamicharts/mariadb
-  ref:
-    tag: main
+  timeout: 3m
