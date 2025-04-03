@@ -42,14 +42,14 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-            - 65539
-            - 1030
+              - 65539
+              - 1030
 
         containers:
           *app :
             image:
-              repository: ghcr.io/onedr0p/lidarr
-              tag: 2.4.3.4248@sha256:fcf7417a7dfa9967a78d668904c62888272bd6dd814b4b9c4500618f51be6b86
+              repository: ghcr.io/home-operations/lidarr
+              tag: 2.11.0.4610@sha256:1730e2a38b87375b814725021207a1678101fe874392bd1d7398993f6462ee19
             env:
               TZ: America/New_York
               LIDARR__INSTANCE_NAME: Lidarr
@@ -74,24 +74,24 @@ spec:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.1.0
             args:
-            - lidarr
+              - lidarr
             env:
-            - name: URL
-              value: "http://localhost"
-            - name: CONFIG
-              value: "/config/config.xml"
-            - name: PORT
-              value: &metricsPort 9709
-            - name: ENABLE_ADDITIONAL_METRICS
-              value: true
-            - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-              value: false
+              - name: URL
+                value: "http://localhost"
+              - name: CONFIG
+                value: "/config/config.xml"
+              - name: PORT
+                value: &metricsPort 9709
+              - name: ENABLE_ADDITIONAL_METRICS
+                value: true
+              - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+                value: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
-                - ALL
+                  - ALL
             resources:
               requests:
                 cpu: 10m
@@ -117,13 +117,13 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
-        - host: &host lidarr.${EXTERNAL_DNS_1_DOMAIN}
-          paths:
-          - path: /
-            pathType: Prefix
-            service:
-              identifier: *app
-              port: *port
+          - host: &host lidarr.${EXTERNAL_DNS_1_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *port
 
     persistence:
       media:
@@ -131,12 +131,12 @@ spec:
         advancedMounts:
           *app :
             *app :
-            - path: /media
+              - path: /media
 
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-        - path: /config
+          - path: /config
 
       backups:
         type: custom
@@ -147,15 +147,15 @@ spec:
         advancedMounts:
           *app :
             *app :
-            - path: /config/backup
-              readOnly: false
+              - path: /config/backup
+                readOnly: false
 
     serviceMonitor:
       metrics:
         serviceName: *app
         endpoints:
-        - port: metrics
-          scheme: http
-          path: /metrics
-          interval: 10m
-          scrapeTimeout: 10s
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 10s

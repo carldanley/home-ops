@@ -42,14 +42,14 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-            - 65539
-            - 1030
+              - 65539
+              - 1030
 
         containers:
           *app :
             image:
-              repository: ghcr.io/onedr0p/bazarr
-              tag: 1.5.1@sha256:3543d7708c49a107558315eb88d202d99a0c8aaf592d3a70157565908c9f1eab
+              repository: ghcr.io/home-operations/bazarr
+              tag: 1.5.1@sha256:a1b0d3a4e6462adb448dbfe4bf466e1d1bc920c17ac97c705b6db6eeb02b37b9
             env:
               TZ: America/New_York
               BAZARR__INSTANCE_NAME: Bazarr
@@ -66,7 +66,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
-                - ALL
+                  - ALL
             resources:
               requests:
                 memory: 350Mi
@@ -90,13 +90,13 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
-        - host: &host bazarr.${EXTERNAL_DNS_1_DOMAIN}
-          paths:
-          - path: /
-            pathType: Prefix
-            service:
-              identifier: *app
-              port: *port
+          - host: &host bazarr.${EXTERNAL_DNS_1_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *port
 
     persistence:
       media:
@@ -104,14 +104,14 @@ spec:
         advancedMounts:
           *app :
             *app :
-            - path: /media
+              - path: /media
 
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         advancedMounts:
           *app :
             *app :
-            - path: /config
+              - path: /config
 
       backups:
         type: custom
@@ -122,8 +122,8 @@ spec:
         advancedMounts:
           *app :
             *app :
-            - path: /config/backup
-              readOnly: false
+              - path: /config/backup
+                readOnly: false
 
     # serviceMonitor:
     #   *app:

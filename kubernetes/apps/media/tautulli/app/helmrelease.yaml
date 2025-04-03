@@ -42,14 +42,14 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups:
-            - 65539
-            - 1030
+              - 65539
+              - 1030
 
         containers:
           *app :
             image:
-              repository: ghcr.io/onedr0p/tautulli
-              tag: 2.15.1@sha256:74468ecce40f44c449675ec7fcb7c86ebff89961572d141ad743b8ccbdde3c98
+              repository: ghcr.io/home-operations/tautulli
+              tag: 2.15.1@sha256:0925254e24ca12769d437527a9463f0738d98908bc41f1bd77072aa8f0307a4c
             env:
               TZ: America/New_York
               TAUTULLI__PORT: &port 8181
@@ -76,19 +76,19 @@ spec:
           nginx.ingress.kubernetes.io/whitelist-source-range: "${INGRESS_INTERNAL_ONLY_CIDR}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         hosts:
-        - host: &host tautulli.${EXTERNAL_DNS_1_DOMAIN}
-          paths:
-          - path: /
-            pathType: Prefix
-            service:
-              identifier: *app
-              port: *port
+          - host: &host tautulli.${EXTERNAL_DNS_1_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: *app
+                  port: *port
 
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}
         globalMounts:
-        - path: /config
+          - path: /config
 
       backups:
         type: custom
@@ -99,15 +99,15 @@ spec:
         advancedMounts:
           *app :
             *app :
-            - path: /config/backup
-              readOnly: false
+              - path: /config/backup
+                readOnly: false
 
     serviceMonitor:
       metrics:
         serviceName: *app
         endpoints:
-        - port: http
-          scheme: http
-          path: /metrics
-          interval: 10m
-          scrapeTimeout: 10s
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 10m
+            scrapeTimeout: 10s
