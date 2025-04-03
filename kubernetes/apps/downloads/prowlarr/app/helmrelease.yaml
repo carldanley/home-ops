@@ -91,7 +91,7 @@ spec:
 
           exporter:
             image:
-              repository: ghcr.io/home-operations/exportarr
+              repository: ghcr.io/onedr0p/exportarr
               tag: v2.1.0
             args:
               - prowlarr
