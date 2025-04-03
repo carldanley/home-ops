@@ -19,18 +19,19 @@ spec:
   values:
     interval: 10s
     sources:
-    - ingress
+      - ingress
     policy: sync
     registry: txt
     txtPrefix: "k8s-external-dns-1-"
     domainFilters:
-    - ${EXTERNAL_DNS_1_DOMAIN}
-    provider: rfc2136
+      - ${EXTERNAL_DNS_1_DOMAIN}
+    provider:
+      name: rfc2136
     extraArgs:
-    - --rfc2136-host=${SYNOLOGY_ADDRESS}
-    - --rfc2136-port=53
-    - --rfc2136-zone=${EXTERNAL_DNS_1_DOMAIN}
-    - --rfc2136-tsig-axfr
+      - --rfc2136-host=${SYNOLOGY_ADDRESS}
+      - --rfc2136-port=53
+      - --rfc2136-zone=${EXTERNAL_DNS_1_DOMAIN}
+      - --rfc2136-tsig-axfr
     resources:
       requests:
         cpu: 5m
@@ -40,15 +41,15 @@ spec:
     serviceMonitor:
       enabled: true
   postRenderers:
-  - kustomize:
-      patches:
-      - target:
-          version: v1
-          kind: Deployment
-          name: external-dns-1
-        patch: |
-          - op: add
-            path: /spec/template/spec/containers/0/envFrom
-            value:
-            - secretRef:
-                name: external-dns-1-secret
+    - kustomize:
+        patches:
+          - target:
+              version: v1
+              kind: Deployment
+              name: external-dns-1
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/envFrom
+                value:
+                - secretRef:
+                    name: external-dns-1-secret
