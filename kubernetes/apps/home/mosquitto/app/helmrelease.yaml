@@ -42,10 +42,10 @@ spec:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.21
             command:
-            - /bin/sh
-            - -c
+              - /bin/sh
+              - -c
             args:
-            - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
+              - /data/mosquitto_init/load-users.sh /data/mosquitto_secret /data/external_config/mosquitto_pwd && mosquitto_passwd -U /data/external_config/mosquitto_pwd && echo "User import Completed"
 
         containers:
           app:
@@ -55,9 +55,9 @@ spec:
             resources:
               requests:
                 cpu: 5m
-                memory: 10Mi
+                memory: 256Mi
               limits:
-                memory: 10Mi
+                memory: 512Mi
             probes:
               liveness: &probes
                 enabled: true
@@ -75,11 +75,11 @@ spec:
             env:
               BROKER_ENDPOINT: tcp://127.0.0.1:1883
             envFrom:
-            - secretRef:
-                name: mosquitto-secret
+              - secretRef:
+                  name: mosquitto-secret
             ports:
-            - name: metrics
-              containerPort: &metricsPort 9234
+              - name: metrics
+                containerPort: &metricsPort 9234
             probes:
               liveness: &probes
                 enabled: true
@@ -108,8 +108,8 @@ spec:
         advancedMounts:
           mosquitto:
             app:
-            - path: /mosquitto/data
-              readOnly: false
+              - path: /mosquitto/data
+                readOnly: false
 
       mosquitto-config:
         type: configMap
@@ -117,8 +117,8 @@ spec:
         advancedMounts:
           mosquitto:
             app:
-            - path: /mosquitto/config/mosquitto.conf
-              subPath: mosquitto.conf
+              - path: /mosquitto/config/mosquitto.conf
+                subPath: mosquitto.conf
 
       mosquitto-secret:
         type: secret
@@ -126,7 +126,7 @@ spec:
         advancedMounts:
           mosquitto:
             user-import:
-            - path: /data/mosquitto_secret
+              - path: /data/mosquitto_secret
 
       mosquitto-init-config:
         type: configMap
@@ -135,23 +135,23 @@ spec:
         advancedMounts:
           mosquitto:
             user-import:
-            - path: /data/mosquitto_init
+              - path: /data/mosquitto_init
 
       external-config:
         type: emptyDir
         advancedMounts:
           mosquitto:
             app:
-            - path: /mosquitto/external_config
+              - path: /mosquitto/external_config
             user-import:
-            - path: /data/external_config
+              - path: /data/external_config
 
     serviceMonitor:
       metrics:
         serviceName: mosquitto
         endpoints:
-        - port: http
-          scheme: http
-          path: /metrics
-          interval: 30s
-          scrapeTimeout: 10s
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 30s
+            scrapeTimeout: 10s
