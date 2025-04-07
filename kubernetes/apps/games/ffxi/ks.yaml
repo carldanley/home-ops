@@ -40,7 +40,10 @@ spec:
       APP: ffxi-database
       VOLSYNC_CLAIM: ffxi-database-data
       VOLSYNC_CAPACITY: 50Gi
-    substituteFrom: []
+    substituteFrom:
+      - kind: Secret
+        name: ffxi-secrets
+        optional: false
   dependsOn:
     - name: games-ffxi-secrets
     - name: storage-rook-ceph-cluster
