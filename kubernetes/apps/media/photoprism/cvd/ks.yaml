@@ -41,12 +41,12 @@ spec:
       VOLSYNC_CLAIM: photoprism-cvd-mariadb-data
       VOLSYNC_CAPACITY: 10Gi
     substituteFrom:
-    - kind: Secret
-      name: photoprism-cvd-secrets
-      optional: false
+      - kind: Secret
+        name: photoprism-cvd-secrets
+        optional: false
   dependsOn:
-  - name: media-photoprism-cvd-secrets
-  - name: storage-rook-ceph-cluster
+    - name: media-photoprism-cvd-secrets
+    - name: storage-rook-ceph-cluster
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -66,9 +66,9 @@ spec:
     name: k8s-home-ops
   postBuild:
     substituteFrom:
-    - kind: Secret
-      name: photoprism-cvd-secrets
-      optional: false
+      - kind: Secret
+        name: photoprism-cvd-secrets
+        optional: false
   dependsOn:
-  - name: media-photoprism-cvd-mariadb
-  - name: ingress-ingress-nginx
+    - name: media-photoprism-cvd-mariadb
+    - name: ingress-ingress-nginx
