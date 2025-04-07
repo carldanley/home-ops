@@ -39,6 +39,10 @@ spec:
       persistence:
         enabled: true
         existingClaim: ${VOLSYNC_CLAIM}
+      service:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_FFXI_DB}
     metrics:
       enabled: true
       serviceMonitor:
