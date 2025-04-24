@@ -19,7 +19,7 @@ spec:
 
     image:
       repository: grafana/grafana
-      tag: 11.6.0
+      tag: 11.6.1
 
     dashboardProviders:
       dashboardproviders.yaml:
