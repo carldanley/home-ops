@@ -5,9 +5,6 @@ metadata:
   name: external-service-plex
   namespace: ingress
 spec:
-  type: LoadBalancer
-  annotations:
-    io.cilium/lb-ipam-ips: ${SERVICE_ADDRESS_PLEX}
   ports:
     - protocol: TCP
       port: 32400
