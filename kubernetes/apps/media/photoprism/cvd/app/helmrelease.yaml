@@ -42,7 +42,7 @@ spec:
           *app :
             image:
               repository: docker.io/photoprism/photoprism
-              tag: latest@sha256:7397ec51dd576cdda92d89184599e86b311422be3d395caa2225bb2ea9e5c6fa
+              tag: latest@sha256:c86cbf9860a21c2083d5b4e1f04d61c11f750c333f867c0455e9337d50becf59
             env:
               ## See other config options from PhotoPrism documentation: https://docs.photoprism.org/getting-started/config-options/
               # PHOTOPRISM_ADMIN_PASSWORD: "please-change"     # Initial admin password: PLEASE CHANGE!
