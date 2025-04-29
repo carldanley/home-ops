@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: mariadb
-      version: 20.4.3
+      version: 20.5.3
       interval: 30m
       sourceRef:
         kind: HelmRepository
