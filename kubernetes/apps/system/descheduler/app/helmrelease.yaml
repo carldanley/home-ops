@@ -22,7 +22,7 @@ spec:
 
     image:
       repository: docker.io/giantswarm/descheduler
-      tag: v0.32.2
+      tag: v0.33.0
 
     leaderElection:
       enabled: true
