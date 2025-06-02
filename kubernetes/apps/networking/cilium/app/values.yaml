@@ -27,6 +27,8 @@ cni:
   exclusive: false
 
 enableRuntimeDeviceDetection: true
+endpointRoutes:
+  enabled: true
 
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
@@ -46,7 +48,7 @@ hubble:
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
-l7Proxy: true
+l7Proxy: false
 
 loadBalancer:
   algorithm: maglev

@@ -5,7 +5,7 @@ clusterName: ${CLUSTER_NAME}
 talosVersion: v1.10.3
 
 # renovate: datasource=github-releases extractVersion=^v(?<version>.*)$ depName=kubernetes/kubernetes
-kubernetesVersion: 1.30.3
+kubernetesVersion: 1.30.9
 
 endpoint: "https://${CLUSTER_NAME}.${DOMAIN}:6443"
 
@@ -13,233 +13,246 @@ allowSchedulingOnMasters: true
 allowSchedulingOnControlPlanes: true
 
 clusterPodNets:
-- 172.22.0.0/16
+  - 172.22.0.0/16
 clusterSvcNets:
-- 172.23.0.0/16
+  - 172.23.0.0/16
 cniConfig:
   name: none
 
 additionalApiServerCertSans: &certSans
-- ${CLUSTER_ENDPOINT_IP}
-- ${CLUSTER_NAME}.${DOMAIN}
-- "127.0.0.1" # KubePrism
+  - ${CLUSTER_ENDPOINT_IP}
+  - ${CLUSTER_NAME}.${DOMAIN}
+  - "127.0.0.1" # KubePrism
 additionalMachineCertSans: *certSans
 
 nodes:
+  - hostname: sc1.${DOMAIN}
+    ipAddress: 192.168.10.41
+    installDiskSelector:
+      model: eui.0025385c9150b204
+    controlPlane: true
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+        vlans:
+          - vlanId: 4
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels: &nodeLabels
+      topology.kubernetes.io/region: batcave
+      topology.kubernetes.io/zone: batcave
 
-- hostname: sc1.${DOMAIN}
-  ipAddress: 192.168.10.41
-  controlPlane: true
-  installDisk: /dev/nvme1n1
-  networkInterfaces:
-  - interface: eth0
-    dhcp: true
-    vip:
-      ip: ${CLUSTER_ENDPOINT_IP}
-    vlans:
-    - vlanId: 4
-      mtu: 1500
-      dhcp: true
-      dhcpOptions:
-        routeMetric: 4096
-  nodeLabels: &nodeLabels
-    topology.kubernetes.io/region: batcave
-    topology.kubernetes.io/zone: batcave
+  - hostname: sc2.${DOMAIN}
+    ipAddress: 192.168.10.42
+    installDiskSelector:
+      model: eui.0025385c9150b1eb
+    controlPlane: true
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+        vlans:
+          - vlanId: 4
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels: *nodeLabels
 
-- hostname: sc2.${DOMAIN}
-  ipAddress: 192.168.10.42
-  controlPlane: true
-  installDisk: /dev/nvme1n1
-  networkInterfaces:
-  - interface: eth0
-    dhcp: true
-    vip:
-      ip: ${CLUSTER_ENDPOINT_IP}
-    vlans:
-    - vlanId: 4
-      mtu: 1500
-      dhcp: true
-      dhcpOptions:
-        routeMetric: 4096
-  nodeLabels: *nodeLabels
+  - hostname: sc3.${DOMAIN}
+    ipAddress: 192.168.10.43
+    installDiskSelector:
+      model: eui.0025385b71b09861
+    controlPlane: true
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: ${CLUSTER_ENDPOINT_IP}
+        vlans:
+          - vlanId: 4
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels: *nodeLabels
 
-- hostname: sc3.${DOMAIN}
-  ipAddress: 192.168.10.43
-  controlPlane: true
-  installDisk: /dev/nvme1n1
-  networkInterfaces:
-  - interface: eth0
-    dhcp: true
-    vip:
-      ip: ${CLUSTER_ENDPOINT_IP}
-    vlans:
-    - vlanId: 4
-      mtu: 1500
-      dhcp: true
-      dhcpOptions:
-        routeMetric: 4096
-  nodeLabels: *nodeLabels
+  - hostname: sc4.${DOMAIN}
+    ipAddress: 192.168.10.44
+    installDiskSelector:
+      model: eui.0025385b9152024b
+    controlPlane: false
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vlans:
+          - vlanId: 4
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels: *nodeLabels
 
-- hostname: sc4.${DOMAIN}
-  ipAddress: 192.168.10.44
-  controlPlane: false
-  installDisk: /dev/nvme1n1
-  networkInterfaces:
-  - interface: eth0
-    dhcp: true
-    vlans:
-    - vlanId: 4
-      mtu: 1500
-      dhcp: true
-      dhcpOptions:
-        routeMetric: 4096
-  nodeLabels: *nodeLabels
-
-- hostname: sc5.${DOMAIN}
-  ipAddress: 192.168.10.45
-  controlPlane: false
-  installDisk: /dev/nvme1n1
-  networkInterfaces:
-  - interface: eth0
-    dhcp: true
-    vlans:
-    - vlanId: 4
-      mtu: 1500
-      dhcp: true
-      dhcpOptions:
-        routeMetric: 4096
-  nodeLabels: *nodeLabels
+  - hostname: sc5.${DOMAIN}
+    ipAddress: 192.168.10.45
+    installDiskSelector:
+      model: eui.0025385c9150b1e9
+    controlPlane: false
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vlans:
+          - vlanId: 4
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    nodeLabels: *nodeLabels
 
 controlPlane:
   schematic: &schematic
     customization:
       extraKernelArgs:
-      - net.ifnames=0
+        - net.ifnames=0
       systemExtensions:
         officialExtensions:
-        - siderolabs/intel-ucode
-        - siderolabs/iscsi-tools
+          - siderolabs/intel-ucode
+          - siderolabs/iscsi-tools
 
   patches:
-  # Configure containerd
-  - &containerdPatch |-
-    machine:
-      files:
-        - op: create
-          path: /etc/cri/conf.d/20-customization.part
-          content: |-
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
-            [plugins."io.containerd.grpc.v1.cri".containerd]
-              discard_unpacked_layers = false
-            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-              discard_unpacked_layers = false
+    # Configure containerd
+    - &containerdPatch |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |-
+              [plugins."io.containerd.grpc.v1.cri"]
+                enable_unprivileged_ports = true
+                enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
 
-  # Disable search domain everywhere
-  - &disableSearchDomainPatch |-
-    machine:
-      network:
-        disableSearchDomain: true
+    # Disable search domain everywhere
+    - &disableSearchDomainPatch |-
+      machine:
+        network:
+          disableSearchDomain: true
 
-  # Configure kubelet
-  - &kubeletConfigPatch |-
-    machine:
-      kubelet:
-        extraArgs:
-          feature-gates: GracefulNodeShutdown=true
-          rotate-server-certificates: true
-        extraConfig:
-          maxPods: 250
-        nodeIP:
-          validSubnets:
+    # Configure kubelet
+    - &kubeletConfigPatch |-
+      machine:
+        kubelet:
+          extraArgs:
+            rotate-server-certificates: true
+          extraConfig:
+            maxPods: 250
+          nodeIP:
+            validSubnets:
+            - 192.168.10.0/23
+
+    # Enable KubePrism
+    - &kubeprismPatch |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Force nameserver
+    - &forceNameserverPatch |-
+      machine:
+        network:
+          nameservers:
+          - ${DNS_SERVER}
+
+    # Configure NTP
+    - &ntpPatch |-
+      machine:
+        time:
+          disabled: false
+          servers:
+          - ${NTP_SERVER}
+
+    # Static host entries
+    - &staticHostEntriesPatch |-
+      machine:
+        network:
+          extraHostEntries:
+          - ip: ${CLUSTER_ENDPOINT_IP}
+            aliases:
+            - ${CLUSTER_NAME}.${DOMAIN}
+
+    # Custom sysctl settings
+    - &customSysctlPatch |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: 1048576
+          fs.inotify.max_user_instances: 8192
+
+    # Disable host DNS
+    - &disableHostDNS |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        proxy:
+          disabled: true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+          advertisedSubnets:
           - 192.168.10.0/23
 
-  # Enable KubePrism
-  - &kubeprismPatch |-
-    machine:
-      features:
-        kubePrism:
-          enabled: true
-          port: 7445
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
 
-  # Force nameserver
-  - &forceNameserverPatch |-
-    machine:
-      network:
-        nameservers:
-        - ${DNS_SERVER}
-
-  # Configure NTP
-  - &ntpPatch |-
-    machine:
-      time:
-        disabled: false
-        servers:
-        - ${NTP_SERVER}
-
-  # Static host entries
-  - &staticHostEntriesPatch |-
-    machine:
-      network:
-        extraHostEntries:
-        - ip: ${CLUSTER_ENDPOINT_IP}
-          aliases:
-          - ${CLUSTER_NAME}.${DOMAIN}
-
-  # Custom sysctl settings
-  - &customSysctlPatch |-
-    machine:
-      sysctls:
-        fs.inotify.max_user_watches: 1048576
-        fs.inotify.max_user_instances: 8192
-
-  # Cluster configuration
-  - |-
-    cluster:
-      allowSchedulingOnMasters: true
-      controllerManager:
-        extraArgs:
-          bind-address: 0.0.0.0
-      proxy:
-        disabled: true
-      scheduler:
-        extraArgs:
-          bind-address: 0.0.0.0
-
-  # ETCD configuration
-  - |-
-    cluster:
-      etcd:
-        extraArgs:
-          listen-metrics-urls: http://0.0.0.0:2381
-        advertisedSubnets:
-        - 192.168.10.0/23
-
-  # Disable default API server admission plugins.
-  - |-
-    - op: remove
-      path: /cluster/apiServer/admissionControl
-
-  # Enable K8s Talos API Access
-  - |-
-    machine:
-      features:
-        kubernetesTalosAPIAccess:
-          enabled: true
-          allowedRoles:
-          - os:admin
-          allowedKubernetesNamespaces:
-          - system
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+            - os:admin
+            allowedKubernetesNamespaces:
+            - system
 
 worker:
   schematic: *schematic
   patches:
-  - *containerdPatch
-  - *disableSearchDomainPatch
-  - *kubeletConfigPatch
-  - *kubeprismPatch
-  - *forceNameserverPatch
-  - *ntpPatch
-  - *staticHostEntriesPatch
-  - *customSysctlPatch
+    - *containerdPatch
+    - *disableSearchDomainPatch
+    - *kubeletConfigPatch
+    - *kubeprismPatch
+    - *forceNameserverPatch
+    - *ntpPatch
+    - *staticHostEntriesPatch
+    - *customSysctlPatch
+    - *disableHostDNS
