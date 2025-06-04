@@ -197,15 +197,6 @@ controlPlane:
           fs.inotify.max_user_watches: 1048576
           fs.inotify.max_user_instances: 8192
 
-    # Disable host DNS
-    - &disableHostDNS |-
-      machine:
-        features:
-          hostDNS:
-            enabled: true
-            resolveMemberNames: true
-            forwardKubeDNSToHost: false
-
     # Cluster configuration
     - |-
       cluster:
@@ -255,4 +246,3 @@ worker:
     - *ntpPatch
     - *staticHostEntriesPatch
     - *customSysctlPatch
-    - *disableHostDNS
