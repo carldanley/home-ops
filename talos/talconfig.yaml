@@ -29,7 +29,7 @@ nodes:
   - hostname: sc1.${DOMAIN}
     ipAddress: 192.168.10.41
     installDiskSelector:
-      model: eui.0025385c9150b204
+      wwid: eui.0025385c9150b204
     controlPlane: true
     networkInterfaces:
       - interface: eth0
@@ -49,7 +49,7 @@ nodes:
   - hostname: sc2.${DOMAIN}
     ipAddress: 192.168.10.42
     installDiskSelector:
-      model: eui.0025385c9150b1eb
+      wwid: eui.0025385c9150b1eb
     controlPlane: true
     networkInterfaces:
       - interface: eth0
@@ -67,7 +67,7 @@ nodes:
   - hostname: sc3.${DOMAIN}
     ipAddress: 192.168.10.43
     installDiskSelector:
-      model: eui.0025385b71b09861
+      wwid: eui.0025385b71b09861
     controlPlane: true
     networkInterfaces:
       - interface: eth0
@@ -233,6 +233,7 @@ controlPlane:
             allowedRoles:
             - os:admin
             allowedKubernetesNamespaces:
+            - actions-runner-system
             - system
 
 worker:
