@@ -23,4 +23,4 @@ metadata:
   name: synology-containers-runner
 spec:
   roles:
-  - os:admin
+    - os:admin

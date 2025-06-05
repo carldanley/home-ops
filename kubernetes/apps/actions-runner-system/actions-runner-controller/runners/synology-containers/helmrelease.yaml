@@ -30,7 +30,7 @@ spec:
       retries: 3
   values:
     githubConfigUrl: https://github.com/carldanley/synology-containers
-    githubConfigSecret: synology-containers
+    githubConfigSecret: synology-containers-runner-secrets
     minRunners: 1
     maxRunners: 3
     containerMode:
