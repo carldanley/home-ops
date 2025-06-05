@@ -29,7 +29,7 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: actions-runner-controller-runners
   dependsOn:
     - name: storage-rook-ceph-cluster
     - name: actions-runner-system-actions-runner-controller
