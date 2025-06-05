@@ -47,6 +47,13 @@ spec:
       namespace: actions-runner-system
     template:
       spec:
+        initContainers:
+          - name: initialize-runner-work-directory
+            image: ghcr.io/actions/actions-runner:2.325.0@sha256:8345f634bbaaedbbdff1abb212649b1821baf295e5bcddf420f07847d7f35a87
+            command: ["sudo", "chown", "-R", "1001:123", "/home/runner/_work"]
+            volumeMounts:
+              - name: work
+                mountPath: /home/runner/_work
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.325.0@sha256:8345f634bbaaedbbdff1abb212649b1821baf295e5bcddf420f07847d7f35a87
