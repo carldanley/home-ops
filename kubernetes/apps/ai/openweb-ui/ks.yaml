@@ -22,5 +22,5 @@ spec:
       VOLSYNC_CAPACITY: 2Gi
     substituteFrom: []
   dependsOn:
-  - name: storage-rook-ceph-cluster
-  - name: storage-volsync
+    - name: storage-rook-ceph-cluster
+    - name: storage-volsync
