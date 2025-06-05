@@ -18,6 +18,8 @@ spec:
     name: k8s-home-ops
   targetNamespace: *namespace
   wait: true
+  postBuild:
+    substituteFrom: []
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -42,3 +44,5 @@ spec:
   targetNamespace: *namespace
   timeout: 3m
   wait: true
+  postBuild:
+    substituteFrom: []
