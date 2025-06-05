@@ -2,22 +2,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app actions-runner-controller
-  namespace: &namespace actions-runner-system
+  name: actions-runner-system-actions-runner-controller
+  namespace: flux-system
 spec:
   interval: 10m
   timeout: 3m
   retryInterval: 2m
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: actions-runner-controller
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-    namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: actions-runner-system
   wait: true
   postBuild:
     substituteFrom: []
@@ -25,16 +24,15 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app actions-runner-controller-runners
-  namespace: &namespace actions-runner-system
+  name: actions-runner-system-actions-runner-controller-runners
+  namespace: flux-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: storage-rook-ceph-cluster
-    - name: actions-runner-controller
-      namespace: *namespace
+    - name: actions-runner-system-actions-runner-controller
   interval: 10m
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/runners
   prune: true
@@ -42,8 +40,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-    namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: actions-runner-system
   timeout: 3m
   wait: true
   postBuild:
